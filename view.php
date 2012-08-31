@@ -100,45 +100,6 @@ try {
   echo "\n\ncreateAuthor Failed with message:  ". $e->getMessage();
 }
 
-
-// Delete all sessions of the user, before creating a new one
-// Finds sessions, that shouldn't exist(why??) then,deleteSession shuts the server down...
-// <- deleted all db entries, now it works, but it may crash...
-// if the author has no sessions yet, than it also throws an exception
-/*
-try {
-    $sessions = $instance->listSessionsOfAuthor($authorID);
-}
-catch (Exception $e) {
-    echo "\n\nlistSessionsOfAuthor failed with message: ". $e->getMessage();
-}
-if(isset($sessions)) {
-    foreach($sessions as $key => $value) {
-        try{
-            $instance->deleteSession($key);
-        }
-        catch (Exception $e) {
-            echo "\n\ndeleteSession failed with message: ". $e->getMessage();
-        }
-    }
-}
-*/
-// ALTERNATIVE
-// if a cookie already exists, delete the session for it
-// (alternative: When a cookie exists, get the sessionInfo. When there is a session, do nothing, if not create one) <- but what, when the user switches to another Etherpad?
-/*
-if($cookie = $_COOKIE['sessionID']) {
-	try {
-		$instance->deleteSession($cookie);
-		setcookie("sessionID","",time()-3600);
-	}
-	catch (Exception $e) {
-		// TODO: Etherpad server st�rzt ab, wenn eine session existiert, aber die gruppe nicht mehr
-		error("\n\ndeleteSession Failed with message:  ". $e->getMessage());
-	}
-}
-*/
-
 //$validUntil = mktime(0, 0, 0, date("m"), date("d")+1, date("y")); // +1 day in the future
 $validUntil = time() + $CFG->etherpadlite_cookietime;
 try{
