@@ -3,8 +3,7 @@
 /**
  * This page prints a particular instance of etherpadlite
  *
- * @author  Your Name <your@email.address>
- * @version $Id: view.php,v 1.6.2.3 2009/04/17 22:06:25 skodak Exp $
+ * @author  Timo Welde <your@email.address>
  * @package mod/etherpadlite
  */
 
