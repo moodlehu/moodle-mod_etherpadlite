@@ -60,7 +60,7 @@ function etherpadlite_add_instance(stdClass $etherpadlite, mod_etherpadlite_mod_
 	
 	$etherpadlite->timecreated = time();
 	
-	// seperator.output wieder zurï¿½cksetzen
+	// seperator.output wieder zurŸcksetzen
 	ini_set('arg_separator.output', $separator);
 	
     return $DB->insert_record('etherpadlite', $etherpadlite);
@@ -126,7 +126,7 @@ function etherpadlite_delete_instance($id) {
  		return false;
 	}
 	
-	// seperator.output wieder zurï¿½cksetzen
+	// seperator.output wieder zurŸcksetzen
 	ini_set('arg_separator.output', $separator);
 	
     if (! $DB->delete_records('etherpadlite', array('id'=>$etherpadlite->id))) {
