@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * This file holds the german language
+ *
+ * @package    mod
+ * @subpackage etherpadlite
+ *
+ * @author     Timo Welde <tjwelde@gmail.com>
+ * @copyright  2012 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 $string['etherpadlite'] = 'Etherpad Lite';
 
 // view
