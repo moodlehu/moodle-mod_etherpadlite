@@ -18,12 +18,11 @@
 /**
  * Definition of log events
  *
- * NOTE: this is an example how to insert log event during installation/update.
- * It is not really essential to know about it, but these logs were created as example.
- *
  * @package    mod
  * @subpackage etherpadlite
- * @copyright  2011 Your Name <your@email.adress>
+ * 
+ * @author     Timo Welde <tjwelde@gmail.com>
+ * @copyright  2012 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

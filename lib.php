@@ -13,6 +13,13 @@
  *     called "locallib.php" (see forum, quiz...). This will
  *     help to save some memory when Moodle is performing
  *     actions across all modules.
+ *
+ * @package    mod
+ * @subpackage etherpadlite
+ *
+ * @author     Timo Welde <tjwelde@gmail.com>
+ * @copyright  2012 Humboldt-Universit√§t zu Berlin <moodle-support@cms.hu-berlin.de>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -60,7 +67,7 @@ function etherpadlite_add_instance(stdClass $etherpadlite, mod_etherpadlite_mod_
 	
 	$etherpadlite->timecreated = time();
 	
-	// seperator.output wieder zurücksetzen
+	// seperator.output wieder zurÔøΩcksetzen
 	ini_set('arg_separator.output', $separator);
 	
     return $DB->insert_record('etherpadlite', $etherpadlite);
@@ -126,7 +133,7 @@ function etherpadlite_delete_instance($id) {
  		return false;
 	}
 	
-	// seperator.output wieder zurücksetzen
+	// seperator.output wieder zurÔøΩcksetzen
 	ini_set('arg_separator.output', $separator);
 	
     if (! $DB->delete_records('etherpadlite', array('id'=>$etherpadlite->id))) {

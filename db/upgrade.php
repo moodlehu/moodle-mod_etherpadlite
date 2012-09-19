@@ -1,5 +1,17 @@
 <?php  //$Id: upgrade.php,v 1.2 2007/08/08 22:36:54 stronk7 Exp $
 
+/**
+ * This file keeps track of upgrades to
+ * the etherpadlite module
+ *
+ * @package    mod
+ * @subpackage etherpadlite
+ *
+ * @author     Timo Welde <tjwelde@gmail.com>
+ * @copyright  2012 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 // This file keeps track of upgrades to
 // the etherpadlite module
 //

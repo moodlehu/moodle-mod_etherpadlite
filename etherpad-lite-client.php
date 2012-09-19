@@ -1,4 +1,17 @@
 <?php
+
+/**
+ * This is a helper class to communicate with ther etherpadlite server
+ *
+ * @package    mod
+ * @subpackage etherpadlite
+ *
+ * @author     Timo Welde <tjwelde@gmail.com>
+ * @link       https://github.com/TomNomNom/etherpad-lite-client
+ * @copyright  Tomnomnom <mail@tomnomnom.com>
+ * @license    Apache License
+ */
+
 class EtherpadLiteClient {
 
   const API_VERSION             = 1;

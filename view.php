@@ -3,8 +3,12 @@
 /**
  * This page prints a particular instance of etherpadlite
  *
- * @author  Timo Welde <your@email.address>
- * @package mod/etherpadlite
+ * @package    mod
+ * @subpackage etherpadlite
+ *
+ * @author     Timo Welde <tjwelde@gmail.com>
+ * @copyright  2012 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once(dirname(dirname(dirname(__FILE__))).'/config.php');

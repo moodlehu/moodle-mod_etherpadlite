@@ -1,5 +1,16 @@
 <?php  //$Id: settings.php,v 1.2 2008/03/25 20:19:49 poltawski Exp $
 
+/**
+ * These are the settings for this module
+ *
+ * @package    mod
+ * @subpackage etherpadlite
+ *
+ * @author     Timo Welde <tjwelde@gmail.com>
+ * @copyright  2012 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 
 $settings->add(new admin_setting_configtext('etherpadlite_url', get_string('url', 'etherpadlite'), 
 				   get_string('urldesc', 'etherpadlite'), null, PARAM_RAW,40));
