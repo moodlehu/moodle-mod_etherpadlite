@@ -48,15 +48,13 @@ class EtherpadLiteClient {
       curl_setopt($c, CURLOPT_TIMEOUT, 20);
       global $CFG;
       if($CFG->etherpadlite_ssl) {
-      	// CODE_CHANGE_TW 07.12.2011 - Because curl doesn't trust any certificate, I had to add this little "hack" here to enable https support
-      	//curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
-      	// CODE_CHANGE_TW 09.12.2011 - Next is the proper solution, where you have to put the root ca in the CAcerts directory (PEM format)
+      	// CODE_CHANGE_TW 09.12.2011 - Next is the proper solution
       	curl_setopt($c, CURLOPT_SSL_VERIFYPEER, true);
       	curl_setopt($c, CURLOPT_SSL_VERIFYHOST, 2);
-      	curl_setopt($c, CURLOPT_CAINFO, $CFG->dirroot."/mod/etherpadlite/CAcerts/cacert.pem"); // CA certs from http://curl.haxx.se/docs/caextract.html (DECEMBER '11)
       	// CODE_CHANGE_TW end
       }
       else {
+          // CODE_CHANGE_TW 07.12.2011 - Because curl doesn't trust any certificate, I had to add this little "hack" here to enable https support
           curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
       }
       $result = curl_exec($c);
@@ -67,7 +65,7 @@ class EtherpadLiteClient {
       $result = file_get_contents($url);
     }
     
-    if($result == ""){
+    if($result == "" || !$result){
       throw new UnexpectedValueException("Empty or No Response from the server");
     }
     
