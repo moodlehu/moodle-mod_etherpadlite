@@ -42,7 +42,7 @@ $string['cookietime'] = 'Session elapse time';
 $string['cookietimedesc'] = 'Here you have to enter the time in seconds until the session should be valid';
 
 $string['ssl'] = 'Https Redirect';
-$string['ssldesc'] = 'With this set, your site will redirect itself to https, if an etherpad is opened';
+$string['ssldesc'] = 'With this set, your site will redirect itself to https, if an etherpad is opened (eyecandy for the user)';
 
 $string['checkssl'] = 'Verify HTTPS cert';
 $string['checkssldesc'] = 'With this set, the HTTPS certificate of the etherpadlite server will be checked, to prevent man in the middle attacks';
