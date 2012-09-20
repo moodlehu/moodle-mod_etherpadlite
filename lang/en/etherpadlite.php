@@ -41,6 +41,9 @@ $string['cookiedomaindesc'] = 'Here you can enter the domain, which should be st
 $string['cookietime'] = 'Session elapse time';
 $string['cookietimedesc'] = 'Here you have to enter the time in seconds until the session should be valid';
 
+$string['jscookie'] = 'Cookie over js';
+$string['jscookiedesc'] = 'With this set, the session cookie will be set via javascript';
+
 $string['ssl'] = 'Https Redirect';
 $string['ssldesc'] = 'With this set, your site will redirect itself to https, if an etherpad is opened (eyecandy for the user)';
 

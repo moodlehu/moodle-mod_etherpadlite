@@ -25,6 +25,7 @@ $settings->add(new admin_setting_configtext('etherpadlite_cookiedomain', get_str
 				   get_string('cookiedomaindesc', 'etherpadlite'), '.mydomain.local'));
 $settings->add(new admin_setting_configtext('etherpadlite_cookietime', get_string('cookietime', 'etherpadlite'), 
 				   get_string('cookietimedesc', 'etherpadlite'), '10800'));
+$settings->add(new admin_setting_configcheckbox('etherpadlite_jscookie', get_string('jscookie', 'etherpadlite'), get_string('jscookiedesc', 'etherpadlite'), 0));
 				   
 $settings->add(new admin_setting_configcheckbox('etherpadlite_ssl', get_string('ssl', 'etherpadlite'),
 				   get_string('ssldesc', 'etherpadlite'), '0'));

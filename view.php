@@ -108,7 +108,18 @@ $sessionID = $sessionID->sessionID;
 // if we reach the etherpadlite server over https, then the cookie should only be delivered over ssl 
 $ssl = (stripos($CFG->etherpadlite_url, 'https://')===0)?true:false;
 
-setcookie("sessionID",$sessionID,$validUntil,'/',$CFG->etherpadlite_cookiedomain, $ssl); // Set a cookie 
+if($CFG->etherpadlite_jscookie) {
+    $jsmodule = array(
+        'name'    => 'mod_etherpadlite',
+        'fullpath'=> '/mod/etherpadlite/module.js',
+        'requires'=> array('cookie')
+    );
+    
+    $PAGE->requires->js_init_call('M.mod_etherpadlite.init_cookie', array($sessionID, $CFG->etherpadlite_cookietime, $CFG->etherpadlite_cookiedomain), false, $jsmodule);
+}
+else {
+    setcookie("sessionID",$sessionID,$validUntil,'/',$CFG->etherpadlite_cookiedomain, $ssl); // Set a cookie
+}
 
 // seperator.output wieder zur�cksetzen
 ini_set('arg_separator.output', $separator);
