@@ -134,7 +134,7 @@ class EtherpadLiteClient {
   }
 
   // creates a new pad in this group 
-  public function createGroupPad($groupID, $padName, $text){
+  public function createGroupPad($groupID, $padName, $text=null){
     return $this->call("createGroupPad", array(
       "groupID" => $groupID,
       "padName" => $padName,
