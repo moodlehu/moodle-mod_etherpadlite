@@ -39,16 +39,8 @@ if($CFG->etherpadlite_ssl) {
 	if (!isset($_SERVER['HTTPS'])) {
 		$url = $CFG->httpswwwroot.'/mod/etherpadlite/view.php?id='.$id;
 
-		// TODO: REMOVE: This is a very HU-specific hack, only 1.9
-		//$CFG->noprotocolrewrite[] = $url;
-
 		redirect($url);
     }
-	// information for the cookie
-	$ssl = TRUE;
-}
-else  {
-	$ssl = FALSE;
 }
 
 
@@ -112,6 +104,9 @@ catch (Exception $e) {
     echo "\n\ncreateSession failed with message: ".$e->getMessage();
 }
 $sessionID = $sessionID->sessionID;
+
+// if we reach the etherpadlite server over https, then the cookie should only be delivered over ssl 
+$ssl = (stripos($CFG->etherpadlite_url, 'https://')===0)?true:false;
 
 setcookie("sessionID",$sessionID,$validUntil,'/',$CFG->etherpadlite_cookiedomain, $ssl); // Set a cookie 
 

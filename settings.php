@@ -13,21 +13,23 @@
 
 
 $settings->add(new admin_setting_configtext('etherpadlite_url', get_string('url', 'etherpadlite'), 
-				   get_string('urldesc', 'etherpadlite'), null, PARAM_RAW,40));
+				   get_string('urldesc', 'etherpadlite'), 'https://myserver.mydomain.local/moodle/', PARAM_RAW,40));
 				   
 $settings->add(new admin_setting_configtext('etherpadlite_apikey', get_string('apikey', 'etherpadlite'),
-		           get_string('apikeydesc', 'etherpadlite'), null, PARAM_RAW,40));
+		           get_string('apikeydesc', 'etherpadlite'), 'Enter your API Key', PARAM_RAW,40));
 		           
 $settings->add(new admin_setting_configtext('etherpadlite_padname', get_string('padname', 'etherpadlite'), 
-				   get_string('padnamedesc', 'etherpadlite'), null));
+				   get_string('padnamedesc', 'etherpadlite'), 'mymoodle2'));
 		           
 $settings->add(new admin_setting_configtext('etherpadlite_cookiedomain', get_string('cookiedomain', 'etherpadlite'),
-				   get_string('cookiedomaindesc', 'etherpadlite'), null));
+				   get_string('cookiedomaindesc', 'etherpadlite'), '.mydomain.local'));
 $settings->add(new admin_setting_configtext('etherpadlite_cookietime', get_string('cookietime', 'etherpadlite'), 
-				   get_string('cookietimedesc', 'etherpadlite'), null));
+				   get_string('cookietimedesc', 'etherpadlite'), '10800'));
 				   
 $settings->add(new admin_setting_configcheckbox('etherpadlite_ssl', get_string('ssl', 'etherpadlite'),
 				   get_string('ssldesc', 'etherpadlite'), '0'));
+$settings->add(new admin_setting_configcheckbox('etherpadlite_check_ssl', get_string('checkssl', 'etherpadlite'), 
+                   get_string('checkssldesc', 'etherpadlite'), 0));
 
 $settings->add(new admin_setting_configcheckbox('etherpadlite_adminguests', get_string('adminguests', 'etherpadlite'),
 				   get_string('adminguestsdesc', 'etherpadlite'), '0'));
