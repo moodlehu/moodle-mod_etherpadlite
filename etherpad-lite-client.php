@@ -47,7 +47,7 @@ class EtherpadLiteClient {
       curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
       curl_setopt($c, CURLOPT_TIMEOUT, 20);
       global $CFG;
-      if($CFG->etherpadlite_ssl) {
+      if($CFG->etherpadlite_check_ssl) {
       	// CODE_CHANGE_TW 09.12.2011 - Next is the proper solution
       	curl_setopt($c, CURLOPT_SSL_VERIFYPEER, true);
       	curl_setopt($c, CURLOPT_SSL_VERIFYHOST, 2);
@@ -58,7 +58,7 @@ class EtherpadLiteClient {
           curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
       }
       $result = curl_exec($c);
-      
+
       curl_close($c);
       
     } else {
