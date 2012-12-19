@@ -13,7 +13,10 @@
 
 $string['etherpadlite'] = 'Etherpad Lite';
 
-$string['modulename'] = 'Etherpad Lite';
+$string['modulename'] = 'Etherpad Lite (beta)';
+$string['modulename_help'] = 'The Etherpad Lite module enables the students and teacher to write text in a collaborative way. (The text is synced as they type) 
+
+(The etherpad server, which stands behind this module, is still in beta stage. That\'s why problems might occur, but aren\'t expected)';
 $string['modulenameplural'] = 'Etherpad Lites';
 
 $string['pluginadministration'] = 'etherpad lite administration';

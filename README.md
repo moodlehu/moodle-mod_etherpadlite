@@ -1,6 +1,6 @@
 # About
 
-This is a etherpadlite-module for Moodle 2.0-2.2
+This is a etherpadlite-module for Moodle 2.3
 
 
 # INSTALLATION
@@ -20,4 +20,4 @@ This is a etherpadlite-module for Moodle 2.0-2.2
 8. Guests allowed to write?: As described
 
 <br>
-*tested with Moodle 2.0-2.2*
+*tested with Moodle 2.3*

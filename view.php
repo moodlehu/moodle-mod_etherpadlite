@@ -30,6 +30,8 @@ if ($id) {
     error('You must specify a course_module ID or an instance ID');
 }
 
+// This must be here, so that require login doesn't throw a warning
+$PAGE->set_url('/mod/etherpadlite/view.php', array('id' => $cm->id));
 require_login($course, true, $cm);
 add_to_log($course->id, 'etherpadlite', 'view', "view.php?id=$cm->id", $etherpadlite->name, $cm->id);
 
@@ -118,7 +120,6 @@ ini_set('arg_separator.output', $separator);
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
 
 /// Print the page header
-$PAGE->set_url('/mod/etherpadlite/view.php', array('id' => $cm->id));
 $PAGE->set_title("Etherpad Lite: ".format_string($etherpadlite->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
