@@ -232,6 +232,27 @@ function etherpadlite_uninstall() {
     return true;
 }
 
+/**
+ * @param string $feature FEATURE_xx constant for requested feature
+ * @return mixed True if module supports feature, null if doesn't know
+ */
+function etherpadlite_supports($feature) {
+    switch($feature) {
+        case FEATURE_GROUPS:                  return false;
+        case FEATURE_GROUPINGS:               return false;
+        case FEATURE_GROUPMEMBERSONLY:        return false;
+        case FEATURE_MOD_INTRO:               return true;
+        case FEATURE_COMPLETION_TRACKS_VIEWS: return false;
+        case FEATURE_COMPLETION_HAS_RULES:    return false;
+        case FEATURE_GRADE_HAS_GRADE:         return false;
+        case FEATURE_GRADE_OUTCOMES:          return false;
+        case FEATURE_BACKUP_MOODLE2:          return true;
+        case FEATURE_SHOW_DESCRIPTION:        return true;
+
+        default: return null;
+    }
+}
+
 
 //////////////////////////////////////////////////////////////////////////////////////
 /// Any other etherpadlite functions go here.  Each of them must have a name that
