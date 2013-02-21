@@ -36,17 +36,49 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
         $userinfo = $this->get_setting_value('userinfo');
  
         $paths[] = new restore_path_element('etherpadlite', '/activity/etherpadlite');
-        $paths[] = new restore_path_element('etherpadlite_content', '/activity/etherpadlite/content');
+        
+        if($userinfo) {
+            $paths[] = new restore_path_element('etherpadlite_content', '/activity/etherpadlite/content');
+        }
  
         // Return the paths wrapped into standard activity structure
         return $this->prepare_activity_structure($paths);
     }
  
     protected function process_etherpadlite($data) {
-        global $DB;
+        global $DB, $CFG;
         $data = (object)$data;
         $oldid = $data->id;
         $data->course = $this->get_courseid();
+        
+        // php.ini separator.output auf '&' setzen
+        $separator = ini_get('arg_separator.output');
+        ini_set('arg_separator.output', '&');
+        
+        $instance = new EtherpadLiteClient($CFG->etherpadlite_apikey,$CFG->etherpadlite_url.'api');
+        
+        try {
+            $createGroup = $instance->createGroup();
+            $groupID = $createGroup->groupID;
+            //echo "New GroupID is $groupID\n\n";
+        } catch (Exception $e) {
+            // the group already exists or something else went wrong
+            echo "\n\ncreateGroup Failed with message ". $e->getMessage();
+        }
+        
+        try {
+            $newpad = $instance->createGroupPad($groupID, $CFG->etherpadlite_padname);
+            $padID = $newpad->padID;
+            //echo "Created new pad with padID: $padID\n\n";
+        } catch (Exception $e) {
+            // the pad already exists or something else went wrong
+            echo "\n\ncreateGroupPad Failed with message ". $e->getMessage();
+        }
+        
+        // seperator.output wieder zur�cksetzen
+        ini_set('arg_separator.output', $separator);
+        
+        $data->uri = $padID;
  
         $data->timecreated = $this->apply_date_offset($data->timecreated);
         $data->timemodified = $this->apply_date_offset($data->timemodified);
@@ -64,6 +96,8 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
         
         $newid = $this->get_new_parentid('etherpadlite');
         $etherpadlite = $DB->get_record('etherpadlite', array('id'=>$newid));
+        $padID = $etherpadlite->uri;
+        
 
         // php.ini separator.output auf '&' setzen
         $separator = ini_get('arg_separator.output');
@@ -72,39 +106,14 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
         $instance = new EtherpadLiteClient($CFG->etherpadlite_apikey,$CFG->etherpadlite_url.'api');
         
         try {
-            $createGroup = $instance->createGroup();
-            $groupID = $createGroup->groupID;
-            //echo "New GroupID is $groupID\n\n";
-        } catch (Exception $e) {
-            // the group already exists or something else went wrong
-          		echo "\n\ncreateGroup Failed with message ". $e->getMessage();
-        }
-        
-        try {
-            $newpad = $instance->createGroupPad($groupID, $CFG->etherpadlite_padname);
-            $padID = $newpad->padID;
-            //echo "Created new pad with padID: $padID\n\n";
-        } catch (Exception $e) {
-          		// the pad already exists or something else went wrong
-          		echo "\n\ncreateGroupPad Failed with message ". $e->getMessage();
-        }
-        
-        // seperator.output wieder zur�cksetzen
-        ini_set('arg_separator.output', $separator);
-        
-        $etherpadlite->uri = $padID;
-        
-        $etherpadlite->timecreated = time();
-        
-        try {
-            $instance->setText($padID, $data->text);
+            $instance->setHTML($padID, '<html>'.$data->html.'</html>');
         } catch (Exception $e) {
             // something went wrong
             echo "\n\nsetHTML Failed with message ". $e->getMessage();
         }
         
-        $DB->update_record('etherpadlite', $etherpadlite);
-        
+        // seperator.output wieder zur�cksetzen
+        ini_set('arg_separator.output', $separator);
     }
  
     protected function after_execute() {
