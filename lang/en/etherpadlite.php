@@ -26,6 +26,8 @@ $string['etherpadlitefieldset'] = 'Custom example fieldset';
 $string['etherpadliteintro'] = 'Etherpadlite Intro';
 $string['etherpadlitename'] = 'Etherpadlite Name';
 
+$string['etherpadlite:addinstance'] = 'Add new pad';
+
 
 // Admin Settings
 $string['url'] = 'Server URL';
