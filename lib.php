@@ -51,7 +51,8 @@ function etherpadlite_add_instance(stdClass $etherpadlite, mod_etherpadlite_mod_
 		//echo "New GroupID is $groupID\n\n";
 	} catch (Exception $e) {
 		// the group already exists or something else went wrong
-  		echo "\n\ncreateGroup Failed with message ". $e->getMessage();
+	    //echo "\n\ncreateGroup Failed with message ". $e->getMessage();
+  		throw $e;
 	}
 	
 	try {
@@ -60,7 +61,8 @@ function etherpadlite_add_instance(stdClass $etherpadlite, mod_etherpadlite_mod_
 	  	//echo "Created new pad with padID: $padID\n\n";
 	} catch (Exception $e) {
   		// the pad already exists or something else went wrong
-  		echo "\n\ncreateGroupPad Failed with message ". $e->getMessage();
+  		//echo "\n\ncreateGroupPad Failed with message ". $e->getMessage();
+  		throw $e;
 	}
 	
 	$etherpadlite->uri = $padID;
