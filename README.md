@@ -18,12 +18,12 @@ You need an etherpad-lite server, which is running on at least the same 2nd-leve
 
 On the github page you'll find all information you need, to install the server: https://github.com/ether/etherpad-lite
 
-We recommend to use not less than the etherpad-lite version 1.2.7
+We recommend to use the etherpad-lite version 1.2.7
 
 It's also recommended to use the latest stable release of nodejs
 (http://nodejs.org/)
 
-	we are using nodejs 0.6.12, installed over apt-get for our productive server. But we test new ep-lite versions always with this node version, before updating productive
+*we are using nodejs 0.6.12, installed over apt-get for our productive server. But we test new ep-lite versions always with this node version, before updating productive*
 
 When you want, that the server is only accessible via Moodle, then i recommend to install ep_remove_embed over the ep-lite admin interface. This removes the embed link.<br>
 *To access the admin area, uncomment the user section in settings.json*
@@ -31,7 +31,7 @@ When you want, that the server is only accessible via Moodle, then i recommend t
 ### Working ep-lite installation
 - Ubuntu 12.04
 - apt-get nodejs, npm, git, nginx, abiword, make, g++
-- etherpad-lite master branch from git (v1.2.7)
+- etherpad-lite from git (v1.2.7)
 - ep-lite settings.json:
 	-	"requireSession":true
 	-	"editOnly":true
@@ -48,8 +48,8 @@ When you want, that the server is only accessible via Moodle, then i recommend t
 2. open your admin/index.php page and follow the instructions
 
 # Configuration
-1. Server Url from your etherpadlite server
-2. ApiKey: this is stored in the file: APIKEY.txt on your etherpadlite server
+1. Server Url from your etherpadlite server *Make sure, that your moodle server can access this URL*
+2. ApiKey: this is stored in the file: `APIKEY.txt` on your etherpadlite server
 3. Padname: this is optional and maybe just for debugging the databse
 4. Cookie Domain: Enter the domain as described
 5. Session elapse time: How long should one session be valid?
