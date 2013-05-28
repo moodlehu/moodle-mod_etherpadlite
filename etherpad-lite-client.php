@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This is a helper class to communicate with ther etherpadlite server
+ * This is a helper class to communicate with the etherpadlite server
  *
  * @package    mod
  * @subpackage etherpadlite
