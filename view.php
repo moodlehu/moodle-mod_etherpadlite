@@ -67,7 +67,8 @@ if(isguestuser() && !etherpadlite_guestsallowed($etherpadlite)) {
 		$fullurl = $domain.'ro/'.$readOnlyID;
 	}
 	catch (Exception $e) {
-		echo "\n\ngetReadOnlyID failed with Message: ".$e->getMessage();
+		//echo "\n\ngetReadOnlyID failed with Message: ".$e->getMessage();
+		throw $e;
 	}
 }
 else {
@@ -94,7 +95,8 @@ try {
 //echo "The AuthorID is now $authorID\n\n";
 } catch (Exception $e) {
   // the pad already exists or something else went wrong
-  echo "\n\ncreateAuthor Failed with message:  ". $e->getMessage();
+  //echo "\n\ncreateAuthor Failed with message:  ". $e->getMessage();
+  throw $e;
 }
 
 //$validUntil = mktime(0, 0, 0, date("m"), date("d")+1, date("y")); // +1 day in the future
@@ -103,7 +105,8 @@ try{
     $sessionID = $instance->createSession($groupID, $authorID, $validUntil);
 }
 catch (Exception $e) {
-    echo "\n\ncreateSession failed with message: ".$e->getMessage();
+    //echo "\n\ncreateSession failed with message: ".$e->getMessage();
+    throw $e;
 }
 $sessionID = $sessionID->sessionID;
 
