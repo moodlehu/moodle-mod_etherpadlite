@@ -24,7 +24,7 @@ class EtherpadLiteClient {
 
   protected $apiKey = "";
   protected $baseUrl = "http://localhost:9001/api";
-  
+
   public function __construct($apiKey, $baseUrl = null){
     if (strlen($apiKey) < 1){
       throw new InvalidArgumentException("[{$apiKey}] is not a valid API key");
@@ -63,10 +63,9 @@ class EtherpadLiteClient {
         curl_setopt($c, CURLOPT_POST, true);
         curl_setopt($c, CURLOPT_POSTFIELDS, $arguments);
       }
-      
+
       // CODE_CHANGE_TW SSL Support
-      global $CFG;
-      if($CFG->etherpadlite_check_ssl) {
+      if(get_config("etherpadlite", "check_ssl") == 1) {
           // CODE_CHANGE_TW 09.12.2011 - Next is the proper solution
           curl_setopt($c, CURLOPT_SSL_VERIFYPEER, true);
           curl_setopt($c, CURLOPT_SSL_VERIFYHOST, 2);
@@ -77,7 +76,7 @@ class EtherpadLiteClient {
           curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
       }
       // CODE_CHANGE_TW end
-      
+
       $result = curl_exec($c);
       curl_close($c);
     // fallback to plain php
@@ -90,11 +89,11 @@ class EtherpadLiteClient {
       $fp = fopen($url, 'rb', false, $context);
       $result = $fp ? stream_get_contents($fp) : null;
     }
-    
+
     if(!$result){
       throw new UnexpectedValueException("Empty or No Response from the server");
     }
-    
+
     $result = json_decode($result);
     if ($result === null){
       throw new UnexpectedValueException("JSON response could not be decoded");
@@ -130,20 +129,20 @@ class EtherpadLiteClient {
 
   // GROUPS
   // Pads can belong to a group. There will always be public pads that doesnt belong to a group (or we give this group the id 0)
-  
-  // creates a new group 
+
+  // creates a new group
   public function createGroup(){
     return $this->post("createGroup");
   }
 
-  // this functions helps you to map your application group ids to etherpad lite group ids 
+  // this functions helps you to map your application group ids to etherpad lite group ids
   public function createGroupIfNotExistsFor($groupMapper){
     return $this->post("createGroupIfNotExistsFor", array(
       "groupMapper" => $groupMapper
     ));
   }
 
-  // deletes a group 
+  // deletes a group
   public function deleteGroup($groupID){
     return $this->post("deleteGroup", array(
       "groupID" => $groupID
@@ -157,7 +156,7 @@ class EtherpadLiteClient {
     ));
   }
 
-  // creates a new pad in this group 
+  // creates a new pad in this group
   public function createGroupPad($groupID, $padName, $text=null){
     return $this->post("createGroupPad", array(
       "groupID" => $groupID,
@@ -172,16 +171,16 @@ class EtherpadLiteClient {
   }
 
   // AUTHORS
-  // Theses authors are bind to the attributes the users choose (color and name). 
+  // Theses authors are bind to the attributes the users choose (color and name).
 
-  // creates a new author 
+  // creates a new author
   public function createAuthor($name){
     return $this->post("createAuthor", array(
       "name" => $name
     ));
   }
 
-  // this functions helps you to map your application author ids to etherpad lite author ids 
+  // this functions helps you to map your application author ids to etherpad lite author ids
   public function createAuthorIfNotExistsFor($authorMapper, $name){
     return $this->post("createAuthorIfNotExistsFor", array(
       "authorMapper" => $authorMapper,
@@ -208,7 +207,7 @@ class EtherpadLiteClient {
   // an author to access more than one group. The sessionID will be set as
   // a cookie to the client and is valid until a certian date.
 
-  // creates a new session 
+  // creates a new session
   public function createSession($groupID, $authorID, $validUntil){
     return $this->post("createSession", array(
       "groupID"    => $groupID,
@@ -217,28 +216,28 @@ class EtherpadLiteClient {
     ));
   }
 
-  // deletes a session 
+  // deletes a session
   public function deleteSession($sessionID){
     return $this->post("deleteSession", array(
       "sessionID" => $sessionID
     ));
   }
 
-  // returns informations about a session 
+  // returns informations about a session
   public function getSessionInfo($sessionID){
     return $this->get("getSessionInfo", array(
       "sessionID" => $sessionID
     ));
   }
 
-  // returns all sessions of a group 
+  // returns all sessions of a group
   public function listSessionsOfGroup($groupID){
     return $this->get("listSessionsOfGroup", array(
       "groupID" => $groupID
     ));
   }
 
-  // returns all sessions of an author 
+  // returns all sessions of an author
   public function listSessionsOfAuthor($authorID){
     return $this->get("listSessionsOfAuthor", array(
       "authorID" => $authorID
@@ -248,7 +247,7 @@ class EtherpadLiteClient {
   // PAD CONTENT
   // Pad content can be updated and retrieved through the API
 
-  // returns the text of a pad 
+  // returns the text of a pad
   public function getText($padID, $rev=null){
     $params = array("padID" => $padID);
     if (isset($rev)){
@@ -266,18 +265,18 @@ class EtherpadLiteClient {
     return $this->get("getHTML", $params);
   }
 
-  // sets the text of a pad 
+  // sets the text of a pad
   public function setText($padID, $text){
     return $this->post("setText", array(
-      "padID" => $padID, 
+      "padID" => $padID,
       "text"  => $text
     ));
   }
 
-  // sets the html text of a pad 
+  // sets the html text of a pad
   public function setHTML($padID, $html){
     return $this->post("setHTML", array(
-      "padID" => $padID, 
+      "padID" => $padID,
       "html"  => $html
     ));
   }
@@ -290,12 +289,12 @@ class EtherpadLiteClient {
   // creates a new pad
   public function createPad($padID, $text){
     return $this->post("createPad", array(
-      "padID" => $padID, 
+      "padID" => $padID,
       "text"  => $text
     ), 'POST');
   }
 
-  // returns the number of revisions of this pad 
+  // returns the number of revisions of this pad
   public function getRevisionsCount($padID){
     return $this->get("getRevisionsCount", array(
       "padID" => $padID
@@ -316,14 +315,14 @@ class EtherpadLiteClient {
     ));
   }
 
-  // deletes a pad 
+  // deletes a pad
   public function deletePad($padID){
     return $this->post("deletePad", array(
       "padID" => $padID
     ));
   }
 
-  // returns the read only link of a pad 
+  // returns the read only link of a pad
   public function getReadOnlyID($padID){
     return $this->get("getReadOnlyID", array(
       "padID" => $padID
@@ -337,7 +336,7 @@ class EtherpadLiteClient {
     ));
   }
 
-  // sets a boolean for the public status of a pad 
+  // sets a boolean for the public status of a pad
   public function setPublicStatus($padID, $publicStatus){
     if (is_bool($publicStatus)) {
       $publicStatus = $publicStatus ? "true" : "false";
@@ -348,14 +347,14 @@ class EtherpadLiteClient {
     ));
   }
 
-  // return true of false 
+  // return true of false
   public function getPublicStatus($padID){
     return $this->get("getPublicStatus", array(
       "padID" => $padID
     ));
   }
 
-  // returns ok or a error message 
+  // returns ok or a error message
   public function setPassword($padID, $password){
     return $this->post("setPassword", array(
       "padID"    => $padID,
@@ -363,7 +362,7 @@ class EtherpadLiteClient {
     ));
   }
 
-  // returns true or false 
+  // returns true or false
   public function isPasswordProtected($padID){
     return $this->get("isPasswordProtected", array(
       "padID" => $padID

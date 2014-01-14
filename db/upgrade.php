@@ -32,9 +32,9 @@
 function xmldb_etherpadlite_upgrade($oldversion=0) {
 
     global $CFG, $THEME, $DB;
-    
+
     $dbman = $DB->get_manager(); // loads ddl manager and xmldb classes
-    
+
     $result = true;
 
 /// And upgrade begins here. For each one, you'll need one
@@ -45,6 +45,22 @@ function xmldb_etherpadlite_upgrade($oldversion=0) {
 /// if ($result && $oldversion < YYYYMMDD00) { //New version in version.php
 ///     $result = result of "/lib/ddllib.php" function calls
 /// }
+
+	if ($oldversion < 2013042901)
+	{
+		set_config("url", $CFG->etherpadlite_url, "etherpadlite");
+		set_config("apikey", $CFG->etherpadlite_apikey, "etherpadlite");
+		set_config("padname", $CFG->etherpadlite_padname, "etherpadlite");
+		set_config("cookiedomain", $CFG->etherpadlite_cookiedomain, "etherpadlite");
+		set_config("cookietime", $CFG->etherpadlite_cookietime, "etherpadlite");
+		set_config("ssl", $CFG->etherpadlite_ssl, "etherpadlite");
+		set_config("check_ssl", $CFG->etherpadlite_check_ssl, "etherpadlite");
+		set_config("adminguests", $CFG->etherpadlite_adminguests, "etherpadlite");
+
+		$DB->delete_records_select("config", "name LIKE 'etherpadlite_%'");
+
+		upgrade_plugin_savepoint(true, 2013042901, "mod", "etherpadlite");
+	}
 
     return $result;
 }

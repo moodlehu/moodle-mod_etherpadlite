@@ -14,7 +14,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
- 
+
 /**
  * @package    mod
  * @subpackage etherpadlite
@@ -29,34 +29,35 @@
  * Structure step to restore one etherpadlite activity
  */
 class restore_etherpadlite_activity_structure_step extends restore_activity_structure_step {
- 
+
     protected function define_structure() {
- 
+
         $paths = array();
         $userinfo = $this->get_setting_value('userinfo');
- 
+
         $paths[] = new restore_path_element('etherpadlite', '/activity/etherpadlite');
-        
+
         if($userinfo) {
             $paths[] = new restore_path_element('etherpadlite_content', '/activity/etherpadlite/content');
         }
- 
+
         // Return the paths wrapped into standard activity structure
         return $this->prepare_activity_structure($paths);
     }
- 
+
     protected function process_etherpadlite($data) {
-        global $DB, $CFG;
+        global $DB;
+        $config = get_config("etherpadlite");
         $data = (object)$data;
         $oldid = $data->id;
         $data->course = $this->get_courseid();
-        
+
         // php.ini separator.output auf '&' setzen
         $separator = ini_get('arg_separator.output');
         ini_set('arg_separator.output', '&');
-        
-        $instance = new EtherpadLiteClient($CFG->etherpadlite_apikey,$CFG->etherpadlite_url.'api');
-        
+
+        $instance = new EtherpadLiteClient($config->apikey,$config->url.'api');
+
         try {
             $createGroup = $instance->createGroup();
             $groupID = $createGroup->groupID;
@@ -65,61 +66,62 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
             // the group already exists or something else went wrong
             echo "\n\ncreateGroup Failed with message ". $e->getMessage();
         }
-        
+
         try {
-            $newpad = $instance->createGroupPad($groupID, $CFG->etherpadlite_padname);
+            $newpad = $instance->createGroupPad($groupID, $config->padname);
             $padID = $newpad->padID;
             //echo "Created new pad with padID: $padID\n\n";
         } catch (Exception $e) {
             // the pad already exists or something else went wrong
             echo "\n\ncreateGroupPad Failed with message ". $e->getMessage();
         }
-        
+
         // seperator.output wieder zur�cksetzen
         ini_set('arg_separator.output', $separator);
-        
+
         $data->uri = $padID;
- 
+
         $data->timecreated = $this->apply_date_offset($data->timecreated);
         $data->timemodified = $this->apply_date_offset($data->timemodified);
- 
+
         // insert the etherpadlite record
         $newitemid = $DB->insert_record('etherpadlite', $data);
         // immediately after inserting "activity" record, call this
         $this->apply_activity_instance($newitemid);
     }
- 
+
     protected function process_etherpadlite_content($data) {
-        global $DB, $CFG;
+        global $DB;
+        $config = get_config("etherpadlite");
         $data = (object)$data;
-        $instance = new EtherpadLiteClient($CFG->etherpadlite_apikey,$CFG->etherpadlite_url.'api');
-        
+        $instance = new EtherpadLiteClient($config->apikey,$config->url.'api');
+
         $newid = $this->get_new_parentid('etherpadlite');
         $etherpadlite = $DB->get_record('etherpadlite', array('id'=>$newid));
         $padID = $etherpadlite->uri;
-        
+
 
         // php.ini separator.output auf '&' setzen
         $separator = ini_get('arg_separator.output');
         ini_set('arg_separator.output', '&');
-        
-        $instance = new EtherpadLiteClient($CFG->etherpadlite_apikey,$CFG->etherpadlite_url.'api');
-        
+
+        $instance = new EtherpadLiteClient($config->apikey,$config->url.'api');
+
         try {
             $instance->setHTML($padID, '<html>'.$data->html.'</html>');
         } catch (Exception $e) {
             // something went wrong
             echo "\n\nsetHTML Failed with message ". $e->getMessage();
         }
-        
+
         // seperator.output wieder zur�cksetzen
         ini_set('arg_separator.output', $separator);
     }
- 
+
     protected function after_execute() {
         // Add etherpadlite related files, no need to match by itemname (just internally handled context)
         global $DB;
         //$this->add_related_files('mod_etherpadlite', 'intro', null);
-        
+
     }
 }

@@ -34,8 +34,9 @@ if ($id) {
 $PAGE->set_url('/mod/etherpadlite/view.php', array('id' => $cm->id));
 require_login($course, true, $cm);
 add_to_log($course->id, 'etherpadlite', 'view', "view.php?id=$cm->id", $etherpadlite->name, $cm->id);
+$config = get_config("etherpadlite");
 
-if($CFG->etherpadlite_ssl) {
+if($config->ssl) {
 	// https_required doesn't work, if $CFG->loginhttps doesn't work
 	$CFG->httpswwwroot = str_replace('http:', 'https:', $CFG->wwwroot);
 	if (!isset($_SERVER['HTTPS'])) {
@@ -49,15 +50,15 @@ if($CFG->etherpadlite_ssl) {
 // [START] Initialise the session for the Author
 // php.ini separator.output auf '&' setzen
 $separator = ini_get('arg_separator.output');
-ini_set('arg_separator.output', '&');  
+ini_set('arg_separator.output', '&');
 
 // set vars
-$domain = $CFG->etherpadlite_url;
+$domain = $config->url;
 $padId = $etherpadlite->uri;
 $fullurl = "domain.tld";
 
 // make a new intance from the etherpadlite client
-$instance = new EtherpadLiteClient($CFG->etherpadlite_apikey,$domain.'api');
+$instance = new EtherpadLiteClient($config->apikey,$domain.'api');
 
 // fullurl generation
 if(isguestuser() && !etherpadlite_guestsallowed($etherpadlite)) {
@@ -100,7 +101,7 @@ try {
 }
 
 //$validUntil = mktime(0, 0, 0, date("m"), date("d")+1, date("y")); // +1 day in the future
-$validUntil = time() + $CFG->etherpadlite_cookietime;
+$validUntil = time() + $config->cookietime;
 try{
     $sessionID = $instance->createSession($groupID, $authorID, $validUntil);
 }
@@ -110,10 +111,10 @@ catch (Exception $e) {
 }
 $sessionID = $sessionID->sessionID;
 
-// if we reach the etherpadlite server over https, then the cookie should only be delivered over ssl 
-$ssl = (stripos($CFG->etherpadlite_url, 'https://')===0)?true:false;
+// if we reach the etherpadlite server over https, then the cookie should only be delivered over ssl
+$ssl = (stripos($config->url, 'https://')===0)?true:false;
 
-setcookie("sessionID",$sessionID,$validUntil,'/',$CFG->etherpadlite_cookiedomain, $ssl); // Set a cookie 
+setcookie("sessionID",$sessionID,$validUntil,'/',$config->cookiedomain, $ssl); // Set a cookie
 
 // seperator.output wieder zur�cksetzen
 ini_set('arg_separator.output', $separator);
@@ -151,8 +152,8 @@ YUI().use(\'resize\', function(Y) {
         minHeight: 140,
         maxWidth: 1080,
         maxHeight: 1080
-    }); 
-    
+    });
+
 });
 </script>
 ';
