@@ -120,7 +120,7 @@ ini_set('arg_separator.output', $separator);
 
 // [END] Etherpad Lite init
 
-$context = get_context_instance(CONTEXT_MODULE, $cm->id);
+$context = context_module::instance($cm->id);
 
 /// Print the page header
 $PAGE->set_title("Etherpad Lite: ".format_string($etherpadlite->name));
