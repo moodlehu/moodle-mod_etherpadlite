@@ -63,16 +63,16 @@ class mod_etherpadlite_mod_form extends moodleform_mod {
         //$mform->setHelpButton('intro', array('writing', 'richtext'), false, 'editorhelpbutton');
     /// Adding "introformat" field
         //$mform->addElement('format', 'introformat', get_string('format'));
-        
+
         // Above deprecated this line using instead:
         $this->add_intro_editor(false);
-        
+
         // Is writing for guests allowed?
-        if($CFG->etherpadlite_adminguests) {
+        if(get_config("etherpadlite", "adminguests") == 1) {
         	$mform->addElement('checkbox', 'guestsallowed', get_string('guestsallowed', 'etherpadlite'));
         	$mform->addHelpButton('guestsallowed', 'guestsallowed', 'etherpadlite');
         }
-        
+
         // remove coursemodule elements
         $this->_features->groups = false;
         $this->_features->groupings = false;

@@ -36,27 +36,27 @@ include 'etherpad-lite-client.php';
  * @return int The id of the newly inserted etherpadlite record
  */
 function etherpadlite_add_instance(stdClass $etherpadlite, mod_etherpadlite_mod_form $mform = null) {
-	
-	global $CFG, $DB;
-	
+
+	global $DB;
+	$config = get_config("etherpadlite");
 	// php.ini separator.output auf '&' setzen
 	$separator = ini_get('arg_separator.output');
-    ini_set('arg_separator.output', '&');    
-	
-	$instance = new EtherpadLiteClient($CFG->etherpadlite_apikey,$CFG->etherpadlite_url.'api');	
+    ini_set('arg_separator.output', '&');
+
+	$instance = new EtherpadLiteClient($config->apikey,$config->url.'api');
 
 	try {
 		$createGroup = $instance->createGroup();
-		$groupID = $createGroup->groupID;	
+		$groupID = $createGroup->groupID;
 		//echo "New GroupID is $groupID\n\n";
 	} catch (Exception $e) {
 		// the group already exists or something else went wrong
 	    //echo "\n\ncreateGroup Failed with message ". $e->getMessage();
   		throw $e;
 	}
-	
+
 	try {
-		$newpad = $instance->createGroupPad($groupID, $CFG->etherpadlite_padname);
+		$newpad = $instance->createGroupPad($groupID, $config->padname);
 		$padID = $newpad->padID;
 	  	//echo "Created new pad with padID: $padID\n\n";
 	} catch (Exception $e) {
@@ -64,14 +64,14 @@ function etherpadlite_add_instance(stdClass $etherpadlite, mod_etherpadlite_mod_
   		//echo "\n\ncreateGroupPad Failed with message ". $e->getMessage();
   		throw $e;
 	}
-	
+
 	$etherpadlite->uri = $padID;
-	
+
 	$etherpadlite->timecreated = time();
-	
+
 	// seperator.output wieder zur�cksetzen
 	ini_set('arg_separator.output', $separator);
-	
+
     return $DB->insert_record('etherpadlite', $etherpadlite);
 }
 
@@ -86,7 +86,7 @@ function etherpadlite_add_instance(stdClass $etherpadlite, mod_etherpadlite_mod_
  */
 function etherpadlite_update_instance(stdClass $etherpadlite, mod_etherpadlite_mod_form $mform = null) {
 	global $DB;
-	
+
     $etherpadlite->timemodified = time();
     $etherpadlite->id = $etherpadlite->instance;
 
@@ -108,36 +108,37 @@ function etherpadlite_update_instance(stdClass $etherpadlite, mod_etherpadlite_m
  * @return boolean Success/Failure
  */
 function etherpadlite_delete_instance($id) {
-	
-	global $CFG, $DB;
-	
+
+	global $DB;
+
     if (! $etherpadlite = $DB->get_record('etherpadlite', array('id'=>$id))) {
         return false;
     }
 
     $result = true;
-    	
+
     # Delete any dependent records here #
 	// php.ini separator.output auf '&' setzen
 	$separator = ini_get('arg_separator.output');
-    ini_set('arg_separator.output', '&');    
-    
-	$instance = new EtherpadLiteClient($CFG->etherpadlite_apikey,$CFG->etherpadlite_url.'api');	
-	
+    ini_set('arg_separator.output', '&');
+
+    $config = get_config("etherpadlite");
+	$instance = new EtherpadLiteClient($config->apikey,$config->url.'api');
+
 	$padID = $etherpadlite->uri;
 	$groupID = explode('$', $padID);
-	$groupID = $groupID[0]; 
-	
+	$groupID = $groupID[0];
+
 	try {
   		$instance->deleteGroup($groupID);
 	} catch (Exception $e) {
  		echo "\n\ndeleteGroupFailed: ". $e->getMessage();
  		return false;
 	}
-	
+
 	// seperator.output wieder zur�cksetzen
 	ini_set('arg_separator.output', $separator);
-	
+
     if (! $DB->delete_records('etherpadlite', array('id'=>$etherpadlite->id))) {
         $result = false;
     }
@@ -273,8 +274,8 @@ function etherpadlite_genRandomString() { // A funtion to generate a random name
 
 function etherpadlite_guestsallowed($e) {
 	global $CFG;
-	
-	if($CFG->etherpadlite_adminguests) {
+
+	if(get_config("etherpadlite", "adminguests") == 1) {
 		if($e->guestsallowed) {
 			return true;
 		}
