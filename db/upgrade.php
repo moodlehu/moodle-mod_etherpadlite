@@ -59,7 +59,7 @@ function xmldb_etherpadlite_upgrade($oldversion=0) {
 
 		$DB->delete_records_select("config", "name LIKE 'etherpadlite_%'");
 
-		upgrade_plugin_savepoint(true, 2013042901, "mod", "etherpadlite");
+        upgrade_mod_savepoint(true, 2013042901, "etherpadlite");
 	}
 
     return $result;
