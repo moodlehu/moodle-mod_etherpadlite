@@ -25,8 +25,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$module->version  = 2013042901;  // The current module version (Date: YYYYMMDDXX)
-$module->cron     = 0;           // Period for cron to check this module (secs)
-$module->requires = 2012062500;
+defined('MOODLE_INTERNAL') || die();
 
-?>
+$plugin->version    = 2014051300;  // The current module version (Date: YYYYMMDDXX)
+$plugin->requires   = 2013051400;
+$plugin->cron       = 0;           // Period for cron to check this module (secs)
+$plugin->component  = 'mod_etherpadlite';
+$plugin->maturity   = MATURITY_STABLE;
+$plugin->release    = '2.5.0 (Build: 2014051300)';
