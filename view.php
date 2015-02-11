@@ -46,7 +46,6 @@ if ($id) {
 // This must be here, so that require login doesn't throw a warning
 $PAGE->set_url('/mod/etherpadlite/view.php', array('id' => $cm->id));
 require_login($course, true, $cm);
-add_to_log($course->id, 'etherpadlite', 'view', "view.php?id=$cm->id", $etherpadlite->name, $cm->id);
 $config = get_config("etherpadlite");
 
 if($config->ssl) {
