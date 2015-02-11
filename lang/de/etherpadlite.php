@@ -32,8 +32,8 @@ $string['modulename_help'] = 'Das Etherpad Lite modul erlaubt es Studenten und L
 $string['etherpadlitename'] = 'Pad-Name';
 
 $string['etherpadlite:addinstance'] = 'Neues Pad hinzufügen';
-$string['guestsallowed'] = 'Dürfen Gäste das Pad ändern?';
-$string['guestsallowed_help'] = 'Diese Einstellung bestimmt, ob die Gäste das Pad beschreiben können. Ansonsten ist ihnen nur ein Lesezugriff gewährt.';
+$string['guestsallowed'] = 'Dürfen Gäste im Pad mitschreiben?';
+$string['guestsallowed_help'] = 'Diese Einstellung bestimmt, ob Gäste im Pad mitschreiben dürfen. Wenn nicht, können Sie den Inhalt nur lesen.';
 
 // view
 $string['summaryguest'] = 'Sie sind als Gast eingeloggt, deshalb sehen Sie nur den reinen Text dieses Pads. Um neue &Auml;nderungen zu sehen, laden Sie diese Seite neu.';
