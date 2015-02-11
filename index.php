@@ -27,30 +27,22 @@
 require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once(dirname(__FILE__).'/lib.php');
 
+global $OUTPUT, $PAGE;
+
 $id = required_param('id', PARAM_INT);   // course
 
+$PAGE->set_url('/mod/etherpadlite/index.php', array('id'=>$id));
+
 if (! $course = $DB->get_record('course', array('id' => $id))) {
-    error('Course ID is incorrect');
+    print_error('invalidcourseid');
 }
 
 require_course_login($course);
-
-add_to_log($course->id, 'etherpadlite', 'view all', "index.php?id=$course->id", '');
-
 
 /// Get all required stringsetherpadlite
 
 $stretherpadlites = get_string('modulenameplural', 'etherpadlite');
 $stretherpadlite  = get_string('modulename', 'etherpadlite');
-
-
-/// Print the header
-
-$navlinks = array();
-$navlinks[] = array('name' => $stretherpadlites, 'link' => '', 'type' => 'activity');
-$navigation = build_navigation($navlinks);
-
-print_header_simple($stretherpadlites, '', $navigation, '', '', true, '', navmenu($course));
 
 /// Get all the appropriate data
 
@@ -66,6 +58,8 @@ $strname  = get_string('name');
 $strsummary = get_string('summary');
 $strweek  = get_string('week');
 $strtopic = get_string('topic');
+
+$table = new html_table();
 
 if ($course->format == 'weeks') {
     $table->head  = array ($strweek, $strname, $strsummary);
@@ -94,11 +88,15 @@ foreach ($etherpadlites as $etherpadlite) {
     }
 }
 
-print_heading($stretherpadlites);
-print_table($table);
+/// Output the page
+$PAGE->navbar->add($stretherpadlites);
+$PAGE->set_title("$course->shortname: $stretherpadlites");
+$PAGE->set_heading($course->fullname);
 
-/// Finish the page
+echo $OUTPUT->header();
 
-print_footer($course);
+echo html_writer::table($table);
+
+echo $OUTPUT->footer($course);
 
 ?>
