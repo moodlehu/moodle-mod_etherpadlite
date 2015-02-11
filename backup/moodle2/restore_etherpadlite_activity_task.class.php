@@ -16,8 +16,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
  
 /**
- * @package    mod
- * @subpackage etherpadlite
+ * @package    mod_etherpadlite
  *
  * @author     Timo Welde <tjwelde@gmail.com>
  * @copyright  2012 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
