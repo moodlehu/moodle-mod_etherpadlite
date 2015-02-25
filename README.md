@@ -37,7 +37,12 @@ When you want, that the server is only accessible via Moodle, then I recommend t
 	-	"requireSession":true
 	-	"editOnly":true
 	-	"abiword": "/usr/bin/abiword"
-- ep-lite plugin: *ep_remove_embed* via admin interface
+- remove embed button (embed) from toolbar in settings.json
+	-	 "right": [
+      ["importexport", "timeslider", "savedrevision"],
+      ["settings"],
+      ["showusers"]
+    ]
 - upstart script
 - logrotate
 - nginx as reverse proxy with https
