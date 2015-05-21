@@ -68,6 +68,9 @@ $string['checkssldesc'] = 'With this set, the HTTPS certificate of the etherpadl
 $string['adminguests'] = 'Guests allowed to write?';
 $string['adminguestsdesc'] = 'With this set, someone who is allowed to, can allow guests to write in his specific etherpadlite module';
 
+$string['responsiveiframe'] = 'Responsive iFrame';
+$string['responsiveiframedesc'] = 'With this set, the iFrame for the Etherpad Lite editor will fit nicely into a responsive Moodle theme and will scale its width according to the browser window. If not, the Etherpad Lite editor will have a fixed width which basically adapts to the width of the browser window at page load time, but will not scale when the window is resized.';
+
 // Pad Settings
 $string['guestsallowed'] = 'Are Guests allowed to write?';
 $string['guestsallowed_help'] = 'This determines, if a guests is allowed to write. If not, then he will only see the content';
