@@ -92,26 +92,22 @@ else {
 $groupID = explode('$', $padId);
 $groupID = $groupID[0];
 
-// create author if not exists for logged in user (with first and lastname)
+// create author if not exists for logged in user (with full name as it is obtained from Moodle core library)
 try {
-	if(isguestuser() && etherpadlite_guestsallowed($etherpadlite)) {
-		$author = $instance->createAuthor('Guest-'.etherpadlite_genRandomString());
-	}
-  else if(isset($USER->firstname, $USER->lastname)) {
-  	$userName = $USER->firstname.' '.$USER->lastname;
-  	$author = $instance->createAuthorIfNotExistsFor($USER->id, $userName);
-  }
-  else {
-  	$author = $instance->createAuthorIfNotExistsFor($USER->id);
-  }
-  $authorID = $author->authorID;
-//echo "The AuthorID is now $authorID\n\n";
-  // Remember authorID for deleteSession event handler
-  set_user_preference('mod_etherpadlite-authorID', $authorID);
+    if(isguestuser() && etherpadlite_guestsallowed($etherpadlite)) {
+        $author = $instance->createAuthor('Guest-'.etherpadlite_genRandomString());
+    }
+    else {
+        $author = $instance->createAuthorIfNotExistsFor($USER->id, fullname($USER));
+    }
+    $authorID = $author->authorID;
+    //echo "The AuthorID is now $authorID\n\n";
+    // Remember authorID for deleteSession event handler
+    set_user_preference('mod_etherpadlite-authorID', $authorID);
 } catch (Exception $e) {
-  // the pad already exists or something else went wrong
-  //echo "\n\ncreateAuthor Failed with message:  ". $e->getMessage();
-  throw $e;
+    // the pad already exists or something else went wrong
+    //echo "\n\ncreateAuthor Failed with message:  ". $e->getMessage();
+    throw $e;
 }
 
 //$validUntil = mktime(0, 0, 0, date("m"), date("d")+1, date("y")); // +1 day in the future
