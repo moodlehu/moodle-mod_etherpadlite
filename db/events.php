@@ -15,21 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Code fragment to define the version of etherpadlite
- * This fragment is called by moodle_needs_upgrading() and /admin/index.php
+ * Module "etherpadlite" - Event definition
  *
- * @package    mod_etheradlite
- *
- * @author     Timo Welde <tjwelde@gmail.com>
- * @copyright  2012 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package     mod
+ * @subpackage  mod_etherpadlite
+ * @copyright   2015 Alexander Bias, University of Ulm <alexander.bias@uni-ulm.de>
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version    = 2015052200;  // The current module version (Date: YYYYMMDDXX)
-$plugin->requires   = 2014051200;
-$plugin->cron       = 0;           // Period for cron to check this module (secs)
-$plugin->component  = 'mod_etherpadlite';
-$plugin->maturity   = MATURITY_STABLE;
-$plugin->release    = '2.7.0 (Build: 2015021100)';
+$observers = array(
+    array(
+        'eventname'   => '\core\event\user_loggedout',
+        'includefile' => '/mod/etherpadlite/eventslib.php',
+        'callback'    => 'delete_session',
+    ),
+);
