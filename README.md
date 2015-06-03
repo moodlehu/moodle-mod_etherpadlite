@@ -49,7 +49,7 @@ When you want, that the server is only accessible via Moodle, then I recommend t
 2. open your admin/index.php page and follow the instructions
 
 # Configuration
-1. Server Url from your etherpadlite server *Make sure, that your moodle server can access this URL*
+1. Server Url from your etherpadlite server *Make sure, that your moodle server can access this URL (don't forget to include a trailing slash!)*
 2. ApiKey: this is stored in the file: `APIKEY.txt` on your etherpadlite server
 3. Padname: this is optional and maybe just for debugging the databse
 4. Cookie Domain: Enter the domain as described
