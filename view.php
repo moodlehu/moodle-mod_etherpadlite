@@ -153,7 +153,7 @@ if(isguestuser() && !etherpadlite_guestsallowed($etherpadlite)) {
 	$summary.= "<br/><br/>".get_string('summaryguest','etherpadlite');
 }
 if(!empty($summary)) {
-	echo $OUTPUT->box($summary, 'generalbox', 'intro');
+	echo $OUTPUT->box($summary, 'generalbox mod_introbox');
 }
 echo '<iframe id="etherpadiframe" src ="'.$fullurl.'" width="100%", height="500px"></iframe>';
 echo '<script type="text/javascript">
