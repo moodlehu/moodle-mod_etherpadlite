@@ -134,7 +134,7 @@ ini_set('arg_separator.output', $separator);
 $context = context_module::instance($cm->id);
 
 /// Print the page header
-$PAGE->set_title("Etherpad Lite: ".format_string($etherpadlite->name));
+$PAGE->set_title(get_string('modulename', 'mod_etherpadlite').': '.format_string($etherpadlite->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
 
@@ -142,12 +142,14 @@ echo $OUTPUT->header();
 
 /// Print the main part of the page
 
-$summary = format_module_intro('etherpadite', $etherpadlite, $cm->id);
+echo $OUTPUT->heading($etherpadlite->name);
+
+$summary = format_module_intro('etherpadlite', $etherpadlite, $cm->id);
 if(isguestuser() && !etherpadlite_guestsallowed($etherpadlite)) {
 	$summary.= "<br/><br/>".get_string('summaryguest','etherpadlite');
 }
 if(!empty($summary)) {
-	echo $OUTPUT->box($summary, 'generalbox mod_introbox', 'etherpadliteintro');
+	echo $OUTPUT->box($summary, 'generalbox mod_introbox');
 }
 echo '<iframe id="etherpadiframe" src ="'.$fullurl.'" width="100%", height="500px"></iframe>';
 echo '<script type="text/javascript">
