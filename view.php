@@ -102,8 +102,6 @@ try {
     }
     $authorID = $author->authorID;
     //echo "The AuthorID is now $authorID\n\n";
-    // Remember authorID for deleteSession event handler
-    set_user_preference('mod_etherpadlite-authorID', $authorID);
 } catch (Exception $e) {
     // the pad already exists or something else went wrong
     //echo "\n\ncreateAuthor Failed with message:  ". $e->getMessage();

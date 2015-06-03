@@ -72,8 +72,4 @@ $string['guestsallowed_help'] = 'This determines if guests are allowed to write 
 
 // view
 $string['summaryguest'] = 'You are logged in as guest. That\'s why you can only see the readonly version of this Pad. Reload the page to get new changes.';
-
-// events
-$string['eventsessiondeleted'] = 'Etherpad lite session deleted';
-$string['eventsessiondeleted_desc'] = 'Etherpad lite session \'{$a->etherpadsessionid}\' of Moodle user \'{$a->userid}\' in etherpad instance \'{$a->etherpadinstance}\' deleted after logout of the Moodle user';
 ?>
