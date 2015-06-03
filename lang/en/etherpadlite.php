@@ -27,15 +27,14 @@
 $string['etherpadlite'] = 'Etherpad Lite';
 
 $string['modulename'] = 'Etherpad Lite';
-$string['modulename_help'] = 'The Etherpad Lite module enables the students and teacher to write text in a collaborative way. (The text is synced as they type) 
+$string['modulename_help'] = 'The Etherpad Lite module enables students and teachers to write text in a collaborative way. The text is synced automatically as they type.
 
-(The etherpad server, which stands behind this module, is still in beta stage. That\'s why problems might occur, but aren\'t expected)';
+(The etherpadlite server, which stands behind this module, is still in beta stage. That\'s why problems might occur in rare circumstances, but aren\'t expected)';
 $string['modulenameplural'] = 'Etherpad Lites';
 
-$string['pluginadministration'] = 'etherpad lite administration';
+$string['pluginadministration'] = 'Etherpad Lite administration';
 $string['pluginname'] = 'Etherpad Lite';
 
-$string['etherpadlitefieldset'] = 'Custom example fieldset';
 $string['etherpadliteintro'] = 'Etherpadlite Intro';
 $string['etherpadlitename'] = 'Etherpadlite Name';
 
@@ -47,30 +46,29 @@ $string['url'] = 'Server URL';
 $string['urldesc'] = 'This is the URL to your Etherpadlite server in the form: http[s]://host[:port]/[subDir/]';
 
 $string['padname'] = 'Padname for all instances';
-$string['padnamedesc'] = 'A general padname can be helpful, if you want to find all instances from this installation on your etherpadlite server. Pad groups are generated autmatically';
+$string['padnamedesc'] = 'A general padname can be helpful, if you want to find all pads from this Moodle installation on your etherpadlite server. Pad groups are generated autmatically.';
 
-$string['apikey'] = 'ApiKey';
-$string['apikeydesc'] = 'This is the apiKey this module needs, to communicate with your server. \n This key is stored on your webserver';
+$string['apikey'] = 'API Key';
+$string['apikeydesc'] = 'This is the API Key which this module needs to communicate with your etherpadlite server. This API key is stored on your etherpadliste server and can be copied from there.';
 
 $string['cookiedomain'] = 'Cookie Domain';
-$string['cookiedomaindesc'] = 'Here you can enter the domain, which should be stored in the session cookie,
-									  so that the etherpadlite server recognize it. When moodle runs on the domain moodle.example.com and your etherpadlite server on etherpadlite.example.com then your cookie domain should be .example.com.';
+$string['cookiedomaindesc'] = 'Here you can enter the domain, which should be stored in the session cookie, so that the etherpadlite server recognize it. When moodle runs on the domain moodle.example.com and your etherpadlite server on etherpadlite.example.com, then your cookie domain should be .example.com.';
 
 $string['cookietime'] = 'Session elapse time';
-$string['cookietimedesc'] = 'Here you have to enter the time in seconds until the session should be valid';
+$string['cookietimedesc'] = 'Here you have to enter the time (in seconds) until the etherpadlite session should be valid';
 
-$string['ssl'] = 'Https Redirect';
-$string['ssldesc'] = 'With this set, your site will redirect itself to https, if an etherpad is opened (eyecandy for the user)';
+$string['ssl'] = 'HTTPS Redirect';
+$string['ssldesc'] = 'With this set, your site will redirect itself to HTTPS, if an etherpadlite is opened (eye candy for the user)';
 
 $string['checkssl'] = 'Verify HTTPS cert';
 $string['checkssldesc'] = 'With this set, the HTTPS certificate of the etherpadlite server will be checked, to prevent man in the middle attacks';
 
 $string['adminguests'] = 'Guests allowed to write?';
-$string['adminguestsdesc'] = 'With this set, someone who is allowed to, can allow guests to write in his specific etherpadlite module';
+$string['adminguestsdesc'] = 'With this set, users who are allowed to configure a specific etherpadlite module can allow guests to write in this specific etherpadlite module';
 
 // Pad Settings
-$string['guestsallowed'] = 'Are Guests allowed to write?';
-$string['guestsallowed_help'] = 'This determines, if a guests is allowed to write. If not, then he will only see the content';
+$string['guestsallowed'] = 'Guests allowed to write?';
+$string['guestsallowed_help'] = 'This determines if guests are allowed to write in this pad. If not, they will be only able to read the content of the pad.';
 
 // view
 $string['summaryguest'] = 'You are logged in as guest. That\'s why you can only see the readonly version of this Pad. Reload the page to get new changes.';
