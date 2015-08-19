@@ -57,3 +57,7 @@ When you want, that the server is only accessible via Moodle, then I recommend t
 6. Https Redirect: This redirects moodle to https, so that the user feels secure <br>(later this should be used to delete sessions on the etherpadlite server)
 7. Verify HTTPS cert: This lets curl check, if the https cert of the etherpadlite server is valid, to prevent man in the middle attacks
 8. Guests allowed to write?: As described
+
+
+## [Sponsors](id:sponsors)
+Browsertesting is kindly provided by [BrowserStack](https://browserstack.com)
