@@ -78,7 +78,7 @@ class mod_etherpadlite_mod_form extends moodleform_mod {
         //$mform->addElement('format', 'introformat', get_string('format'));
 
         // Above deprecated this line using instead:
-        $this->add_intro_editor(false);
+        $this->standard_intro_elements(false);
 
         // Is writing for guests allowed?
         if(get_config("etherpadlite", "adminguests") == 1) {
