@@ -131,6 +131,17 @@ ini_set('arg_separator.output', $separator);
 
 $context = context_module::instance($cm->id);
 
+/// Display the etherpadlite and possibly results
+$eventparams = array(
+    'context' => $context,
+    'objectid' => $etherpadlite->id
+);
+$event = \mod_etherpadlite\event\course_module_viewed::create($eventparams);
+$event->add_record_snapshot('course_modules', $cm);
+$event->add_record_snapshot('course', $course);
+$event->add_record_snapshot('etherpadlite', $etherpadlite);
+$event->trigger();
+
 /// Print the page header
 $PAGE->set_title(get_string('modulename', 'mod_etherpadlite').': '.format_string($etherpadlite->name));
 $PAGE->set_heading(format_string($course->fullname));
