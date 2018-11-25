@@ -20,6 +20,7 @@
  * @package    mod_etherpadlite
  *
  * @author     Timo Welde <tjwelde@gmail.com>
+ * @author     Andreas Grabs <moodle@grabs-edv.de>
  * @link       https://github.com/TomNomNom/etherpad-lite-client
  * @copyright  Tomnomnom <mail@tomnomnom.com>
  * @license    Apache License
@@ -37,6 +38,7 @@ class EtherpadLiteClient {
 
   protected $apiKey = "";
   protected $baseUrl = "http://localhost:9001/api";
+  protected $curl; // Use the moodle curl class.
 
   public function __construct($apiKey, $baseUrl = null){
     if (strlen($apiKey) < 1){
@@ -50,6 +52,7 @@ class EtherpadLiteClient {
     if (!filter_var($this->baseUrl, FILTER_VALIDATE_URL)){
       throw new InvalidArgumentException("[{$this->baseUrl}] is not a valid URL");
     }
+    $this->curl = new \curl();
   }
 
   protected function get($function, array $arguments = array()){
@@ -62,64 +65,44 @@ class EtherpadLiteClient {
 
   protected function call($function, array $arguments = array(), $method = 'GET'){
     $arguments['apikey'] = $this->apiKey;
-    $arguments = http_build_query($arguments, '', '&');
     $url = $this->baseUrl."/".self::API_VERSION."/".$function;
-    if ($method !== 'POST'){
-      $url .=  "?".$arguments;
+
+    // All posts and gets use the moodle curl class.
+    $options = array();
+    // Should the certificate be verified.
+    if(get_config("etherpadlite", "check_ssl") != 1) {
+      $options = array(
+          'CURLOPT_SSL_VERIFYHOST' => 0,
+          'CURLOPT_SSL_VERIFYPEER' => 0,
+        );
     }
-    // use curl of it's available
-    if (function_exists('curl_init')){
-      $c = curl_init($url);
-      curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-      curl_setopt($c, CURLOPT_TIMEOUT, 20);
-      if ($method === 'POST'){
-        curl_setopt($c, CURLOPT_POST, true);
-        curl_setopt($c, CURLOPT_POSTFIELDS, $arguments);
-      }
-
-      // CODE_CHANGE_TW SSL Support
-      if(get_config("etherpadlite", "check_ssl") == 1) {
-          // CODE_CHANGE_TW 09.12.2011 - Next is the proper solution
-          curl_setopt($c, CURLOPT_SSL_VERIFYPEER, true);
-          curl_setopt($c, CURLOPT_SSL_VERIFYHOST, 2);
-          // CODE_CHANGE_TW end
-      }
-      else {
-          // CODE_CHANGE_TW 07.12.2011 - Because curl doesn't trust any certificate, I had to add this little "hack" here to enable https support
-          curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
-      }
-      // CODE_CHANGE_TW end
-
-      $result = curl_exec($c);
-      curl_close($c);
-    // fallback to plain php
+    if ($method === 'POST') {
+        $result = $this->curl->post($url, $arguments, $options);
     } else {
-      $params = array('http' => array('method' => $method, 'ignore_errors' => true, 'header' => 'Content-Type:application/x-www-form-urlencoded'));
-      if ($method === 'POST'){
-        $params['http']['content'] = $arguments;
-      }
-      $context = stream_context_create($params);
-      $fp = fopen($url, 'rb', false, $context);
-      $result = $fp ? stream_get_contents($fp) : null;
+        $result = $this->curl->get($url, $arguments, $options);
     }
 
     if(!$result){
-      throw new UnexpectedValueException("Empty or No Response from the server");
+    //   throw new UnexpectedValueException("Empty or No Response from the server");
+        return false;
     }
 
     $result = json_decode($result);
     if ($result === null){
-      throw new UnexpectedValueException("JSON response could not be decoded");
+    //   throw new UnexpectedValueException("JSON response could not be decoded");
+        return false;
     }
     return $this->handleResult($result);
   }
 
   protected function handleResult($result){
     if (!isset($result->code)){
-      throw new RuntimeException("API response has no code");
+    //   throw new RuntimeException("API response has no code");
+        return false;
     }
     if (!isset($result->message)){
-      throw new RuntimeException("API response has no message");
+    //   throw new RuntimeException("API response has no message");
+        return false;
     }
     if (!isset($result->data)){
       $result->data = null;
@@ -130,13 +113,17 @@ class EtherpadLiteClient {
         return $result->data;
       case self::CODE_INVALID_PARAMETERS:
       case self::CODE_INVALID_API_KEY:
-        throw new InvalidArgumentException($result->message);
+        // throw new InvalidArgumentException($result->message);
+        return false;
       case self::CODE_INTERNAL_ERROR:
-        throw new RuntimeException($result->message);
+        // throw new RuntimeException($result->message);
+        return false;
       case self::CODE_INVALID_FUNCTION:
-        throw new BadFunctionCallException($result->message);
+        // throw new BadFunctionCallException($result->message);
+        return false;
       default:
-        throw new RuntimeException("An unexpected error occurred whilst handling the response");
+        // throw new RuntimeException("An unexpected error occurred whilst handling the response");
+        return false;
     }
   }
 

@@ -60,10 +60,6 @@ if($config->ssl) {
 
 
 // [START] Initialise the session for the Author
-// php.ini separator.output auf '&' setzen
-$separator = ini_get('arg_separator.output');
-ini_set('arg_separator.output', '&');
-
 // set vars
 $domain = $config->url;
 $padId = $etherpadlite->uri;
@@ -123,9 +119,6 @@ $sessionID = $sessionID->sessionID;
 $ssl = (stripos($config->url, 'https://')===0)?true:false;
 
 setcookie("sessionID",$sessionID,$validUntil,'/',$config->cookiedomain, $ssl); // Set a cookie
-
-// seperator.output wieder zur�cksetzen
-ini_set('arg_separator.output', $separator);
 
 // [END] Etherpad Lite init
 

@@ -51,10 +51,6 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
         $oldid = $data->id;
         $data->course = $this->get_courseid();
 
-        // php.ini separator.output auf '&' setzen
-        $separator = ini_get('arg_separator.output');
-        ini_set('arg_separator.output', '&');
-
         $instance = new EtherpadLiteClient($config->apikey,$config->url.'api');
 
         try {
@@ -74,9 +70,6 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
             // the pad already exists or something else went wrong
             echo "\n\ncreateGroupPad Failed with message ". $e->getMessage();
         }
-
-        // seperator.output wieder zur�cksetzen
-        ini_set('arg_separator.output', $separator);
 
         $data->uri = $padID;
 
@@ -100,21 +93,15 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
         $padID = $etherpadlite->uri;
 
 
-        // php.ini separator.output auf '&' setzen
-        $separator = ini_get('arg_separator.output');
-        ini_set('arg_separator.output', '&');
-
         $instance = new EtherpadLiteClient($config->apikey,$config->url.'api');
 
         try {
-            $instance->setHTML($padID, '<html>'.$data->html.'</html>');
+            $instance->setText($padID, $data->text);
+            $instance->setHTML($padID, $data->html);
         } catch (Exception $e) {
             // something went wrong
             echo "\n\nsetHTML Failed with message ". $e->getMessage();
         }
-
-        // seperator.output wieder zur�cksetzen
-        ini_set('arg_separator.output', $separator);
     }
 
     protected function after_execute() {
