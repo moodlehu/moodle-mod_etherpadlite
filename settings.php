@@ -47,4 +47,7 @@ $settings->add(new admin_setting_configcheckbox('etherpadlite/check_ssl', get_st
 $settings->add(new admin_setting_configcheckbox('etherpadlite/adminguests', get_string('adminguests', 'etherpadlite'),
 				   get_string('adminguestsdesc', 'etherpadlite'), '0'));
 
+$settings->add(new admin_setting_configcheckbox('etherpadlite/responsiveiframe', get_string('responsiveiframe', 'etherpadlite'),
+				   get_string('responsiveiframedesc', 'etherpadlite'), '0'));
+
 ?>

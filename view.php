@@ -160,24 +160,31 @@ if(isguestuser() && !etherpadlite_guestsallowed($etherpadlite)) {
 if(!empty($summary)) {
 	echo $OUTPUT->box($summary, 'generalbox mod_introbox');
 }
-echo '<iframe id="etherpadiframe" src ="'.$fullurl.'" width="100%", height="500px"></iframe>';
-echo '<script type="text/javascript">
-YUI().use(\'resize\', function(Y) {
-    var resize = new Y.Resize({
-        //Selector of the node to resize
-        node: \'#etherpadiframe\',
-        handles: \'br\'
-    });
-    resize.plug(Y.Plugin.ResizeConstrained, {
-        minWidth: 380,
-        minHeight: 140,
-        maxWidth: 1080,
-        maxHeight: 1080
-    });
+// Show Etherpad lite editor in responsive iFrame mode
+if ($config->responsiveiframe == true) {
+    echo '<div class="etherpadiframe-responsive-container"><iframe id="etherpadiframe" src ="'.$fullurl.'"></iframe></div>';
+}
+// Show Etherpad lite editor in classic width mode
+else {
+    echo '<iframe id="etherpadiframe" src ="'.$fullurl.'" width="100%" height="500px"></iframe>';
+    echo '<script type="text/javascript">
+    YUI().use(\'resize\', function(Y) {
+        var resize = new Y.Resize({
+            //Selector of the node to resize
+            node: \'#etherpadiframe\',
+            handles: \'br\'
+        });
+        resize.plug(Y.Plugin.ResizeConstrained, {
+            minWidth: 380,
+            minHeight: 140,
+            maxWidth: 1080,
+            maxHeight: 1080
+        });
 
-});
-</script>
-';
+    });
+    </script>
+    ';
+}
 
 /// Finish the page
 echo $OUTPUT->footer();

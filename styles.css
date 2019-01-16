@@ -1,5 +1,21 @@
 @CHARSET "UTF-8";
 
 #etherpadiframe {
-	border: 1px solid #000;	
+    border: 1px solid #000;
+    box-sizing: border-box;
+}
+
+/* Styles for responsive iFrame mode
+   Based on http://www.smashingmagazine.com/2014/02/27/making-embedded-content-work-in-responsive-design */
+.etherpadiframe-responsive-container {
+    position: relative;
+    height: 500px;
+    overflow: hidden;
+}
+.etherpadiframe-responsive-container #etherpadiframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
