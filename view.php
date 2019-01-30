@@ -138,9 +138,8 @@ $renderer = $PAGE->get_renderer('mod_etherpadlite');
 // Print the page header.
 echo $renderer->header();
 
-// Print the page heading.
-echo $renderer->heading($etherpadlite->name);
 // Print the etherpad content.
 echo $renderer->render_etherpad($etherpadlite, $cm, $fullurl);
+
 // Close the page.
 echo $renderer->footer();

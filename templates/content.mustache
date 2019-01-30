@@ -19,18 +19,11 @@
 
     Displays etherpad content
 
-    Classes required for JS:
-    * none
-
-    Data attributes required for JS:
-    * none
-
-    Context variables required for this template:
-    * none
-
     Example context (json):
     {
+        "id" : 46,
         "legacy" : 1,
+        "name" : "Test pad"
         "summary" : "...",
         "summaryguest" : "...",
         "responsiveiframe" : 1,
@@ -39,6 +32,14 @@
     }
 
 }}
+
+<h2>
+    <button type="button" title="{{#str}}fullscreen, mod_etherpadlite{{/str}}" class="etherpadmodal btn btn-primary" data-toggle="modal" data-target="#etherpadmodal_{{id}}">
+        <i class="fa fa-expand fa-lg" aria-hidden="true"></i>
+    </button>
+    {{name}}
+</h2>
+
 {{#summary}}
     <div class="box generalbox mod_introbox py-3">
         <div class="no-overflow">
@@ -56,3 +57,9 @@
 {{^legacy}}
     {{> mod_etherpadlite/iframe}}
 {{/legacy}}
+{{> mod_etherpadlite/modal}}
+{{#js}}
+require(['mod_etherpadlite/modal_iframe'], function(mod) {
+    mod.init("{{frameurl}}", {{{id}}});
+});
+{{/js}}

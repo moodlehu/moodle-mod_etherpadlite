@@ -25,6 +25,7 @@
 namespace mod_etherpadlite\output;
 
 class renderer extends \plugin_renderer_base {
+
     public function render_etherpad($etherpadlite, $cm, $frameurl) {
         $config = get_config('etherpadlite');
 
@@ -33,11 +34,10 @@ class renderer extends \plugin_renderer_base {
         if(isguestuser() && !etherpadlite_guestsallowed($etherpadlite)) {
             $summaryguest = get_string('summaryguest','etherpadlite');
         }
-        // if(!empty($summary)) {
-        //     echo $renderer->box($summary, 'generalbox mod_introbox');
-        // }
 
         $content = new \stdClass();
+        $content->id = $cm->id;
+        $content->name = $etherpadlite->name;
         $content->summary = $summary;
         $content->summaryguest = $summaryguest;
         $content->frameurl = $frameurl;

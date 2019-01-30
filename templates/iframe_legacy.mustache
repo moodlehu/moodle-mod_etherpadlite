@@ -15,25 +15,16 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template mod_etherpadlite/content
+    @template mod_etherpadlite/iframe_legacy
 
-    Displays etherpad content
-
-    Classes required for JS:
-    * none
-
-    Data attributes required for JS:
-    * none
-
-    Context variables required for this template:
-    * none
+    Displays etherpad iframe in legacy mode (pre boost based themes)
 
     Example context (json):
     {
-        "responsiveiframe" : 1,
-        "minwidth" : "400px",
-        "frameurl" : "https://...."
+        "id" : 1,
+        "minwidth" : "400px"
     }
 
 }}
-<iframe style="height:500px;width:100%;min-width:{{minwidth}};" id="etherpadiframe" src="{{{frameurl}}}"></iframe>
+
+<iframe class="etherpadiframe" style="height:500px;width:100%;min-width:{{minwidth}};" id="etherpadiframe_{{id}}" src=""></iframe>
