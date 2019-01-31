@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,7 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
- 
+
 /**
  * @package    mod_etherpadlite
  *
@@ -22,7 +21,9 @@
  * @copyright  2012 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
- 
- // This activity has not particular settings but the inherited from the generic
- // backup_activity_task so here there isn't any class definition, like the ones
- // existing in /backup/moodle2/backup_settingslib.php (activities section)
+
+defined('MOODLE_INTERNAL') || die();
+
+// This activity has not particular settings but the inherited from the generic
+// backup_activity_task so here there isn't any class definition, like the ones
+// existing in /backup/moodle2/backup_settingslib.php (activities section).

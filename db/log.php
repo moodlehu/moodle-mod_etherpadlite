@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -30,8 +29,8 @@ defined('MOODLE_INTERNAL') || die();
 global $DB;
 
 $logs = array(
-    array('module'=>'etherpadlite', 'action'=>'add', 'mtable'=>'etherpadlite', 'field'=>'name'),
-    array('module'=>'etherpadlite', 'action'=>'update', 'mtable'=>'etherpadlite', 'field'=>'name'),
-    array('module'=>'etherpadlite', 'action'=>'view', 'mtable'=>'etherpadlite', 'field'=>'name'),
-    array('module'=>'etherpadlite', 'action'=>'view all', 'mtable'=>'etherpadlite', 'field'=>'name')
+    array('module' => 'etherpadlite', 'action' => 'add', 'mtable' => 'etherpadlite', 'field' => 'name'),
+    array('module' => 'etherpadlite', 'action' => 'update', 'mtable' => 'etherpadlite', 'field' => 'name'),
+    array('module' => 'etherpadlite', 'action' => 'view', 'mtable' => 'etherpadlite', 'field' => 'name'),
+    array('module' => 'etherpadlite', 'action' => 'view all', 'mtable' => 'etherpadlite', 'field' => 'name')
 );

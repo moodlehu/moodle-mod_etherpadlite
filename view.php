@@ -27,102 +27,94 @@
 require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once(dirname(__FILE__).'/lib.php');
 
-$id = optional_param('id', 0, PARAM_INT); // course_module ID, or
-$a  = optional_param('a', 0, PARAM_INT);  // etherpadlite instance ID
+$id = optional_param('id', 0, PARAM_INT); // The course_module id, or
+$a = optional_param('a', 0, PARAM_INT);  // etherpadlite instance id.
 
 if ($id) {
-    $cm           = get_coursemodule_from_id('etherpadlite', $id, 0, false, MUST_EXIST);
-    $course       = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
-    $etherpadlite = $DB->get_record('etherpadlite', array('id' => $cm->instance), '*', MUST_EXIST);
-} elseif ($a) {
-    $etherpadlite = $DB->get_record('etherpadlite', array('id' => $a), '*', MUST_EXIST);
-    $course       = $DB->get_record('course', array('id' => $etherpadlite->course), '*', MUST_EXIST);
-    $cm           = get_coursemodule_from_instance('etherpadlite', $etherpadlite->id, $course->id, false, MUST_EXIST);
+    $cm = get_coursemodule_from_id('etherpadlite', $id, 0, false, MUST_EXIST);
+    $course = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
+    $etherpadlite = $DB->get_record('etherpadlite', ['id' => $cm->instance], '*', MUST_EXIST);
+} else if ($a) {
+    $etherpadlite = $DB->get_record('etherpadlite', ['id' => $a], '*', MUST_EXIST);
+    $course = $DB->get_record('course', ['id' => $etherpadlite->course], '*', MUST_EXIST);
+    $cm = get_coursemodule_from_instance('etherpadlite', $etherpadlite->id, $course->id, false, MUST_EXIST);
 } else {
     error('You must specify a course_module ID or an instance ID');
 }
 
 // This must be here, so that require login doesn't throw a warning.
-$PAGE->set_url('/mod/etherpadlite/view.php', array('id' => $cm->id));
+$PAGE->set_url('/mod/etherpadlite/view.php', ['id' => $cm->id]);
 require_login($course, true, $cm);
-$config = get_config("etherpadlite");
+$config = get_config('etherpadlite');
 
-if($config->ssl) {
-	// The https_required doesn't work, if $CFG->loginhttps doesn't work.
-	$CFG->httpswwwroot = str_replace('http:', 'https:', $CFG->wwwroot);
-	if (!isset($_SERVER['HTTPS'])) {
-		$url = $CFG->httpswwwroot.'/mod/etherpadlite/view.php?id='.$id;
+if ($config->ssl) {
+    // The https_required doesn't work, if $CFG->loginhttps doesn't work.
+    $CFG->httpswwwroot = str_replace('http:', 'https:', $CFG->wwwroot);
+    if (!isset($_SERVER['HTTPS'])) {
+        $url = $CFG->httpswwwroot.'/mod/etherpadlite/view.php?id='.$id;
 
-		redirect($url);
+        redirect($url);
     }
 }
 
-
-// [START] Initialise the session for the Author.
+// START of Initialise the session for the Author.
 // Set vars.
 $domain = $config->url;
-$padId = $etherpadlite->uri;
-$fullurl = "domain.tld";
+$padid = $etherpadlite->uri;
+$fullurl = 'domain.tld';
 
 // Make a new intance from the etherpadlite client.
-$instance = new EtherpadLiteClient($config->apikey,$domain.'api');
+$instance = new \mod_etherpadlite\client($config->apikey, $domain.'api');
 
 // Fullurl generation.
-if(isguestuser() && !etherpadlite_guestsallowed($etherpadlite)) {
-	try {
-		$readOnlyID = $instance->getReadOnlyID($padId);
-		$readOnlyID = $readOnlyID->readOnlyID;
-		$fullurl = $domain.'ro/'.$readOnlyID;
-	}
-	catch (Exception $e) {
-		throw $e;
-	}
-}
-else {
-	$fullurl = $domain.'p/'.$padId;
+if (isguestuser() && !etherpadlite_guestsallowed($etherpadlite)) {
+    try {
+        $readonlyid = $instance->get_readonly_id($padid);
+        $fullurl = $domain.'ro/'.$readonlyid;
+    } catch (Exception $e) {
+        throw $e;
+    }
+} else {
+    $fullurl = $domain.'p/'.$padid;
 }
 
-// Get the groupID
-$groupID = explode('$', $padId);
-$groupID = $groupID[0];
+// Get the groupID.
+$groupid = explode('$', $padid);
+$groupid = $groupid[0];
 
 // Create author if not exists for logged in user (with full name as it is obtained from Moodle core library).
 try {
-    if(isguestuser() && etherpadlite_guestsallowed($etherpadlite)) {
-        $author = $instance->createAuthor('Guest-'.etherpadlite_genRandomString());
+    if (isguestuser() && etherpadlite_guestsallowed($etherpadlite)) {
+        $authorid = $instance->create_author('Guest-'.etherpadlite_gen_random_string());
+    } else {
+        $authorid = $instance->create_author_if_not_exists_for($USER->id, fullname($USER));
     }
-    else {
-        $author = $instance->createAuthorIfNotExistsFor($USER->id, fullname($USER));
-    }
-    $authorID = $author->authorID;
 } catch (Exception $e) {
     // The pad already exists or something else went wrong.
     throw $e;
 }
 
-$validUntil = time() + $config->cookietime;
-try{
-    $sessionID = $instance->createSession($groupID, $authorID, $validUntil);
-}
-catch (Exception $e) {
+$validuntil = time() + $config->cookietime;
+try {
+    $sessionid = $instance->create_session($groupid, $authorid, $validuntil);
+} catch (Exception $e) {
     throw $e;
 }
-$sessionID = $sessionID->sessionID;
 
 // If we reach the etherpadlite server over https, then the cookie should only be delivered over ssl.
-$ssl = (stripos($config->url, 'https://')===0)?true:false;
+$ssl = (stripos($config->url, 'https://') === 0) ? true : false;
 
-setcookie("sessionID",$sessionID,$validUntil,'/',$config->cookiedomain, $ssl); // Set a cookie
+setcookie('sessionID', $sessionid, $validuntil, '/', $config->cookiedomain, $ssl); // Set a cookie.
 
-// [END] Etherpad Lite init.
+// END of Etherpad Lite init.
 
 $context = context_module::instance($cm->id);
 
 // Display the etherpadlite and possibly results.
-$eventparams = array(
+$eventparams = [
     'context' => $context,
     'objectid' => $etherpadlite->id
-);
+];
 $event = \mod_etherpadlite\event\course_module_viewed::create($eventparams);
 $event->add_record_snapshot('course_modules', $cm);
 $event->add_record_snapshot('course', $course);

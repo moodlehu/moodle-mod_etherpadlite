@@ -40,42 +40,32 @@
 // will tell you what you need to do.
 //
 // The commands in here will all be database-neutral,
-// using the functions defined in lib/ddllib.php
+// using the functions defined in lib/ddllib.php.
+
+defined('MOODLE_INTERNAL') || die();
 
 function xmldb_etherpadlite_upgrade($oldversion=0) {
 
     global $CFG, $THEME, $DB;
 
-    $dbman = $DB->get_manager(); // loads ddl manager and xmldb classes
+    $dbman = $DB->get_manager(); // Loads ddl manager and xmldb classes.
 
     $result = true;
 
-/// And upgrade begins here. For each one, you'll need one
-/// block of code similar to the next one. Please, delete
-/// this comment lines once this file start handling proper
-/// upgrade code.
+    if ($oldversion < 2013042901) {
+        set_config("url", $CFG->etherpadlite_url, "etherpadlite");
+        set_config("apikey", $CFG->etherpadlite_apikey, "etherpadlite");
+        set_config("padname", $CFG->etherpadlite_padname, "etherpadlite");
+        set_config("cookiedomain", $CFG->etherpadlite_cookiedomain, "etherpadlite");
+        set_config("cookietime", $CFG->etherpadlite_cookietime, "etherpadlite");
+        set_config("ssl", $CFG->etherpadlite_ssl, "etherpadlite");
+        set_config("check_ssl", $CFG->etherpadlite_check_ssl, "etherpadlite");
+        set_config("adminguests", $CFG->etherpadlite_adminguests, "etherpadlite");
 
-/// if ($result && $oldversion < YYYYMMDD00) { //New version in version.php
-///     $result = result of "/lib/ddllib.php" function calls
-/// }
-
-	if ($oldversion < 2013042901)
-	{
-		set_config("url", $CFG->etherpadlite_url, "etherpadlite");
-		set_config("apikey", $CFG->etherpadlite_apikey, "etherpadlite");
-		set_config("padname", $CFG->etherpadlite_padname, "etherpadlite");
-		set_config("cookiedomain", $CFG->etherpadlite_cookiedomain, "etherpadlite");
-		set_config("cookietime", $CFG->etherpadlite_cookietime, "etherpadlite");
-		set_config("ssl", $CFG->etherpadlite_ssl, "etherpadlite");
-		set_config("check_ssl", $CFG->etherpadlite_check_ssl, "etherpadlite");
-		set_config("adminguests", $CFG->etherpadlite_adminguests, "etherpadlite");
-
-		$DB->delete_records_select("config", "name LIKE 'etherpadlite_%'");
+        $DB->delete_records_select("config", "name LIKE 'etherpadlite_%'");
 
         upgrade_mod_savepoint(true, 2013042901, "etherpadlite");
-	}
+    }
 
     return $result;
 }
-
-?>

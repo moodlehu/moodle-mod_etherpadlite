@@ -34,9 +34,9 @@ When you want, that the server is only accessible via Moodle, then I recommend t
 - donwload nodejs from nodejs.org and compile it (you can use 'n' to switch between versions <https://www.npmjs.org/package/n>)
 - etherpad-lite from git
 - ep-lite settings.json:
-	-	"requireSession":true
-	-	"editOnly":true
-	-	"abiword": "/usr/bin/abiword"
+    -    "requireSession":true
+    -    "editOnly":true
+    -    "abiword": "/usr/bin/abiword"
 - ep-lite plugin: *ep_remove_embed* via admin interface
 - upstart script
 - logrotate

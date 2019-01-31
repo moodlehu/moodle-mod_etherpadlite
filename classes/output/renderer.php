@@ -24,6 +24,8 @@
 
 namespace mod_etherpadlite\output;
 
+defined('MOODLE_INTERNAL') || die();
+
 class renderer extends \plugin_renderer_base {
 
     public function render_etherpad($etherpadlite, $cm, $frameurl) {
@@ -31,8 +33,8 @@ class renderer extends \plugin_renderer_base {
 
         $summary = format_module_intro('etherpadlite', $etherpadlite, $cm->id);
         $summaryguest = '';
-        if(isguestuser() && !etherpadlite_guestsallowed($etherpadlite)) {
-            $summaryguest = get_string('summaryguest','etherpadlite');
+        if (isguestuser() && !etherpadlite_guestsallowed($etherpadlite)) {
+            $summaryguest = get_string('summaryguest', 'etherpadlite');
         }
 
         $content = new \stdClass();

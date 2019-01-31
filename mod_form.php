@@ -50,17 +50,16 @@ require_once($CFG->dirroot.'/course/moodleform_mod.php');
 
 class mod_etherpadlite_mod_form extends moodleform_mod {
 
-    function definition() {
+    public function definition() {
 
         global $COURSE, $CFG;
         $mform = $this->_form;
 
-//-------------------------------------------------------------------------------
-    /// Adding the "general" fieldset, where all the common settings are showed
+        // Adding the "general" fieldset, where all the common settings are showed.
         $mform->addElement('header', 'general', get_string('general', 'form'));
 
-    /// Adding the standard "name" field
-        $mform->addElement('text', 'name', get_string('etherpadlitename', 'etherpadlite'), array('size'=>'64'));
+        // Adding the standard "name" field.
+        $mform->addElement('text', 'name', get_string('etherpadlitename', 'etherpadlite'), array('size' => '64'));
         if (!empty($CFG->formatstringstriptags)) {
             $mform->setType('name', PARAM_TEXT);
         } else {
@@ -69,32 +68,18 @@ class mod_etherpadlite_mod_form extends moodleform_mod {
         $mform->addRule('name', null, 'required', null, 'client');
         $mform->addRule('name', get_string('maximumchars', '', 150), 'maxlength', 150, 'client');
 
-    /// Adding the required "intro" field to hold the description of the instance
-        //$mform->addElement('htmleditor', 'intro', get_string('etherpadliteintro', 'etherpadlite'));
-        //$mform->setType('intro', PARAM_RAW);
-        //$mform->addRule('intro', get_string('required'), 'required', null, 'client');
-        //$mform->setHelpButton('intro', array('writing', 'richtext'), false, 'editorhelpbutton');
-    /// Adding "introformat" field
-        //$mform->addElement('format', 'introformat', get_string('format'));
-
-        // Above deprecated this line using instead:
+        // Adding the required "intro" field to hold the description of the instance.
         $this->standard_intro_elements(false);
 
         // Is writing for guests allowed?
-        if(get_config("etherpadlite", "adminguests") == 1) {
-        	$mform->addElement('checkbox', 'guestsallowed', get_string('guestsallowed', 'etherpadlite'));
-        	$mform->addHelpButton('guestsallowed', 'guestsallowed', 'etherpadlite');
+        if (get_config("etherpadlite", "adminguests") == 1) {
+            $mform->addElement('checkbox', 'guestsallowed', get_string('guestsallowed', 'etherpadlite'));
+            $mform->addHelpButton('guestsallowed', 'guestsallowed', 'etherpadlite');
         }
 
-        // remove coursemodule elements
-        $this->_features->groups = false;
-        $this->_features->groupings = false;
-        $this->_features->groupmembersonly = false;
-        $this->_features->gradecat = false;
-        $this->_features->idnumber = false;
         $this->standard_coursemodule_elements();
 
-        // add standard buttons, common to all modules
+        // Add standard buttons, common to all modules.
         $this->add_action_buttons();
 
     }

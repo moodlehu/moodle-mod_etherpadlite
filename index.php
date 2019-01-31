@@ -16,7 +16,7 @@
 
 /**
  * This page lists all the instances of etherpadlite in a particular course
- * 
+ *
  * @package    mod_etherpadlite
  *
  * @author     Timo Welde <tjwelde@gmail.com>
@@ -29,9 +29,9 @@ require_once(dirname(__FILE__).'/lib.php');
 
 global $OUTPUT, $PAGE;
 
-$id = required_param('id', PARAM_INT);   // course
+$id = required_param('id', PARAM_INT); // The course id.
 
-$PAGE->set_url('/mod/etherpadlite/index.php', array('id'=>$id));
+$PAGE->set_url('/mod/etherpadlite/index.php', array('id' => $id));
 
 if (! $course = $DB->get_record('course', array('id' => $id))) {
     print_error('invalidcourseid');
@@ -39,19 +39,19 @@ if (! $course = $DB->get_record('course', array('id' => $id))) {
 
 require_course_login($course);
 
-/// Get all required stringsetherpadlite
+// Get all required stringsetherpadlite.
 
 $stretherpadlites = get_string('modulenameplural', 'etherpadlite');
 $stretherpadlite  = get_string('modulename', 'etherpadlite');
 
-/// Get all the appropriate data
+// Get all the appropriate data.
 
 if (! $etherpadlites = get_all_instances_in_course('etherpadlite', $course)) {
     notice('There are no instances of etherpadlite', "../../course/view.php?id=$course->id");
     die;
 }
 
-/// Print the list of instances (your module will probably extend this)
+// Print the list of instances (your module will probably extend this).
 
 $timenow  = time();
 $strname  = get_string('name');
@@ -74,10 +74,10 @@ if ($course->format == 'weeks') {
 
 foreach ($etherpadlites as $etherpadlite) {
     if (!$etherpadlite->visible) {
-        //Show dimmed if the mod is hidden
+        // Show dimmed if the mod is hidden.
         $link = '<a class="dimmed" href="view.php?id='.$etherpadlite->coursemodule.'">'.format_string($etherpadlite->name).'</a>';
     } else {
-        //Show normal if the mod is visible
+        // Show normal if the mod is visible.
         $link = '<a href="view.php?id='.$etherpadlite->coursemodule.'">'.format_string($etherpadlite->name).'</a>';
     }
 
@@ -88,7 +88,7 @@ foreach ($etherpadlites as $etherpadlite) {
     }
 }
 
-/// Output the page
+// Output the page.
 $PAGE->navbar->add($stretherpadlites);
 $PAGE->set_title("$course->shortname: $stretherpadlites");
 $PAGE->set_heading($course->fullname);
@@ -98,5 +98,3 @@ echo $OUTPUT->header();
 echo html_writer::table($table);
 
 echo $OUTPUT->footer($course);
-
-?>

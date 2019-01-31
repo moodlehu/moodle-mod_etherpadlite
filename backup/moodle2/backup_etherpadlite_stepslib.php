@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -23,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 /**
  * Define the complete podcaster structure for backup, with file and id annotations
  */
@@ -33,40 +34,40 @@ class backup_etherpadlite_activity_structure_step extends backup_activity_struct
 
         $config = get_config("etherpadlite");
 
-        $instance = new EtherpadLiteClient($config->apikey,$config->url.'api');
+        $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
 
-        // To know if we are including userinfo
+        // To know if we are including userinfo.
         $userinfo = $this->get_setting_value('userinfo');
 
-        // Define each element separated
+        // Define each element separated.
         $eplite = new backup_nested_element('etherpadlite', array('id'), array(
             'name', 'intro', 'introformat', 'guestsallowed', 'timecreated', 'timemodified'));
 
         $content = new backup_nested_element('content', null, array('html', 'text', ));
 
-        // Build the tree
+        // Build the tree.
         $eplite->add_child($content);
 
-        // Define sources
+        // Define sources.
         $eplite->set_source_table('etherpadlite', array('id' => backup::VAR_ACTIVITYID));
 
-        // All the rest of elements only happen if we are including user info
+        // All the rest of elements only happen if we are including user info.
         if ($userinfo) {
-            // The HTML content of the pad
+            // The HTML content of the pad.
             $modid = $this->task->get_activityid();
-            $padID = $DB->get_field('etherpadlite', 'uri', array('id' => $modid));
-            $html = $instance->getHTML($padID);
-            $text = $instance->getText($padID);
+            $padid = $DB->get_field('etherpadlite', 'uri', array('id' => $modid));
+            $html = $instance->get_html($padid);
+            $text = $instance->get_text($padid);
 
-            $content->set_source_array(array((object)array('html'=>$html->html, 'text'=>$text->text)));
+            $content->set_source_array(array((object)array('html' => $html->html, 'text' => $text->text)));
         }
 
-        // Define id annotations
-        // We have none
+        // Define id annotations.
+        // We have none.
 
-        // Define file annotations
+        // Define file annotations.
 
-        // Return the root element (etherpadlite), wrapped into standard activity structure
+        // Return the root element (etherpadlite), wrapped into standard activity structure.
         return $this->prepare_activity_structure($eplite);
 
     }
