@@ -1,6 +1,6 @@
 # About
 
-This is a module, which integrates etherpad-lite in Moodle 2.5 - 2.x
+This is a module, which integrates etherpad-lite in Moodle 3.5 or higher
 
 Features:
 
@@ -18,7 +18,7 @@ You need an etherpad-lite server, which is running on at least the same 2nd-leve
 
 On the github page you'll find all information you need, to install the server: https://github.com/ether/etherpad-lite
 
-We recommend to use the etherpad-lite version 1.3.0
+We recommend to use the etherpad-lite version 1.8.0 or higher
 
 It's also recommended to use the latest stable release of nodejs
 (http://nodejs.org/)
