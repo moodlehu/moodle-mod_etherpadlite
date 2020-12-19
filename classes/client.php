@@ -161,12 +161,16 @@ class client {
     }
 
     // Creates a new pad in this group.
-    public function create_group_pad($groupid, $padname, $text = null) {
-        $pad = $this->post('createGroupPad', [
-            'groupID' => $groupid,
-            'padName' => $padname,
-            'text' => $text
-        ]);
+    public function create_group_pad($groupid, $padname) {
+        $postParameters =  [
+                'groupID' => $groupid,
+                'padName' => $padname
+        ];
+
+        $defaultpadtext = get_config('etherpadlite', 'defaultpadtext');
+        empty($defaultpadtext) ? null : $postParameters['text'] = $defaultpadtext;
+
+        $pad = $this->post('createGroupPad', $postParameters);
         if ($pad) {
             return $pad->padID;
         }

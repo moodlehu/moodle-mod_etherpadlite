@@ -60,3 +60,5 @@ $string['urldesc'] = 'This is the URL to your Etherpadlite server in the form: h
 $string['ssl'] = 'HTTPS Redirect';
 $string['ssldesc'] = 'With this set, your site will redirect itself to HTTPS, if an etherpadlite is opened (eye candy for the user)';
 $string['summaryguest'] = 'You are logged in as guest. That\'s why you can only see the readonly version of this Pad. Reload the page to get new changes.';
+$string['defaultpadtext'] = 'Default pad text';
+$string['defaultpadtextdesc'] = 'This is the default text that will be inserted into newly created pads. This overrides the text from the \'defaultPadText\' setting of your etherpadlite server. Leave it empty to use the setting of your server.';
