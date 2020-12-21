@@ -53,3 +53,6 @@ $settings->add(new admin_setting_configcheckbox('etherpadlite/responsiveiframe',
 
 $settings->add(new admin_setting_configtext('etherpadlite/minwidth', get_string('minwidth', 'etherpadlite'),
                    get_string('minwidthdesc', 'etherpadlite'), '400', PARAM_INT));
+
+$settings->add(new admin_setting_configtextarea('etherpadlite/defaultpadtext', get_string('defaultpadtext', 'etherpadlite'),
+                   get_string('defaultpadtextdesc', 'etherpadlite'), "", PARAM_TEXT));
