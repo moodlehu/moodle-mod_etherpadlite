@@ -98,7 +98,6 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
     }
 
     protected function after_execute() {
-        // Nothing to do.
-        global $DB;
+        $this->add_related_files('mod_etherpadlite', 'intro', null);
     }
 }
