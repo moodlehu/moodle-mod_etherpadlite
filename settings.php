@@ -51,5 +51,8 @@ $settings->add(new admin_setting_configcheckbox('etherpadlite/adminguests', get_
 $settings->add(new admin_setting_configcheckbox('etherpadlite/responsiveiframe', get_string('responsiveiframe', 'etherpadlite'),
                    get_string('responsiveiframedesc', 'etherpadlite'), '0'));
 
+$settings->add(new admin_setting_configtext('etherpadlite/minwidth', get_string('minwidth', 'etherpadlite'),
+                   get_string('minwidthdesc', 'etherpadlite'), '400', PARAM_INT));
+
 $settings->add(new admin_setting_configcheckbox('etherpadlite/copylink', get_string('copylink', 'etherpadlite'),
                    get_string('copylinkdesc', 'etherpadlite'), '0'));
