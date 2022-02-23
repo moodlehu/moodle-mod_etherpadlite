@@ -256,6 +256,65 @@ function etherpadlite_supports($feature) {
     }
 }
 
+/**
+ * Optionally extend the module settings menu for teachers and managers:
+ * add a button which copies the url of the current pad to the clipboard.
+ * @param settings_navigation $settingsnav The settings navigation object
+ * @param navigation_node $node The node to add module settings to
+ * @return boolean true if success, false on error
+ */
+function etherpadlite_extend_settings_navigation($settingsnav, $navigationnode) {
+    global $USER, $PAGE;
+
+    if ($PAGE->cm->modname === 'etherpadlite' and !empty($PAGE->url->params()['id'])
+            and has_capability('mod/etherpadlite:addinstance', $PAGE->cm->context)) {
+
+        $config = get_config('etherpadlite');
+
+        // Check if getting the pad url via the menu is enabled in the plugin settings.
+        if ($config->copylink) {
+
+            // Create navigation item with pseudo link.
+            // It's just used as a button which triggers some javascript to copy the
+            // pad url to the clipboard.
+            $url = new moodle_url( '#' );
+            $copytoclipboardbutton = navigation_node::create(
+                get_string('copylink', 'mod_etherpadlite'),
+                $url,
+                navigation_node::TYPE_SETTING,
+                null,
+                'testkey',
+                new pix_icon('t/copy', '')
+            );
+            $copytoclipboardbutton->classes = array( 'copy_etherpadlink_to_clipboard_button' );
+
+            // Add the copy to clipboard button to the module menu navigation.
+            $navigationnode->add_node( $copytoclipboardbutton );
+
+            // Get the full etherpad url and pass it as a variable to the
+            // javascript which handles the copying and the notification.
+            global $DB;
+            $paduri  = $DB->get_record( 'etherpadlite',   array( 'id' => $PAGE->cm->instance ), 'uri', MUST_EXIST );
+            $url     = $config->url . 'p/' . $paduri->uri;
+
+            // Include the javascript file, which handles the copy-to-clipboard process.
+            $PAGE->requires->js_call_amd(
+                'mod_etherpadlite/copy_to_clipboard',
+                'init',
+                array( $url ),
+            );
+
+            // Make the translations for the notification available in javascript.
+            $PAGE->requires->strings_for_js(
+                array(
+                    'link_copied',
+                    'etherpadlite_link_copied_to_clipboard'
+                ),
+                'mod_etherpadlite'
+            );
+        }
+    }
+}
 
 // Any other etherpadlite functions go here.  Each of them must have a name that
 // starts with etherpadlite_
