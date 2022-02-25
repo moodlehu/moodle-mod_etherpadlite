@@ -28,10 +28,13 @@ var etherpadliteFullPadURL = null;
  */
 function copyToClipboard() {
     navigator.clipboard.writeText(etherpadliteFullPadURL);
-    require(['core/notification'], function(notification) {
-        notification.alert(
-            M.util.get_string('link_copied', 'mod_etherpadlite'),
-            M.util.get_string('etherpadlite_link_copied_to_clipboard', 'mod_etherpadlite')
+    require(['core/str', 'core/notification'], function(str, notification) {
+        str.get_strings([
+                {'key': 'link_copied', component: 'mod_etherpadliteag'},
+                {'key': 'etherpadlite_link_copied_to_clipboard', component: 'mod_etherpadlite'},
+            ]).done(function(strings) {
+                notification.alert(strings[0], strings[1]);
+            }
         );
     });
 }

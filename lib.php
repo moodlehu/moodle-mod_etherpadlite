@@ -303,15 +303,6 @@ function etherpadlite_extend_settings_navigation($settingsnav, $navigationnode) 
                 'init',
                 array( $url ),
             );
-
-            // Make the translations for the notification available in javascript.
-            $PAGE->requires->strings_for_js(
-                array(
-                    'link_copied',
-                    'etherpadlite_link_copied_to_clipboard'
-                ),
-                'mod_etherpadlite'
-            );
         }
     }
 }
