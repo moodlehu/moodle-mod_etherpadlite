@@ -30,7 +30,7 @@ function copyToClipboard() {
     navigator.clipboard.writeText(etherpadliteFullPadURL);
     require(['core/str', 'core/notification'], function(str, notification) {
         str.get_strings([
-                {'key': 'link_copied', component: 'mod_etherpadliteag'},
+                {'key': 'link_copied', component: 'mod_etherpadlite'},
                 {'key': 'etherpadlite_link_copied_to_clipboard', component: 'mod_etherpadlite'},
             ]).done(function(strings) {
                 notification.alert(strings[0], strings[1]);
