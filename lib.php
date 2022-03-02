@@ -266,8 +266,7 @@ function etherpadlite_supports($feature) {
 function etherpadlite_extend_settings_navigation($settingsnav, $navigationnode) {
     global $USER, $PAGE;
 
-    if ($PAGE->cm->modname === 'etherpadlite' and !empty($PAGE->url->params()['id'])
-            and has_capability('mod/etherpadlite:addinstance', $PAGE->cm->context)) {
+    if (has_capability('mod/etherpadlite:addinstance', $PAGE->cm->context)) {
 
         $config = get_config('etherpadlite');
 
@@ -301,7 +300,7 @@ function etherpadlite_extend_settings_navigation($settingsnav, $navigationnode) 
             $PAGE->requires->js_call_amd(
                 'mod_etherpadlite/copy_to_clipboard',
                 'init',
-                array( $url ),
+                array( $url )
             );
         }
     }
