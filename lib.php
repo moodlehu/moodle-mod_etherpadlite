@@ -35,8 +35,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Given an object containing all the necessary data,
  * (defined by the form in mod_form.php) this function
@@ -233,8 +231,6 @@ function etherpadlite_supports($feature) {
         case FEATURE_GROUPS:
             return false;
         case FEATURE_GROUPINGS:
-            return false;
-        case FEATURE_GROUPMEMBERSONLY:
             return false;
         case FEATURE_MOD_INTRO:
             return true;

@@ -42,8 +42,6 @@
 // The commands in here will all be database-neutral,
 // using the functions defined in lib/ddllib.php.
 
-defined('MOODLE_INTERNAL') || die();
-
 function xmldb_etherpadlite_upgrade($oldversion=0) {
 
     global $CFG, $THEME, $DB;

@@ -22,8 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Define the complete podcaster structure for backup, with file and id annotations
  */
@@ -50,7 +48,7 @@ class backup_etherpadlite_activity_structure_step extends backup_activity_struct
 
         // Define sources.
         $eplite->set_source_table('etherpadlite', array('id' => backup::VAR_ACTIVITYID));
-        $eplite->annotate_files('mod_etherpadlite', 'intro', null); // This file area hasn't itemid
+        $eplite->annotate_files('mod_etherpadlite', 'intro', null); // This file area hasn't an itemid.
 
         // All the rest of elements only happen if we are including user info.
         if ($userinfo) {

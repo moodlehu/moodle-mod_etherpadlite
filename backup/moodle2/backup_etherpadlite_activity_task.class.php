@@ -25,7 +25,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/mod/etherpadlite/backup/moodle2/backup_etherpadlite_stepslib.php');
-require_once($CFG->dirroot . '/mod/etherpadlite/backup/moodle2/backup_etherpadlite_settingslib.php');
 
 /**
  * podcaster backup task that provides all the settings and steps to perform one
@@ -52,7 +51,7 @@ class backup_etherpadlite_activity_task extends backup_activity_task {
      * Code the transformations to perform in the activity in
      * order to get transportable (encoded) links
      */
-    static public function encode_content_links($content) {
+    public static function encode_content_links($content) {
         global $CFG;
 
         // No links to encode.

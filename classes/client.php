@@ -28,8 +28,6 @@
 
 namespace mod_etherpadlite;
 
-defined('MOODLE_INTERNAL') || die();
-
 class client {
     const API_VERSION = '1.1';
 
@@ -45,7 +43,7 @@ class client {
 
     public function __construct($apikey, $baseurl = null) {
         if (strlen($apikey) < 1) {
-            throw new InvalidArgumentException("[{$apikey}] is not a valid API key");
+            throw new \InvalidArgumentException("[{$apikey}] is not a valid API key");
         }
         $this->apikey = $apikey;
 
@@ -53,7 +51,7 @@ class client {
             $this->baseurl = $baseurl;
         }
         if (!filter_var($this->baseurl, FILTER_VALIDATE_URL)) {
-            throw new InvalidArgumentException("[{$this->baseurl}] is not a valid URL");
+            throw new \InvalidArgumentException("[{$this->baseurl}] is not a valid URL");
         }
         $this->curl = new \curl();
     }

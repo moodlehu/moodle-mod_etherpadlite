@@ -27,8 +27,8 @@
 require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once(dirname(__FILE__).'/lib.php');
 
-$id = optional_param('id', 0, PARAM_INT); // The course_module id, or
-$a = optional_param('a', 0, PARAM_INT);  // etherpadlite instance id.
+$id = optional_param('id', 0, PARAM_INT); // The course_module id.
+$a = optional_param('a', 0, PARAM_INT);  // The etherpadlite instance id.
 
 if ($id) {
     $cm = get_coursemodule_from_id('etherpadlite', $id, 0, false, MUST_EXIST);
