@@ -63,3 +63,7 @@
     height: 100%;
     min-height: 100%;
 }
+.activitytitle.modtype_etherpadlite .activityiconcontainer.collaboration img.activityicon,
+.modicon_etherpadlite.activityiconcontainer.collaboration img.activityicon {
+    filter: none;
+}

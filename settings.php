@@ -26,8 +26,25 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$urldesc = get_string('urldesc', 'etherpadlite');
+$urldescinfo = '';
+$urldescinfotype = '';
+if ($baseurl = get_config('etherpadlite', 'url')) {
+    if ($urldescinfo = \mod_etherpadlite\client::is_url_blocked($baseurl)) {
+        $urldescinfo = get_string('urlisblocked', 'etherpadlite', $urldescinfo);
+        if (get_config('etherpadlite', 'ignoresecurity')) {
+            $urldescinfotype = 'warning';
+        } else {
+            $urldescinfotype = 'danger';
+        }
+    }
+}
+$urldescwidget = new \mod_etherpadlite\output\component\urlsettingsnote($urldesc, $urldescinfo, $urldescinfotype);
 $settings->add(new admin_setting_configtext('etherpadlite/url', get_string('url', 'etherpadlite'),
-                   get_string('urldesc', 'etherpadlite'), 'https://myserver.mydomain.local/moodle/', PARAM_RAW, 40));
+                   $OUTPUT->render($urldescwidget), 'https://myserver.mydomain.local/moodle/', PARAM_RAW, 40));
+
+$settings->add(new admin_setting_configcheckbox('etherpadlite/ignoresecurity', get_string('ignoresecurity', 'etherpadlite'),
+                    get_string('ignoresecuritydesc', 'etherpadlite'), false));
 
 $settings->add(new admin_setting_configtext('etherpadlite/apikey', get_string('apikey', 'etherpadlite'),
                    get_string('apikeydesc', 'etherpadlite'), 'Enter your API Key', PARAM_RAW, 40));
