@@ -40,8 +40,10 @@ class client {
     protected $apikey = '';
     protected $baseurl = 'http://localhost:9001/api';
     protected $curl; // Use the moodle curl class.
+    protected $config;
 
     public function __construct($apikey, $baseurl = null) {
+        $this->config = get_config('etherpadlite');
         if (strlen($apikey) < 1) {
             throw new \InvalidArgumentException("[{$apikey}] is not a valid API key");
         }
@@ -53,7 +55,14 @@ class client {
         if (!filter_var($this->baseurl, FILTER_VALIDATE_URL)) {
             throw new \InvalidArgumentException("[{$this->baseurl}] is not a valid URL");
         }
-        $this->curl = new \curl();
+
+        // Sometimes the etherpad host is located on an internal network like 127.0.0.1 or 10.0.0.0/8.
+        // Since Moodle 4.0 this kind of host are blocked by default.
+        $settings = array();
+        if (!empty($this->config->ignoresecurity)) {
+            $settings['ignoresecurity'] = true;
+        }
+        $this->curl = new \curl($settings);
     }
 
     protected function get($function, array $arguments = []) {
@@ -71,7 +80,7 @@ class client {
         // All posts and gets use the moodle curl class.
         $options = [];
         // Should the certificate be verified.
-        if (get_config('etherpadlite', 'check_ssl') != 1) {
+        if (empty($this->config->check_ssl)) {
             $options = [
                 'CURLOPT_SSL_VERIFYHOST' => 0,
                 'CURLOPT_SSL_VERIFYPEER' => 0,
@@ -404,5 +413,19 @@ class client {
             'padID' => $padid,
             'msg' => $msg
         ]);
+    }
+
+    public static function is_url_blocked($urlstring) {
+        $curl = new \curl(array('ignoresecurity' => true));
+        $url = new \moodle_url($urlstring);
+        if ($curl->get_security()->url_is_blocked($url)) {
+            $ipstring = '';
+            if ($ips = gethostbynamel($url->get_host())) {
+                $ipstring = implode(', ', $ips);
+            }
+            return $url->get_host().'('.$ipstring.')';
+        }
+
+        return false;
     }
 }
