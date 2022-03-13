@@ -27,9 +27,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version    = 2022022501;  // The current module version (Date: YYYYMMDDXX).
-$plugin->release    = 'MDL_311_2022030700';
+$plugin->version    = 2022022502;  // Don't go higher than 202203xxyy because there starts the version for 4.0.
+$plugin->release    = 'v3.11-r1 (2022-03-13)';
 $plugin->requires   = 2018050800;
 $plugin->cron       = 0;           // Period for cron to check this module (secs).
 $plugin->component  = 'mod_etherpadlite';
-$plugin->maturity   = MATURITY_BETA;
+$plugin->maturity   = MATURITY_STABLE;
