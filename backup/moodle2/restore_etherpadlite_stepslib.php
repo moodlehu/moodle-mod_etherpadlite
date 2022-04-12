@@ -72,6 +72,28 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
         $newitemid = $DB->insert_record('etherpadlite', $data);
         // Immediately after inserting "activity" record, call this.
         $this->apply_activity_instance($newitemid);
+
+        $cm = get_coursemodule_from_instance('etherpadlite', $newitemid);
+        // Get all groups.
+        $groups = groups_get_all_groups($data->course, 0, $cm->groupingid);
+
+        if ($cm->groupmode != 0 && $groups) {
+            $mgroupdb = [];
+            foreach ($groups as $group) {
+                $mgroup = [];
+                $mgroup['padid'] = $newitemid;
+                $mgroup['groupid'] = $group->id;
+                array_push($mgroupdb, $mgroup);
+
+                try {
+                    $padid = $instance->create_group_pad($groupid, $config->padname . $group->id);
+                } catch (Exception $e) {
+                    continue;
+                }
+            }
+            $DB->insert_records('etherpadlite_mgroups', $mgroupdb);
+        }
+
     }
 
     protected function process_etherpadlite_content($data) {

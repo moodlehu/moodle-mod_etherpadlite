@@ -36,6 +36,15 @@ $string['cookiedomain'] = 'Cookie Domain';
 $string['cookiedomaindesc'] = 'Here you can enter the domain, which should be stored in the session cookie, so that the etherpadlite server recognize it. When moodle runs on the domain moodle.example.com and your etherpadlite server on etherpadlite.example.com, then your cookie domain should be .example.com.';
 $string['cookietime'] = 'Session elapse time';
 $string['cookietimedesc'] = 'Here you have to enter the time (in seconds) until the etherpadlite session should be valid';
+
+$string['deletenow'] = 'Immediately';
+$string['deleteinonehour'] = '1 hour';
+$string['deleteintwelvehours'] = '12 hours';
+$string['deletein24hours'] = '24 hours';
+$string['deletemgroupads'] = 'Delete moodle group pads in';
+$string['deletemgroupadsdesc'] = 'Delete all group pads created in association with moodle group mode';
+$string['donotdelete'] = 'Do not delete';
+
 $string['etherpadlite'] = 'Etherpad Lite';
 $string['etherpadliteintro'] = 'Etherpadlite Intro';
 $string['etherpadlitename'] = 'Etherpadlite Name';

@@ -73,3 +73,12 @@ $settings->add(new admin_setting_configtext('etherpadlite/minwidth', get_string(
 
 $settings->add(new admin_setting_configcheckbox('etherpadlite/copylink', get_string('copylink', 'etherpadlite'),
                    get_string('copylinkdesc', 'etherpadlite'), '0'));
+$options = array();
+$options[0] = get_string("donotdelete", "etherpadlite");
+$options[1] = get_string("deletenow", "etherpadlite");
+$options[2] = get_string("deleteinonehour", "etherpadlite");
+$options[3] = get_string("deleteintwelvehours", "etherpadlite");
+$options[4] = get_string("deletein24hours", "etherpadlite");
+
+$settings->add(new admin_setting_configselect('etherpadlite/deletemgrouppad', get_string('deletemgroupads', 'etherpadlite'),
+    get_string('deletemgroupadsdesc', 'etherpadlite'), 2, $options));
