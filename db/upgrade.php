@@ -65,5 +65,29 @@ function xmldb_etherpadlite_upgrade($oldversion=0) {
         upgrade_mod_savepoint(true, 2013042901, "etherpadlite");
     }
 
+    if ($oldversion < 2022022503) {
+
+        // Define table etherpadlite_mgroups to be created.
+        $table = new xmldb_table('etherpadlite_mgroups');
+
+        // Adding fields to table etherpadlite_mgroups.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('padid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('groupid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+
+        // Adding keys to table etherpadlite_mgroups.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        // Define key unique key over padid and groupid to be added to etherpadlite_mgroups.
+        $table->add_key('padid-groupid', XMLDB_KEY_UNIQUE, ['padid', 'groupid']);
+
+        // Conditionally launch create table for etherpadlite_mgroups.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Etherpadlite savepoint reached.
+        upgrade_mod_savepoint(true, 2022022503, 'etherpadlite');
+    }
+
     return $result;
 }

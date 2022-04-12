@@ -43,7 +43,9 @@ if ($id) {
 }
 
 // This must be here, so that require login doesn't throw a warning.
-$PAGE->set_url('/mod/etherpadlite/view.php', ['id' => $cm->id]);
+$url = new moodle_url('/mod/etherpadlite/view.php', ['id' => $cm->id]);
+
+$PAGE->set_url($url);
 require_login($course, true, $cm);
 $config = get_config('etherpadlite');
 
@@ -76,6 +78,16 @@ if (isguestuser() && !etherpadlite_guestsallowed($etherpadlite)) {
     }
 } else {
     $fullurl = $domain.'p/'.$padid;
+}
+
+// Get group mode.
+$groupmode = groups_get_activity_groupmode($cm);
+
+if ($groupmode) {
+    $activegroup = groups_get_activity_group($cm, true);
+    if ($activegroup != 0) {
+        $fullurl = $fullurl . $activegroup;
+    }
 }
 
 // Get the groupID.
@@ -129,6 +141,13 @@ $renderer = $PAGE->get_renderer('mod_etherpadlite');
 
 // Print the page header.
 echo $renderer->header();
+
+require_once($CFG->libdir . '/grouplib.php');
+$groupselecturl = new moodle_url($CFG->wwwroot . '/mod/etherpadlite/view.php',
+    array('id' => $cm->id
+    ));
+
+groups_print_activity_menu($cm, $groupselecturl);
 
 // Print the etherpad content.
 echo $renderer->render_etherpad($etherpadlite, $cm, $fullurl);

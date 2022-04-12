@@ -21,14 +21,14 @@
  * @package    mod_etheradlite
  *
  * @author     Timo Welde <tjwelde@gmail.com>
- * @copyright  2012 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
+ * @copyright  2012 Humboldt-UniversitÃ¤t zu Berlin <moodle-support@cms.hu-berlin.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version    = 2022022502;  // Don't go higher than 202203xxyy because there starts the version for 4.0.
-$plugin->release    = 'v3.11-r1 (2022-03-13)';
+$plugin->version    = 2022022503;  // Don't go higher than 202203xxyy because there starts the version for 4.0.
+$plugin->release    = 'v3.11-r2 (2022-04-14)';
 $plugin->requires   = 2018050800;
 $plugin->cron       = 0;           // Period for cron to check this module (secs).
 $plugin->component  = 'mod_etherpadlite';
