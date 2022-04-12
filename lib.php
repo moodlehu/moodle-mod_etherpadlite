@@ -69,9 +69,29 @@ function etherpadlite_add_instance(stdClass $etherpadlite, mod_etherpadlite_mod_
 
     $etherpadlite->timecreated = time();
 
-    return $DB->insert_record('etherpadlite', $etherpadlite);
-}
+    $padinstanceid = $DB->insert_record('etherpadlite', $etherpadlite);
 
+    // Moodle groupmode
+    $groups = groups_get_all_groups($etherpadlite->course, 0, $etherpadlite->groupingid);
+
+    if ($etherpadlite->groupmode != 0 && $groups) {
+        $mgroupdb = [];
+        foreach ($groups as $group) {
+            $mgroup = new stdClass();
+            $mgroup->padid = $padinstanceid;
+            $mgroup->groupid = $group->id;
+            array_push($mgroupdb, $mgroup);
+
+            try {
+                $padid = $instance->create_group_pad($groupid, $config->padname . $group->id);
+            } catch (Exception $e) {
+                throw $e;
+            }
+        }
+        $DB->insert_records('etherpadlite_mgroups', $mgroupdb);
+    }
+    return $padinstanceid;
+}
 
 /**
  * Given an object containing all the necessary data,
@@ -83,6 +103,7 @@ function etherpadlite_add_instance(stdClass $etherpadlite, mod_etherpadlite_mod_
  */
 function etherpadlite_update_instance(stdClass $etherpadlite, mod_etherpadlite_mod_form $mform = null) {
     global $DB;
+    require_once('locallib.php');
 
     $etherpadlite->timemodified = time();
     $etherpadlite->id = $etherpadlite->instance;
@@ -91,10 +112,18 @@ function etherpadlite_update_instance(stdClass $etherpadlite, mod_etherpadlite_m
     if (empty($etherpadlite->guestsallowed)) {
         $etherpadlite->guestsallowed = 0;
     }
+    // if groupmode is not set anymore, delete mgroupspads if exist
+    $formdata = $mform->get_data();
+    $etherpadliteuri = $DB->get_field('etherpadlite', 'uri', ['id' => $etherpadlite->id]);
+    $config = get_config("etherpadlite");
+    $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
+    if ($formdata->groupmode != 0) {
+        // deletion will be done by adhoc task triggered by cm_update
+        mod_etherpadlite_add_mgrouppads($formdata, $etherpadlite->id, $etherpadliteuri, $instance);
+    }
 
     return $DB->update_record('etherpadlite', $etherpadlite);
 }
-
 
 /**
  * Given an ID of an instance of this module,
@@ -107,6 +136,7 @@ function etherpadlite_update_instance(stdClass $etherpadlite, mod_etherpadlite_m
 function etherpadlite_delete_instance($id) {
 
     global $DB;
+    require_once('locallib.php');
 
     if (! $etherpadlite = $DB->get_record('etherpadlite', array('id' => $id))) {
         return false;
@@ -122,6 +152,9 @@ function etherpadlite_delete_instance($id) {
     $padid = $etherpadlite->uri;
     $groupid = explode('$', $padid);
     $groupid = $groupid[0];
+
+    // delete pads for moodle groups and respective DB entry
+    mod_etherpadlite_delete_all_mgrouppads($id, $padid, $instance);
 
     $instance->delete_pad($padid);
     $instance->delete_group($groupid);
@@ -229,8 +262,10 @@ function etherpadlite_uninstall() {
 function etherpadlite_supports($feature) {
     switch($feature) {
         case FEATURE_GROUPS:
-            return false;
+            return true;
         case FEATURE_GROUPINGS:
+            return true;
+        case FEATURE_GROUPMEMBERSONLY:
             return false;
         case FEATURE_MOD_INTRO:
             return true;

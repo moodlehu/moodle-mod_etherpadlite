@@ -65,5 +65,51 @@ function xmldb_etherpadlite_upgrade($oldversion=0) {
         upgrade_mod_savepoint(true, 2013042901, "etherpadlite");
     }
 
+    if ($oldversion < 2022041100) {
+
+        // Define table etherpad_mgroups to be created.
+        $table = new xmldb_table('etherpad_mgroups');
+
+        // Adding fields to table etherpad_mgroups.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('padid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('groupid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+
+        // Adding keys to table etherpad_mgroups.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+
+        // Conditionally launch create table for etherpad_mgroups.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Etherpadlite savepoint reached.
+        upgrade_mod_savepoint(true, 2022041100, 'etherpadlite');
+    }
+
+    if ($oldversion < 2022041100) {
+
+        // Define table etherpadlite_mgroups to be renamed to NEWNAMEGOESHERE.
+        $table = new xmldb_table('etherpad_mgroups');
+
+        // Launch rename table for etherpadlite_mgroups.
+        $dbman->rename_table($table, 'etherpadlite_mgroups');
+
+        // Etherpadlite savepoint reached.
+        upgrade_mod_savepoint(true, 2022041100, 'etherpadlite');
+    }
+    if ($oldversion < 2022041101) {
+
+        // Define key groupdids (unique) to be added to etherpadlite_mgroups.
+        $table = new xmldb_table('etherpadlite_mgroups');
+        $key = new xmldb_key('groupdids', XMLDB_KEY_UNIQUE, ['padid', 'groupid']);
+
+        // Launch add key groupdids.
+        $dbman->add_key($table, $key);
+
+        // Etherpadlite savepoint reached.
+        upgrade_mod_savepoint(true, 2022041101, 'etherpadlite');
+    }
+
     return $result;
 }
