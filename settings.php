@@ -49,6 +49,9 @@ $settings->add(new admin_setting_configcheckbox('etherpadlite/ignoresecurity', g
 $settings->add(new admin_setting_configtext('etherpadlite/apikey', get_string('apikey', 'etherpadlite'),
                    get_string('apikeydesc', 'etherpadlite'), 'Enter your API Key', PARAM_RAW, 40));
 
+$settings->add(new admin_setting_configselect('etherpadlite/apiversion', get_string('apiversion', 'etherpadlite'),
+                   get_string('apiversiondesc', 'etherpadlite'), '1.2', array('1.1' => '1.1', '1.2' => '1.2')));
+
 $settings->add(new admin_setting_configtext('etherpadlite/padname', get_string('padname', 'etherpadlite'),
                    get_string('padnamedesc', 'etherpadlite'), 'mymoodle2'));
 

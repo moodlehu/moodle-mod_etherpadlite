@@ -65,17 +65,15 @@ $domain = $config->url;
 $padid = $etherpadlite->uri;
 $fullurl = 'domain.tld';
 
-// Make a new intance from the etherpadlite client.
+// Make a new intance from the etherpadlite client. It might throw an exception.
 $instance = new \mod_etherpadlite\client($config->apikey, $domain.'api');
 
 // Fullurl generation.
 if (isguestuser() && !etherpadlite_guestsallowed($etherpadlite)) {
-    try {
-        $readonlyid = $instance->get_readonly_id($padid);
-        $fullurl = $domain.'ro/'.$readonlyid;
-    } catch (Exception $e) {
-        throw $e;
+    if (!$readonlyid = $instance->get_readonly_id($padid)) {
+        throw new \moodle_exception('could not get readonly id');
     }
+    $fullurl = $domain.'ro/'.$readonlyid;
 } else {
     $fullurl = $domain.'p/'.$padid;
 }
@@ -95,22 +93,19 @@ $groupid = explode('$', $padid);
 $groupid = $groupid[0];
 
 // Create author if not exists for logged in user (with full name as it is obtained from Moodle core library).
-try {
-    if (isguestuser() && etherpadlite_guestsallowed($etherpadlite)) {
-        $authorid = $instance->create_author('Guest-'.etherpadlite_gen_random_string());
-    } else {
-        $authorid = $instance->create_author_if_not_exists_for($USER->id, fullname($USER));
-    }
-} catch (Exception $e) {
-    // The pad already exists or something else went wrong.
-    throw $e;
+if (isguestuser() && etherpadlite_guestsallowed($etherpadlite)) {
+    $authorid = $instance->create_author('Guest-'.etherpadlite_gen_random_string());
+} else {
+    $authorid = $instance->create_author_if_not_exists_for($USER->id, fullname($USER));
+}
+if (!$authorid) {
+    throw new \moodle_exception('could not create etherpad author');
 }
 
 $validuntil = time() + $config->cookietime;
-try {
-    $sessionid = $instance->create_session($groupid, $authorid, $validuntil);
-} catch (Exception $e) {
-    throw $e;
+
+if (!$sessionid = $instance->create_session($groupid, $authorid, $validuntil)) {
+    throw new \moodle_exception('could not create etherpad session');
 }
 
 // If we reach the etherpadlite server over https, then the cookie should only be delivered over ssl.

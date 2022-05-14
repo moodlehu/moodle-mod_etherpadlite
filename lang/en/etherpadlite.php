@@ -27,6 +27,8 @@
 $string['adminguests'] = 'Guests allowed to write?';
 $string['adminguestsdesc'] = 'With this set, users who are allowed to configure a specific etherpadlite module can allow guests to write in this specific etherpadlite module';
 $string['apikey'] = 'API Key';
+$string['apiversion'] = 'API version';
+$string['apiversiondesc'] = 'The default version is "1.2". You only should use version "1.1" if you use a very old version of etherpad lite server!';
 $string['apikeydesc'] = 'This is the API Key which this module needs to communicate with your etherpadlite server. This API key is stored on your etherpadliste server and can be copied from there.';
 $string['checkssl'] = 'Verify HTTPS cert';
 $string['checkssldesc'] = 'With this set, the HTTPS certificate of the etherpadlite server will be checked, to prevent man in the middle attacks';
