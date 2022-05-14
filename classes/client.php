@@ -29,7 +29,7 @@
 namespace mod_etherpadlite;
 
 class client {
-    const API_VERSION = '1.1';
+    const DEFAULT_API_VERSION = '1.2';
 
     const CODE_OK = 0;
     const CODE_INVALID_PARAMETERS = 1;
@@ -43,9 +43,13 @@ class client {
     protected $config;
 
     public function __construct($apikey, $baseurl = null) {
+        global $CFG;
+        require_once($CFG->libdir.'/filelib.php');
+
         $this->config = get_config('etherpadlite');
+
         if (strlen($apikey) < 1) {
-            throw new \InvalidArgumentException("[{$apikey}] is not a valid API key");
+            throw new \InvalidArgumentException('Config has no API key');
         }
         $this->apikey = $apikey;
 
@@ -53,7 +57,7 @@ class client {
             $this->baseurl = $baseurl;
         }
         if (!filter_var($this->baseurl, FILTER_VALIDATE_URL)) {
-            throw new \InvalidArgumentException("[{$this->baseurl}] is not a valid URL");
+            throw new \InvalidArgumentException('Config has no valid baseurl');
         }
 
         // Sometimes the etherpad host is located on an internal network like 127.0.0.1 or 10.0.0.0/8.
@@ -63,6 +67,19 @@ class client {
             $settings['ignoresecurity'] = true;
         }
         $this->curl = new \curl($settings);
+
+        if (empty($this->config->apiversion)) {
+            $this->config->apiversion = self::DEFAULT_API_VERSION;
+        }
+        if (!$this->check_version($this->config->apiversion)) {
+            throw new \InvalidArgumentException('Config has wrong api version');
+        }
+
+        if ($this->check_version('1.2', $this->config->apiversion)) {
+            if (!$this->check_token()) {
+                throw new \InvalidArgumentException('Config has an invalid API key');
+            }
+        }
     }
 
     protected function get($function, array $arguments = []) {
@@ -75,7 +92,7 @@ class client {
 
     protected function call($function, array $arguments = [], $method = 'GET') {
         $arguments['apikey'] = $this->apikey;
-        $url = $this->baseurl.'/'.self::API_VERSION.'/'.$function;
+        $url = $this->baseurl.'/'.$this->config->apiversion.'/'.$function;
 
         // All posts and gets use the moodle curl class.
         $options = [];
@@ -127,6 +144,41 @@ class client {
             default:
                 return false;
         }
+    }
+
+    public function get_version() {
+        $url = $this->baseurl;
+        $options = [];
+        // Should the certificate be verified.
+        if (empty($this->config->check_ssl)) {
+            $options = [
+                'CURLOPT_SSL_VERIFYHOST' => 0,
+                'CURLOPT_SSL_VERIFYPEER' => 0,
+            ];
+        }
+        $result = $this->curl->get($url, array(), $options);
+
+        $result = json_decode($result);
+        if (!empty($result->currentVersion)) {
+            return $result->currentVersion;
+        }
+        throw new \InvalidArgumentException('Could not get api version');
+    }
+
+    // Generel
+    // Check the api version.
+    public function check_version($neededversion, $usedversion = null) {
+        if (is_null($usedversion)) {
+            $currentversion = $this->get_version();
+        } else {
+            $currentversion = $usedversion;
+        }
+        return version_compare($currentversion, $neededversion, '>=');
+    }
+
+    // Check the API key.
+    public function check_token() {
+        return ($this->get('checkToken') !== false);
     }
 
     // GROUPS

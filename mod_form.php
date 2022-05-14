@@ -54,6 +54,15 @@ class mod_etherpadlite_mod_form extends moodleform_mod {
 
         global $COURSE, $CFG;
         $mform = $this->_form;
+        $config = get_config("etherpadlite");
+
+        try {
+            $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
+        } catch (\InvalidArgumentException $e) {
+            \core\notification::add($e->getMessage(), \core\notification::ERROR);
+            $url = course_get_url($COURSE->id);
+            redirect($url);
+        }
 
         // Adding the "general" fieldset, where all the common settings are showed.
         $mform->addElement('header', 'general', get_string('general', 'form'));

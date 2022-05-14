@@ -47,20 +47,27 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
         $oldid = $data->id;
         $data->course = $this->get_courseid();
 
-        $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
-
         try {
-            $groupid = $instance->create_group();
-        } catch (Exception $e) {
-            // The group already exists or something else went wrong.
-            echo "\n\ncreateGroup Failed with message ". $e->getMessage();
+            $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
+        } catch (\InvalidArgumentException $e) {
+            \core\notification::add($e->getMessage(), \core\notification::ERROR);
+            return;
         }
 
-        try {
+        if (!empty($instance)) {
+            $groupid = $instance->create_group();
+        }
+
+        if (!$groupid) {
+            \core\notification::add('Could not create etherpad group', \core\notification::ERROR);
+            return;
+        } else {
             $padid = $instance->create_group_pad($groupid, $config->padname);
-        } catch (Exception $e) {
-            // The pad already exists or something else went wrong.
-            echo "\n\ncreateGroupPad Failed with message ". $e->getMessage();
+        }
+
+        if (!$padid) {
+            \core\notification::add('Could not create etherpad group pad', \core\notification::ERROR);
+            return;
         }
 
         $data->uri = $padid;
@@ -100,13 +107,17 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
         global $DB;
         $config = get_config('etherpadlite');
         $data = (object)$data;
-        $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
+
+        try {
+            $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
+        } catch (\InvalidArgumentException $e) {
+            \core\notification::add($e->getMessage(), \core\notification::ERROR);
+            return null;
+        }
 
         $newid = $this->get_new_parentid('etherpadlite');
         $etherpadlite = $DB->get_record('etherpadlite', ['id' => $newid]);
         $padid = $etherpadlite->uri;
-
-        $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
 
         try {
             $instance->set_text($padid, $data->text);

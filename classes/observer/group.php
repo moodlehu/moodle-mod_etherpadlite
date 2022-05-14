@@ -43,7 +43,13 @@ class group {
             return;
         }
         $config = get_config('etherpadlite');
-        $instance = new \mod_etherpadlite\client($config->apikey, $config->url .'api');
+
+        try {
+            $instance = new \mod_etherpadlite\client($config->apikey, $config->url .'api');
+        } catch (\InvalidArgumentException $e) {
+            \core\notification::add($e->getMessage(), \core\notification::ERROR);
+            return;
+        }
 
         $etherpads = $DB->get_records('etherpadlite', ['course' => $data['courseid']]);
         $mgroupdb = [];
@@ -105,7 +111,13 @@ class group {
         }
         $other = $event->other;
         $config = get_config('etherpadlite');
-        $instance = new \mod_etherpadlite\client($config->apikey, $config->url .'api');
+
+        try {
+            $instance = new \mod_etherpadlite\client($config->apikey, $config->url .'api');
+        } catch (\InvalidArgumentException $e) {
+            \core\notification::add($e->getMessage(), \core\notification::ERROR);
+            return;
+        }
 
         foreach ($etherpads as $etherpad) {
             $padid = $etherpad->uri;
@@ -170,7 +182,13 @@ class group {
             $data['groupmode'] = $cm->groupmode;
             $data['course'] = $eventdata['courseid'];
             $config = get_config("etherpadlite");
-            $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
+
+            try {
+                $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
+            } catch (\InvalidArgumentException $e) {
+                return;
+            }
+
             if ($data['groupmode'] == 0) {
                 $mgrouppads = $DB->get_records('etherpadlite_mgroups', ['padid' => $etherpadlite->id]);
                 if ($mgrouppads) {

@@ -49,20 +49,21 @@ function etherpadlite_add_instance(stdClass $etherpadlite, mod_etherpadlite_mod_
     global $DB;
     $config = get_config("etherpadlite");
 
-    $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
-
     try {
-        $groupid = $instance->create_group();
-    } catch (Exception $e) {
-        // The group already exists or something else went wrong.
-        throw $e;
+        $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
+    } catch (\InvalidArgumentException $e) {
+        \core\notification::add($e->getMessage(), \core\notification::ERROR);
+        return false;
     }
 
-    try {
-        $padid = $instance->create_group_pad($groupid, $config->padname);
-    } catch (Exception $e) {
+    if (!$groupid = $instance->create_group()) {
+        // The group already exists or something else went wrong.
+        throw new \moodle_exception('could not create etherpad group');
+    }
+
+    if (!$padid = $instance->create_group_pad($groupid, $config->padname)) {
         // The pad already exists or something else went wrong.
-        throw $e;
+        throw new \moodle_exception('could not create etherpad group pad');
     }
 
     $etherpadlite->uri = $padid;
@@ -116,7 +117,12 @@ function etherpadlite_update_instance(stdClass $etherpadlite, mod_etherpadlite_m
     $formdata = $mform->get_data();
     $etherpadliteuri = $DB->get_field('etherpadlite', 'uri', ['id' => $etherpadlite->id]);
     $config = get_config("etherpadlite");
-    $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
+    try {
+        $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
+    } catch (\InvalidArgumentException $e) {
+        \core\notification::add($e->getMessage(), \core\notification::ERROR);
+        return false;
+    }
     if ($formdata->groupmode != 0) {
         // Deletion will be done by adhoc task triggered by cm_update.
         mod_etherpadlite_add_mgrouppads($formdata, $etherpadlite->id, $etherpadliteuri, $instance);
@@ -147,17 +153,22 @@ function etherpadlite_delete_instance($id) {
     // Delete any dependent records here.
 
     $config = get_config("etherpadlite");
-    $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
+    try {
+        $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
 
-    $padid = $etherpadlite->uri;
-    $groupid = explode('$', $padid);
-    $groupid = $groupid[0];
+        $padid = $etherpadlite->uri;
+        $groupid = explode('$', $padid);
+        $groupid = $groupid[0];
 
-    // Delete pads for moodle groups and respective DB entry.
-    mod_etherpadlite_delete_all_mgrouppads($id, $padid, $instance);
+        // Delete pads for moodle groups and respective DB entry.
+        mod_etherpadlite_delete_all_mgrouppads($id, $padid, $instance);
 
-    $instance->delete_pad($padid);
-    $instance->delete_group($groupid);
+        $instance->delete_pad($padid);
+        $instance->delete_group($groupid);
+
+    } catch (\InvalidArgumentException $e) {
+        \core\notification::add($e->getMessage(), \core\notification::ERROR);
+    }
 
     if (! $DB->delete_records('etherpadlite', array('id' => $etherpadlite->id))) {
         $result = false;
@@ -178,7 +189,7 @@ function etherpadlite_delete_instance($id) {
  * @todo Finish documenting this function
  */
 function etherpadlite_user_outline($course, $user, $mod, $etherpadlite) {
-    return $return;
+    return null;
 }
 
 
