@@ -42,6 +42,8 @@ if ($id) {
     error('You must specify a course_module ID or an instance ID');
 }
 
+$context = context_module::instance($cm->id);
+
 // This must be here, so that require login doesn't throw a warning.
 $url = new moodle_url('/mod/etherpadlite/view.php', ['id' => $cm->id]);
 
@@ -68,24 +70,28 @@ $fullurl = 'domain.tld';
 // Make a new intance from the etherpadlite client. It might throw an exception.
 $instance = new \mod_etherpadlite\client($config->apikey, $domain.'api');
 
-// Fullurl generation.
-if (isguestuser() && !etherpadlite_guestsallowed($etherpadlite)) {
-    if (!$readonlyid = $instance->get_readonly_id($padid)) {
-        throw new \moodle_exception('could not get readonly id');
-    }
-    $fullurl = $domain.'ro/'.$readonlyid;
-} else {
-    $fullurl = $domain.'p/'.$padid;
-}
-
 // Get group mode.
 $groupmode = groups_get_activity_groupmode($cm);
+$canaddinstance = has_capability('mod/etherpadlite:addinstance', $context);
+$isgroupmember = true;
+$urlpadid = $padid;
 
 if ($groupmode) {
     $activegroup = groups_get_activity_group($cm, true);
     if ($activegroup != 0) {
-        $fullurl = $fullurl . $activegroup;
+        $urlpadid = $urlpadid . $activegroup;
+        $isgroupmember = groups_is_member($activegroup);
     }
+}
+
+// Fullurl generation.
+if ((isguestuser() && !etherpadlite_guestsallowed($etherpadlite)) || (!$isgroupmember && !$canaddinstance)) {
+    if (!$readonlyid = $instance->get_readonly_id($urlpadid)) {
+        throw new \moodle_exception('could not get readonly id');
+    }
+    $fullurl = $domain . 'p/' . $readonlyid;
+} else {
+    $fullurl = $domain . 'p/' . $urlpadid;
 }
 
 // Get the groupID.
@@ -93,7 +99,7 @@ $groupid = explode('$', $padid);
 $groupid = $groupid[0];
 
 // Create author if not exists for logged in user (with full name as it is obtained from Moodle core library).
-if (isguestuser() && etherpadlite_guestsallowed($etherpadlite)) {
+if ((isguestuser() && etherpadlite_guestsallowed($etherpadlite)) || !$isgroupmember) {
     $authorid = $instance->create_author('Guest-'.etherpadlite_gen_random_string());
 } else {
     $authorid = $instance->create_author_if_not_exists_for($USER->id, fullname($USER));
@@ -114,9 +120,6 @@ $ssl = (stripos($config->url, 'https://') === 0) ? true : false;
 setcookie('sessionID', $sessionid, $validuntil, '/', $config->cookiedomain, $ssl); // Set a cookie.
 
 // END of Etherpad Lite init.
-
-$context = context_module::instance($cm->id);
-
 // Display the etherpadlite and possibly results.
 $eventparams = [
     'context' => $context,
