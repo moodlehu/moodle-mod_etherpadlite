@@ -15,7 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file defines the main etherpadlite configuration form
+ * This file defines the main etherpadlite configuration form.
+ *
  * It uses the standard core Moodle (>1.8) formslib. For
  * more info about them, please visit:
  *
@@ -48,8 +49,20 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot.'/course/moodleform_mod.php');
 
+/**
+ * Etherpadlite configuration form
+ *
+ * @author     Timo Welde <tjwelde@gmail.com>
+ * @copyright  2012 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class mod_etherpadlite_mod_form extends moodleform_mod {
 
+    /**
+     * Defines the mform elements
+     *
+     * @return void
+     */
     public function definition() {
 
         global $COURSE, $CFG;

@@ -15,17 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    mod_etherpadlite
+ * Structure step to restore one etherpadlite activity
  *
+ * @package    mod_etherpadlite
  * @author     Timo Welde <tjwelde@gmail.com>
  * @copyright  2012 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-/**
- * Structure step to restore one etherpadlite activity
- */
 class restore_etherpadlite_activity_structure_step extends restore_activity_structure_step {
+
+    /**
+     * Define the restore structure for the etherpadlite plugin
+     *
+     * @return array
+     */
     protected function define_structure() {
         $paths = [];
         $userinfo = $this->get_setting_value('userinfo');
@@ -40,6 +43,12 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
         return $this->prepare_activity_structure($paths);
     }
 
+    /**
+     * Process the restore
+     *
+     * @param \stdClass|array $data
+     * @return void
+     */
     protected function process_etherpadlite($data) {
         global $DB;
         $config = get_config('etherpadlite');
@@ -103,6 +112,12 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
 
     }
 
+    /**
+     * Restore the etherpadlite content
+     *
+     * @param \stdClass|array $data
+     * @return void
+     */
     protected function process_etherpadlite_content($data) {
         global $DB;
         $config = get_config('etherpadlite');
@@ -112,7 +127,7 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
             $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
         } catch (\InvalidArgumentException $e) {
             \core\notification::add($e->getMessage(), \core\notification::ERROR);
-            return null;
+            return;
         }
 
         $newid = $this->get_new_parentid('etherpadlite');
@@ -128,6 +143,11 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
         }
     }
 
+    /**
+     * Add files after the database structure is restored
+     *
+     * @return void
+     */
     protected function after_execute() {
         $this->add_related_files('mod_etherpadlite', 'intro', null);
     }

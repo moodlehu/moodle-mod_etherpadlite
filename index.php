@@ -81,7 +81,7 @@ foreach ($etherpadlites as $etherpadlite) {
         $link = '<a href="view.php?id='.$etherpadlite->coursemodule.'">'.format_string($etherpadlite->name).'</a>';
     }
 
-    if ($course->format == 'weeks' or $course->format == 'topics') {
+    if ($course->format == 'weeks' || $course->format == 'topics') {
         $table->data[] = array ($etherpadlite->section, $link, format_text($etherpadlite->intro, FORMAT_MOODLE, 'para = false'));
     } else {
         $table->data[] = array ($link, format_text($etherpadlite->intro, FORMAT_MOODLE, 'para = false'));

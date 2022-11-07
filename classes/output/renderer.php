@@ -14,18 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace mod_etherpadlite\output;
+
 /**
- * @package    mod_etherpadlite
+ * Renderer class for this plugin
  *
+ * @package    mod_etherpadlite
  * @author     Andreas Grabs <moodle@grabs-edv.de>
  * @copyright  2019 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-namespace mod_etherpadlite\output;
-
 class renderer extends \plugin_renderer_base {
 
+    /**
+     * Renders the etherpad frame
+     *
+     * @param \stdClass $etherpadlite
+     * @param \stdClass $cm
+     * @param string $frameurl
+     * @return string The rendered html output
+     */
     public function render_etherpad($etherpadlite, $cm, $frameurl) {
         $config = get_config('etherpadlite');
 
@@ -50,6 +58,11 @@ class renderer extends \plugin_renderer_base {
         return $this->render_from_template('mod_etherpadlite/content', $content);
     }
 
+    /**
+     * Checks whether or not the current theme is based on boost.
+     *
+     * @return boolean
+     */
     public function is_boost_based() {
         if (strcmp($this->page->theme->name, 'boost') === 0) {
             return true;

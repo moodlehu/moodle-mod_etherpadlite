@@ -14,25 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * The questiontype class for the flashcard question type.
- *
- * @package    mod_etherpadlite
- * @copyright  2022 University of Vienna
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
 namespace mod_etherpadlite\observer;
 
 use mod_etherpadlite\task\delete_moodle_group_pad;
 
 /**
- * Event observer for mod_flashcards.
+ * Event observer for mod_etherpadlite.
+ *
+ * @package    mod_etherpadlite
+ * @copyright  2022 Andreas Grabs
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class group {
     /**
      * Triggered via group_created core event
      *
      * @param \core\event\group_created $event
+     * @return void
      */
     public static function group_created(\core\event\group_created $event) {
         global $DB;
@@ -227,9 +225,10 @@ class group {
     }
 
     /**
+     * Get the next runtime for deletion
      *
      * @param int $configtime
-     * @return number
+     * @return int|null
      */
     public static function get_next_runtime(int $configtime) {
         $timenow = time();
@@ -253,6 +252,15 @@ class group {
         return $nextruntime;
     }
 
+    /**
+     * Create a new adhoc task for deletion of an mgrouppad
+     *
+     * @param string $paduri
+     * @param string $padid
+     * @param \stdClass $mgrouppad
+     * @param int $nextruntime
+     * @return void
+     */
     public static function delete_mgroup_pad_adhoc_task($paduri, $padid, $mgrouppad, $nextruntime) {
         $deletepad = new delete_moodle_group_pad();
         $deletepad->set_custom_data([

@@ -32,6 +32,11 @@ namespace mod_etherpadlite\task;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class delete_moodle_group_pad extends \core\task\adhoc_task {
+    /**
+     * Execute this task.
+     *
+     * @return void
+     */
     public function execute() {
         global $DB;
 

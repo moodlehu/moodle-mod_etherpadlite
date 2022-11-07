@@ -14,16 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace mod_etherpadlite\event;
+
 /**
- * @package    mod_etherpadlite
+ * Event class for course_module_viewed.
  *
+ * @package    mod_etherpadlite
  * @author     Andreas Grabs <moodle@grabs-edv.de>
  * @copyright  2019 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-namespace mod_etherpadlite\event;
-
 class course_module_viewed extends \core\event\course_module_viewed {
 
     /**
@@ -31,7 +31,6 @@ class course_module_viewed extends \core\event\course_module_viewed {
      *
      * @return void
      */
-
     protected function init() {
         $this->data['objecttable'] = 'etherpadlite';
         parent::init();

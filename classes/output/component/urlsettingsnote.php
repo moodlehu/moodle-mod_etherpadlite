@@ -14,21 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace mod_etherpadlite\output\component;
+
 /**
- * @package    mod_etherpadlite
+ * Output component to render a notification
  *
+ * @package    mod_etherpadlite
  * @author     Andreas Grabs <moodle@grabs-edv.de>
  * @copyright  2019 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-namespace mod_etherpadlite\output\component;
-
 class urlsettingsnote implements \renderable, \templatable {
-    protected $data;
-    public const MSGTYPE_INFO = 'warning';
+    /** Value for message type "info" */
+    public const MSGTYPE_INFO = 'info';
+    /** Value for message type "warning" */
     public const MSGTYPE_WARNING = 'warning';
+    /** Value for message type "danger" */
     public const MSGTYPE_DANGER = 'danger';
+
+    /** @var array */
+    protected $data;
+
+    /** @var array Fa icons for message types */
     protected $msgtypes = array(
         self::MSGTYPE_INFO => 'info-circle',
         self::MSGTYPE_WARNING => 'exclamation-triangle',
@@ -54,6 +61,12 @@ class urlsettingsnote implements \renderable, \templatable {
         }
     }
 
+    /**
+     * Get the mustache context data
+     *
+     * @param \renderer_base $output
+     * @return \stdClass|array
+     */
     public function export_for_template(\renderer_base $output) {
         return $this->data;
     }

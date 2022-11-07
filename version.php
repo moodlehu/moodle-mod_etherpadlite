@@ -16,10 +16,10 @@
 
 /**
  * Code fragment to define the version of etherpadlite
+ *
  * This fragment is called by moodle_needs_upgrading() and /admin/index.php
  *
- * @package    mod_etheradlite
- *
+ * @package    mod_etherpadlite
  * @author     Timo Welde <tjwelde@gmail.com>
  * @copyright  2012 Humboldt-UniversitÃ¤t zu Berlin <moodle-support@cms.hu-berlin.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

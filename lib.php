@@ -16,6 +16,7 @@
 
 /**
  * Library of functions and constants for module etherpadlite
+ *
  * This file should have two well differenced parts:
  *   - All the core Moodle functions, neeeded to allow
  *     the module to work integrated in Moodle.
@@ -36,12 +37,13 @@
  */
 
 /**
- * Given an object containing all the necessary data,
- * (defined by the form in mod_form.php) this function
- * will create a new instance and return the id number
- * of the new instance.
+ * Create a new etherpadlite instance.
  *
- * @param object $etherpadlite An object from the form in mod_form.php
+ * Given an object containing all the necessary data, (defined by the form in mod_form.php) this function
+ * will create a new instance and return the id number of the new instance.
+ *
+ * @param stdClass $etherpadlite An object from the form in mod_form.php
+ * @param mod_etherpadlite_mod_form $mform
  * @return int The id of the newly inserted etherpadlite record
  */
 function etherpadlite_add_instance(stdClass $etherpadlite, mod_etherpadlite_mod_form $mform = null) {
@@ -95,11 +97,13 @@ function etherpadlite_add_instance(stdClass $etherpadlite, mod_etherpadlite_mod_
 }
 
 /**
- * Given an object containing all the necessary data,
- * (defined by the form in mod_form.php) this function
+ * Update an existing etherpadlite instance.
+ *
+ * Given an object containing all the necessary data, (defined by the form in mod_form.php) this function
  * will update an existing instance with new data.
  *
- * @param object $etherpadlite An object from the form in mod_form.php
+ * @param stdClass $etherpadlite An object from the form in mod_form.php
+ * @param mod_etherpadlite_mod_form $mform
  * @return boolean Success/Fail
  */
 function etherpadlite_update_instance(stdClass $etherpadlite, mod_etherpadlite_mod_form $mform = null) {
@@ -177,7 +181,6 @@ function etherpadlite_delete_instance($id) {
     return $result;
 }
 
-
 /**
  * Return a small object with summary information about what a
  * user has done with a given particular instance of this module
@@ -185,8 +188,11 @@ function etherpadlite_delete_instance($id) {
  * $return->time = the time they did it
  * $return->info = a short text description
  *
- * @return null
- * @todo Finish documenting this function
+ * @param \stdClass $course
+ * @param \stdClass $user
+ * @param \stdClass $mod
+ * @param \stdClass $etherpadlite
+ * @return \stdClass|null
  */
 function etherpadlite_user_outline($course, $user, $mod, $etherpadlite) {
     return null;
@@ -194,11 +200,15 @@ function etherpadlite_user_outline($course, $user, $mod, $etherpadlite) {
 
 
 /**
- * Print a detailed representation of what a user has done with
- * a given particular instance of this module, for user activity reports.
+ * Print a detailed representation
  *
+ * Print a reprensentation of what a user has done with a given particular instance of this module, for user activity reports.
+ *
+ * @param \stdClass $course
+ * @param \stdClass $user
+ * @param \stdClass $mod
+ * @param \stdClass $etherpadlite
  * @return boolean
- * @todo Finish documenting this function
  */
 function etherpadlite_user_complete($course, $user, $mod, $etherpadlite) {
     return true;
@@ -206,10 +216,14 @@ function etherpadlite_user_complete($course, $user, $mod, $etherpadlite) {
 
 
 /**
- * Given a course and a time, this module should find recent activity
- * that has occurred in etherpadlite activities and print it out.
  * Return true if there was output, or false is there was none.
  *
+ * Given a course and a time, this module should find recent activity
+ * that has occurred in etherpadlite activities and print it out.
+ *
+ * @param \stdClass $course
+ * @param boolean $isteacher
+ * @param int $timestart
  * @return boolean
  * @todo Finish documenting this function
  */
@@ -267,8 +281,10 @@ function etherpadlite_uninstall() {
 }
 
 /**
+ * Checks whether or not a given feature is supported.
+ *
  * @param string $feature FEATURE_xx constant for requested feature
- * @return mixed True if module supports feature, null if doesn't know
+ * @return boolean True if module supports feature, null if doesn't know
  */
 function etherpadlite_supports($feature) {
     switch($feature) {
@@ -296,15 +312,16 @@ function etherpadlite_supports($feature) {
             return MOD_PURPOSE_COLLABORATION;
 
         default:
-            return null;
+            return false;
     }
 }
 
 /**
  * Optionally extend the module settings menu for teachers and managers:
  * add a button which copies the url of the current pad to the clipboard.
+ *
  * @param settings_navigation $settingsnav The settings navigation object
- * @param navigation_node $node The node to add module settings to
+ * @param navigation_node $navigationnode The node to add module settings to
  * @return boolean true if success, false on error
  */
 function etherpadlite_extend_settings_navigation($settingsnav, $navigationnode) {
@@ -354,7 +371,12 @@ function etherpadlite_extend_settings_navigation($settingsnav, $navigationnode) 
 // starts with etherpadlite_
 // Remember (see note in first lines) that, if this section grows, it's HIGHLY
 // recommended to move all funcions below to a new "localib.php" file.
-// A funtion to generate a random name if something doesn't already exist.
+
+/**
+ * A funtion to generate a random name if something doesn't already exist.
+ *
+ * @return string
+ */
 function etherpadlite_gen_random_string() {
     $length = 5;
     $characters = "0123456789";
@@ -365,11 +387,17 @@ function etherpadlite_gen_random_string() {
     return $string;
 }
 
-function etherpadlite_guestsallowed($e) {
+/**
+ * Check whether or not guests are allowed
+ *
+ * @param \stdClass $etherpadlite
+ * @return void
+ */
+function etherpadlite_guestsallowed($etherpadlite) {
     global $CFG;
 
     if (get_config("etherpadlite", "adminguests") == 1) {
-        if ($e->guestsallowed) {
+        if ($etherpadlite->guestsallowed) {
             return true;
         }
     }

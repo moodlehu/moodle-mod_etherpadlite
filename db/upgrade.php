@@ -15,8 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file keeps track of upgrades to
- * the etherpadlite module
+ * This file keeps track of upgrades to the etherpadlite module.
  *
  * @package    mod_etherpadlite
  *
@@ -42,6 +41,12 @@
 // The commands in here will all be database-neutral,
 // using the functions defined in lib/ddllib.php.
 
+/**
+ * Process the upgrade of this plugin
+ *
+ * @param integer $oldversion
+ * @return boolean
+ */
 function xmldb_etherpadlite_upgrade($oldversion=0) {
 
     global $CFG, $THEME, $DB;

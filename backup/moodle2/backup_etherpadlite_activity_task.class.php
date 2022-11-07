@@ -14,21 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * @package    mod_etherpadlite
- *
- * @author     Timo Welde <tjwelde@gmail.com>
- * @copyright  2012 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/mod/etherpadlite/backup/moodle2/backup_etherpadlite_stepslib.php');
 
 /**
- * podcaster backup task that provides all the settings and steps to perform one
- * complete backup of the activity
+ * Etherpadlite backup task that provides all the settings and steps to perform one complete backup of the activity
+ *
+ * @package    mod_etherpadlite
+ * @author     Timo Welde <tjwelde@gmail.com>
+ * @copyright  2012 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backup_etherpadlite_activity_task extends backup_activity_task {
 
@@ -48,8 +44,10 @@ class backup_etherpadlite_activity_task extends backup_activity_task {
     }
 
     /**
-     * Code the transformations to perform in the activity in
-     * order to get transportable (encoded) links
+     * Code the transformations to perform in the activity in order to get transportable (encoded) links
+     *
+     * @param string $content some HTML text that eventually contains URLs to the activity instance scripts
+     * @return string the content with the URLs encoded
      */
     public static function encode_content_links($content) {
         global $CFG;

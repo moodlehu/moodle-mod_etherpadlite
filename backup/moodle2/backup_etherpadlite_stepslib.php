@@ -15,18 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    mod_etherpadlite
+ * Define the complete etherpadlite structure for backup, with file and id annotations
  *
+ * @package    mod_etherpadlite
  * @author     Timo Welde <tjwelde@gmail.com>
  * @copyright  2012 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-/**
- * Define the complete podcaster structure for backup, with file and id annotations
- */
 class backup_etherpadlite_activity_structure_step extends backup_activity_structure_step {
 
+    /**
+     * Define the plugin structure for backup
+     *
+     * @return \backup_nested_element
+     */
     protected function define_structure() {
         global $DB;
 

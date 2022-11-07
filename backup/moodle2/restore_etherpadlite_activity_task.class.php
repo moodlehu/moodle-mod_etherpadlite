@@ -14,21 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * @package    mod_etherpadlite
- *
- * @author     Timo Welde <tjwelde@gmail.com>
- * @copyright  2012 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/mod/etherpadlite/backup/moodle2/restore_etherpadlite_stepslib.php');
 
 /**
- * etherpadlite restore task that provides all the settings and steps to perform one
- * complete restore of the activity
+ * Etherpadlite restore task that provides all the settings and steps to perform one complete restore of the activity
+ *
+ * @package    mod_etherpadlite
+ * @author     Timo Welde <tjwelde@gmail.com>
+ * @copyright  2012 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_etherpadlite_activity_task extends restore_activity_task {
 
@@ -74,9 +70,9 @@ class restore_etherpadlite_activity_task extends restore_activity_task {
 
     /**
      * Define the restore log rules that will be applied
-     * by the {@link restore_logs_processor} when restoring
+     * by the {@see restore_logs_processor} when restoring
      * etherpadlite logs. It must return one array
-     * of {@link restore_log_rule} objects
+     * of {@see restore_log_rule} objects
      */
     public static function define_restore_log_rules() {
         $rules = array();
@@ -93,9 +89,9 @@ class restore_etherpadlite_activity_task extends restore_activity_task {
 
     /**
      * Define the restore log rules that will be applied
-     * by the {@link restore_logs_processor} when restoring
+     * by the {@see restore_logs_processor} when restoring
      * course logs. It must return one array
-     * of {@link restore_log_rule} objects
+     * of {@see restore_log_rule} objects
      *
      * Note this rules are applied when restoring course logs
      * by the restore final task, but are defined here at

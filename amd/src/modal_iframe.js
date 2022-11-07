@@ -14,8 +14,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    mod_etherpadlite
- *
+ * @module     mod_etherpadlite/modal_iframe
  * @author     Andreas Grabs <moodle@grabs-edv.de>
  * @copyright  2019 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -24,13 +23,13 @@
 define(['jquery'], function($) {
     return {
         'init': function(frameurl, id) {
-            $("#etherpadmodal_" + id).on("show.bs.modal", function (event) {
-                $("#etherpadiframe_" + id).attr("src", "");
+            $("#etherpadmodal_" + id).on("show.bs.modal", function () {
+                $("#etherpadiframe_" + id).attr("src", "about:blank");
                 $("#etherpadiframe2_" + id).attr("src", frameurl);
                 $("body").addClass("modal-open");
             });
-            $("#etherpadmodal_" + id).on("hide.bs.modal", function (event) {
-                $("#etherpadiframe2_" + id).attr("src", "");
+            $("#etherpadmodal_" + id).on("hide.bs.modal", function () {
+                $("#etherpadiframe2_" + id).attr("src", "about:blank");
                 $("#etherpadiframe_" + id).attr("src", frameurl);
                 $("body").removeClass("modal-open");
             });

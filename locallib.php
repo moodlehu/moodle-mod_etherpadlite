@@ -22,7 +22,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-function mod_etherpadlite_delete_all_mgrouppads( $padid, $paduri, $instance) {
+/**
+ * Delete all grouppads
+ *
+ * @param string $padid
+ * @param string $paduri
+ * @param \mod_etherpadlite\client $instance
+ * @return void
+ */
+function mod_etherpadlite_delete_all_mgrouppads($padid, $paduri, $instance) {
     global $DB;
 
     $mgrouppads = $DB->get_records('etherpadlite_mgroups', ['padid' => $padid]);
@@ -34,6 +42,15 @@ function mod_etherpadlite_delete_all_mgrouppads( $padid, $paduri, $instance) {
     }
 }
 
+/**
+ * Add an etherpadlite grouppad
+ *
+ * @param \stdClass $formdata
+ * @param string $mpadid
+ * @param string $paduri
+ * @param \mod_etherpadlite\client $instance
+ * @return void
+ */
 function mod_etherpadlite_add_mgrouppads($formdata, $mpadid, $paduri, $instance) {
     global $DB;
 
