@@ -27,6 +27,8 @@
 require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once(dirname(__FILE__).'/lib.php');
 
+use \core_privacy\local\request\transform;
+
 $id = optional_param('id', 0, PARAM_INT); // The course_module id.
 $a = optional_param('a', 0, PARAM_INT);  // The etherpadlite instance id.
 
@@ -84,8 +86,14 @@ if ($groupmode) {
     }
 }
 
+// Check if Activity is in the open timeframe.
+$time = time();
+$timeclose = $etherpadlite->timeclose ? : 2147483647;
+
 // Fullurl generation.
-if ((isguestuser() && !etherpadlite_guestsallowed($etherpadlite)) || (!$isgroupmember && !$canaddinstance)) {
+if ((isguestuser() && !etherpadlite_guestsallowed($etherpadlite)) ||
+    (!$isgroupmember && !$canaddinstance) ||
+    !($time >= $etherpadlite->timeopen && $time <= $timeclose)) {
     if (!$readonlyid = $instance->get_readonly_id($urlpadid)) {
         throw new \moodle_exception('could not get readonly id');
     }

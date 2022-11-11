@@ -24,6 +24,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['activityopen'] = 'Open the etherpad';
+$string['activityclose'] = 'Close the etherpad';
+$string['activityopenclose'] = 'Open and close dates';
+$string['activityopenclose_help'] = 'Students can only edit the etherpad between the open and the close time.';
 $string['adminguests'] = 'Guests allowed to write?';
 $string['adminguestsdesc'] = 'With this set, users who are allowed to configure a specific etherpadlite module can allow guests to write in this specific etherpadlite module';
 $string['apikey'] = 'API Key';
@@ -78,3 +82,4 @@ $string['urlisblocked'] = 'The current host "{$a}" is blocked';
 $string['ssl'] = 'HTTPS Redirect';
 $string['ssldesc'] = 'With this set, your site will redirect itself to HTTPS, if an etherpadlite is opened (eye candy for the user)';
 $string['summaryguest'] = 'You are logged in as guest. That\'s why you can only see the readonly version of this Pad. Reload the page to get new changes.';
+$string['timing'] = 'Timing';
