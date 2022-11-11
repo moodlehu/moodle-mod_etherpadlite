@@ -89,5 +89,22 @@ function xmldb_etherpadlite_upgrade($oldversion=0) {
         upgrade_mod_savepoint(true, 2022041400, 'etherpadlite');
     }
 
+    if ($oldversion < 2022051402) {
+        $table = new xmldb_table('etherpadlite');
+        $field = new xmldb_field('timeopen', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        $field = new xmldb_field('timeclose', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        upgrade_mod_savepoint(true, 2022051402, 'etherpadlite');
+    }
+
     return $result;
 }
