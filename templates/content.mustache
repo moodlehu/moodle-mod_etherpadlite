@@ -24,7 +24,6 @@
         "id" : 46,
         "legacy" : 1,
         "name" : "Test pad",
-        "summary" : "...",
         "summaryguest" : "...",
         "responsiveiframe" : 1,
         "minwidth" : "400px",
@@ -40,17 +39,13 @@
     {{name}}
 </h2>
 
-{{#summary}}
+{{#summaryguest}}
     <div class="box generalbox mod_introbox py-3">
         <div class="no-overflow">
-            {{{summary}}}
-            {{#summaryguest}}
-                <br /><br />
-                {{{summaryguest}}}
-            {{/summaryguest}}
+            {{{.}}}
         </div>
     </div>
-{{/summary}}
+{{/summaryguest}}
 {{#legacy}}
     {{> mod_etherpadlite/iframe_legacy}}
 {{/legacy}}

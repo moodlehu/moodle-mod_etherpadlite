@@ -37,7 +37,6 @@ class renderer extends \plugin_renderer_base {
     public function render_etherpad($etherpadlite, $cm, $frameurl) {
         $config = get_config('etherpadlite');
 
-        $summary = format_module_intro('etherpadlite', $etherpadlite, $cm->id);
         $summaryguest = '';
         if (isguestuser() && !etherpadlite_guestsallowed($etherpadlite)) {
             $summaryguest = get_string('summaryguest', 'etherpadlite');
@@ -46,7 +45,6 @@ class renderer extends \plugin_renderer_base {
         $content = new \stdClass();
         $content->id = $cm->id;
         $content->name = $etherpadlite->name;
-        $content->summary = $summary;
         $content->summaryguest = $summaryguest;
         $content->frameurl = $frameurl;
         $content->minwidth = (empty($config->minwidth) ? 10 : $config->minwidth).'px';
