@@ -149,6 +149,9 @@ $PAGE->set_title(get_string('modulename', 'mod_etherpadlite').': '.format_string
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
 
+// Add the keepalive system to keep checking for a connection.
+\core\session\manager::keepalive();
+
 $renderer = $PAGE->get_renderer('mod_etherpadlite');
 
 // Print the page header.
