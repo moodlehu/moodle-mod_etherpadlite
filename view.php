@@ -27,8 +27,6 @@
 require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once(dirname(__FILE__).'/lib.php');
 
-use \core_privacy\local\request\transform;
-
 $id = optional_param('id', 0, PARAM_INT); // The course_module id.
 $a = optional_param('a', 0, PARAM_INT);  // The etherpadlite instance id.
 
@@ -41,7 +39,7 @@ if ($id) {
     $course = $DB->get_record('course', ['id' => $etherpadlite->course], '*', MUST_EXIST);
     $cm = get_coursemodule_from_instance('etherpadlite', $etherpadlite->id, $course->id, false, MUST_EXIST);
 } else {
-    error('You must specify a course_module ID or an instance ID');
+    throw new \moodle_exception('You must specify a course_module ID or an instance ID');
 }
 
 $context = context_module::instance($cm->id);
