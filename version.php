@@ -18,7 +18,7 @@
  * Code fragment to define the version of etherpadlite
  * This fragment is called by moodle_needs_upgrading() and /admin/index.php
  *
- * @package    mod_etheradlite
+ * @package    mod_etherpadlite
  *
  * @author     Timo Welde <tjwelde@gmail.com>
  * @copyright  2012 Humboldt-UniversitÃ¤t zu Berlin <moodle-support@cms.hu-berlin.de>
@@ -27,8 +27,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version    = 2022022505;  // Don't go higher than 202203xxyy because there starts the version for 4.0.
-$plugin->release    = 'v3.11-r4 (2022-08-31)';
+$plugin->version    = 2022022506;  // Don't go higher than 202203xxyy because there starts the version for 4.0.
+$plugin->release    = 'v3.11-r5 (2022-11-14)';
 $plugin->requires   = 2018050800;
 $plugin->cron       = 0;           // Period for cron to check this module (secs).
 $plugin->component  = 'mod_etherpadlite';

@@ -39,7 +39,7 @@ if ($id) {
     $course = $DB->get_record('course', ['id' => $etherpadlite->course], '*', MUST_EXIST);
     $cm = get_coursemodule_from_instance('etherpadlite', $etherpadlite->id, $course->id, false, MUST_EXIST);
 } else {
-    error('You must specify a course_module ID or an instance ID');
+    throw new \moodle_exception('You must specify a course_module ID or an instance ID');
 }
 
 $context = context_module::instance($cm->id);
@@ -84,8 +84,20 @@ if ($groupmode) {
     }
 }
 
-// Fullurl generation.
-if ((isguestuser() && !etherpadlite_guestsallowed($etherpadlite)) || (!$isgroupmember && !$canaddinstance)) {
+// Check if Activity is in the open timeframe.
+$time = time();
+$openrestricted = !empty($etherpadlite->timeopen) && ($etherpadlite->timeopen >= $time);
+$closerestricted = !empty($etherpadlite->timeclose) && ($etherpadlite->timeclose <= $time);
+$timerestricted = ($openrestricted || $closerestricted) && !$canaddinstance;
+
+// Are there some guest restrictions?
+$guestrestricted = isguestuser() && !etherpadlite_guestsallowed($etherpadlite);
+
+// Are there some groups restrictions?
+$grouprestricted = !$isgroupmember && !$canaddinstance;
+
+// Fullurl generation depending on the restrictions.
+if ($guestrestricted || $grouprestricted || $timerestricted) {
     if (!$readonlyid = $instance->get_readonly_id($urlpadid)) {
         throw new \moodle_exception('could not get readonly id');
     }
@@ -148,10 +160,10 @@ $groupselecturl = new moodle_url($CFG->wwwroot . '/mod/etherpadlite/view.php',
     array('id' => $cm->id
     ));
 
-groups_print_activity_menu($cm, $groupselecturl);
+$activitymenu = groups_print_activity_menu($cm, $groupselecturl, true);
 
 // Print the etherpad content.
-echo $renderer->render_etherpad($etherpadlite, $cm, $fullurl);
+echo $renderer->render_etherpad($etherpadlite, $cm, $fullurl, $activitymenu);
 
 // Close the page.
 echo $renderer->footer();

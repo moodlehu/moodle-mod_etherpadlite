@@ -33,13 +33,12 @@
 
 }}
 
-<h2>
-    <button type="button" title="{{#str}}fullscreen, mod_etherpadlite{{/str}}" class="etherpadmodal btn btn-primary" data-toggle="modal" data-target="#etherpadmodal_{{id}}">
-        <i class="fa fa-expand fa-lg" aria-hidden="true"></i>
-    </button>
-    {{name}}
-</h2>
-
+{{#timeopen}}
+    <strong>{{#str}} activityopen, mod_etherpadlite {{/str}}:</strong> {{.}}<br>
+{{/timeopen}}
+{{#timeclose}}
+    <strong>{{#str}} activityclose, mod_etherpadlite {{/str}}:</strong> {{.}}
+{{/timeclose}}
 {{#summary}}
     <div class="box generalbox mod_introbox py-3">
         <div class="no-overflow">
@@ -51,6 +50,14 @@
         </div>
     </div>
 {{/summary}}
+{{{activitymenu}}}
+
+<h2>
+    <button type="button" title="{{#str}}fullscreen, mod_etherpadlite{{/str}}" class="etherpadmodal btn btn-primary" data-toggle="modal" data-target="#etherpadmodal_{{id}}">
+        <i class="fa fa-expand fa-lg" aria-hidden="true"></i>
+    </button>
+    {{name}}
+</h2>
 {{#legacy}}
     {{> mod_etherpadlite/iframe_legacy}}
 {{/legacy}}

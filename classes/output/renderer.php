@@ -26,7 +26,7 @@ namespace mod_etherpadlite\output;
 
 class renderer extends \plugin_renderer_base {
 
-    public function render_etherpad($etherpadlite, $cm, $frameurl) {
+    public function render_etherpad($etherpadlite, $cm, $frameurl, $activitymenu) {
         $config = get_config('etherpadlite');
 
         $summary = format_module_intro('etherpadlite', $etherpadlite, $cm->id);
@@ -46,6 +46,16 @@ class renderer extends \plugin_renderer_base {
         if (!$this->is_boost_based()) {
             $content->legacy = true;
         }
+
+            // Populate some other values that can be used in calendar or on dashboard.
+        if (!empty($etherpadlite->timeopen)) {
+            $content->timeopen = userdate($etherpadlite->timeopen);
+        }
+        if (!empty($etherpadlite->timeclose)) {
+            $content->timeclose = userdate($etherpadlite->timeclose);
+        }
+
+        $content->activitymenu = $activitymenu;
 
         return $this->render_from_template('mod_etherpadlite/content', $content);
     }

@@ -24,6 +24,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['activityopen'] = 'Allow editing from';
+$string['activityclose'] = 'Allow editing to';
+$string['activityopenclose'] = 'Allow editing from/to';
+$string['activityopenclose_help'] = 'If activated, students can edit the etherpad only in the specified period.';
 $string['adminguests'] = 'Guests allowed to write?';
 $string['adminguestsdesc'] = 'With this set, users who are allowed to configure a specific etherpadlite module can allow guests to write in this specific etherpadlite module';
 $string['apikey'] = 'API Key';
