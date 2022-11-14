@@ -88,12 +88,18 @@ if ($groupmode) {
 
 // Check if Activity is in the open timeframe.
 $time = time();
-$timeclose = $etherpadlite->timeclose ? : 2147483647;
+$openrestricted = !empty($etherpadlite->timeopen) && ($etherpadlite->timeopen >= $time);
+$closerestricted = !empty($etherpadlite->timeclose) && ($etherpadlite->timeclose <= $time);
+$timerestricted = ($openrestricted || $closerestricted) && !$canaddinstance;
 
-// Fullurl generation.
-if ((isguestuser() && !etherpadlite_guestsallowed($etherpadlite)) ||
-    (!$isgroupmember && !$canaddinstance) ||
-    !($time >= $etherpadlite->timeopen && $time <= $timeclose)) {
+// Are there some guest restrictions?
+$guestrestricted = isguestuser() && !etherpadlite_guestsallowed($etherpadlite);
+
+// Are there some groups restrictions?
+$grouprestricted = !$isgroupmember && !$canaddinstance;
+
+// Fullurl generation depending on the restrictions.
+if ($guestrestricted || $grouprestricted || $timerestricted) {
     if (!$readonlyid = $instance->get_readonly_id($urlpadid)) {
         throw new \moodle_exception('could not get readonly id');
     }

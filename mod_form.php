@@ -58,15 +58,11 @@ require_once($CFG->dirroot.'/course/moodleform_mod.php');
  */
 class mod_etherpadlite_mod_form extends moodleform_mod {
 
-    /** @var array options to be used with date_time_selector fields in the etherpad. */
-    public static $datefieldoptions = array('optional' => true);
-
     /**
      * Defines the mform elements
      *
      * @return void
      */
-    /** @var array options to be used with date_time_selector fields in the etherpad. */
     public function definition() {
 
         global $COURSE, $CFG;
@@ -103,12 +99,12 @@ class mod_etherpadlite_mod_form extends moodleform_mod {
             $mform->addHelpButton('guestsallowed', 'guestsallowed', 'etherpadlite');
         }
 
-        $mform->addElement('header', 'timing', get_string('timing', 'etherpadlite'));
+        $mform->addElement('header', 'availabilityhdr', get_string('availability'));
         $mform->addElement('date_time_selector', 'timeopen', get_string('activityopen', 'etherpadlite'),
-                self::$datefieldoptions);
+            array('optional' => true));
         $mform->addHelpButton('timeopen', 'activityopenclose', 'etherpadlite');
         $mform->addElement('date_time_selector', 'timeclose', get_string('activityclose', 'etherpadlite'),
-                self::$datefieldoptions);
+            array('optional' => true));
 
         $this->standard_coursemodule_elements();
 

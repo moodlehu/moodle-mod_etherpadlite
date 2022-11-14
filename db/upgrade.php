@@ -94,21 +94,27 @@ function xmldb_etherpadlite_upgrade($oldversion=0) {
         upgrade_mod_savepoint(true, 2022041400, 'etherpadlite');
     }
 
-    if ($oldversion < 2022051402) {
+    if ($oldversion < 2022083102) {
+
+        // Define field timeopen to be added to etherpadlite.
         $table = new xmldb_table('etherpadlite');
-        $field = new xmldb_field('timeopen', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        $field = new xmldb_field('timeopen', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'timemodified');
 
+        // Conditionally launch add field timeopen.
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
 
-        $field = new xmldb_field('timeclose', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        // Define field timeclose to be added to etherpadlite.
+        $field = new xmldb_field('timeclose', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'timeopen');
 
+        // Conditionally launch add field timeclose.
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
 
-        upgrade_mod_savepoint(true, 2022051402, 'etherpadlite');
+        // Etherpadlite savepoint reached.
+        upgrade_mod_savepoint(true, 2022083102, 'etherpadlite');
     }
 
     return $result;
