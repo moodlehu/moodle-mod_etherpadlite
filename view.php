@@ -65,10 +65,9 @@ if ($config->ssl) {
 // Set vars.
 $domain = $config->url;
 $padid = $etherpadlite->uri;
-$fullurl = 'domain.tld';
 
 // Make a new intance from the etherpadlite client. It might throw an exception.
-$instance = new \mod_etherpadlite\client($config->apikey, $domain.'api');
+$client = \mod_etherpadlite\api\client::get_instance($config->apikey, $domain.'api');
 
 // Get group mode.
 $groupmode = groups_get_activity_groupmode($cm);
@@ -98,7 +97,7 @@ $grouprestricted = !$isgroupmember && !$canaddinstance;
 
 // Fullurl generation depending on the restrictions.
 if ($guestrestricted || $grouprestricted || $timerestricted) {
-    if (!$readonlyid = $instance->get_readonly_id($urlpadid)) {
+    if (!$readonlyid = $client->get_readonly_id($urlpadid)) {
         throw new \moodle_exception('could not get readonly id');
     }
     $fullurl = $domain . 'p/' . $readonlyid;
@@ -112,24 +111,18 @@ $groupid = $groupid[0];
 
 // Create author if not exists for logged in user (with full name as it is obtained from Moodle core library).
 if ((isguestuser() && etherpadlite_guestsallowed($etherpadlite)) || !$isgroupmember) {
-    $authorid = $instance->create_author('Guest-'.etherpadlite_gen_random_string());
+    $authorid = $client->create_author('Guest-'.etherpadlite_gen_random_string());
 } else {
-    $authorid = $instance->create_author_if_not_exists_for($USER->id, fullname($USER));
+    $authorid = $client->create_author_if_not_exists_for($USER->id, fullname($USER));
 }
 if (!$authorid) {
     throw new \moodle_exception('could not create etherpad author');
 }
 
-$validuntil = time() + $config->cookietime;
-
-if (!$sessionid = $instance->create_session($groupid, $authorid, $validuntil)) {
+// Create a browser session to the etherpad lite server.
+if (!$client->create_session($groupid, $authorid)) {
     throw new \moodle_exception('could not create etherpad session');
 }
-
-// If we reach the etherpadlite server over https, then the cookie should only be delivered over ssl.
-$ssl = (stripos($config->url, 'https://') === 0) ? true : false;
-
-setcookie('sessionID', $sessionid, $validuntil, '/', $config->cookiedomain, $ssl); // Set a cookie.
 
 // END of Etherpad Lite init.
 // Display the etherpadlite and possibly results.
@@ -163,6 +156,9 @@ $groupselecturl = new moodle_url($CFG->wwwroot . '/mod/etherpadlite/view.php',
 groups_print_activity_menu($cm, $groupselecturl);
 
 // Print the etherpad content.
+if (\mod_etherpadlite\api\client::is_testing()) {
+    $fullurl = new \moodle_url('/mod/etherpadlite/tests/fixtures/dummyoutput.php');
+}
 echo $renderer->render_etherpad($etherpadlite, $cm, $fullurl);
 
 // Close the page.

@@ -70,7 +70,7 @@ class mod_etherpadlite_mod_form extends moodleform_mod {
         $config = get_config("etherpadlite");
 
         try {
-            $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
+            $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url.'api');
         } catch (\InvalidArgumentException $e) {
             \core\notification::add($e->getMessage(), \core\notification::ERROR);
             $url = course_get_url($COURSE->id);

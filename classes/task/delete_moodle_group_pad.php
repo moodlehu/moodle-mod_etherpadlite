@@ -56,8 +56,8 @@ class delete_moodle_group_pad extends \core\task\adhoc_task {
 
         $config = get_config("etherpadlite");
         try {
-            $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
-            $instance->delete_pad($data->paduri);
+            $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url.'api');
+            $client->delete_pad($data->paduri);
         } catch (\InvalidArgumentException $e) {
             \core\notification::add($e->getMessage(), \core\notification::ERROR);
         }

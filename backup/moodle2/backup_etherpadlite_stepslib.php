@@ -35,7 +35,7 @@ class backup_etherpadlite_activity_structure_step extends backup_activity_struct
         $config = get_config("etherpadlite");
 
         try {
-            $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
+            $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url.'api');
         } catch (\InvalidArgumentException $e) {
             \core\notification::add($e->getMessage(), \core\notification::ERROR);
         }
@@ -61,9 +61,9 @@ class backup_etherpadlite_activity_structure_step extends backup_activity_struct
             // The HTML content of the pad.
             $modid = $this->task->get_activityid();
             $padid = $DB->get_field('etherpadlite', 'uri', array('id' => $modid));
-            if (!empty($instance)) {
-                $html = $instance->get_html($padid);
-                $text = $instance->get_text($padid);
+            if (!empty($client)) {
+                $html = $client->get_html($padid);
+                $text = $client->get_text($padid);
                 $content->set_source_array(array((object)array('html' => $html->html, 'text' => $text->text)));
             }
         }

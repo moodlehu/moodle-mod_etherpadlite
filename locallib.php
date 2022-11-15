@@ -27,16 +27,16 @@
  *
  * @param string $padid
  * @param string $paduri
- * @param \mod_etherpadlite\client $instance
+ * @param \mod_etherpadlite\api\client $client
  * @return void
  */
-function mod_etherpadlite_delete_all_mgrouppads($padid, $paduri, $instance) {
+function mod_etherpadlite_delete_all_mgrouppads($padid, $paduri, $client) {
     global $DB;
 
     $mgrouppads = $DB->get_records('etherpadlite_mgroups', ['padid' => $padid]);
     if ($mgrouppads) {
         foreach ($mgrouppads as $mgrouppad) {
-            $instance->delete_pad($paduri . $mgrouppad->groupid);
+            $client->delete_pad($paduri . $mgrouppad->groupid);
         }
         $DB->delete_records('etherpadlite_mgroups', ['padid' => $padid]);
     }
@@ -48,10 +48,10 @@ function mod_etherpadlite_delete_all_mgrouppads($padid, $paduri, $instance) {
  * @param \stdClass $formdata
  * @param string $mpadid
  * @param string $paduri
- * @param \mod_etherpadlite\client $instance
+ * @param \mod_etherpadlite\api\client $client
  * @return void
  */
-function mod_etherpadlite_add_mgrouppads($formdata, $mpadid, $paduri, $instance) {
+function mod_etherpadlite_add_mgrouppads($formdata, $mpadid, $paduri, $client) {
     global $DB;
 
     $config = get_config("etherpadlite");
@@ -68,7 +68,7 @@ function mod_etherpadlite_add_mgrouppads($formdata, $mpadid, $paduri, $instance)
             $mgroup->groupid = $group->id;
             array_push($mgroupdb, $mgroup);
             try {
-                $padid = $instance->create_group_pad($groupid, $config->padname . $group->id);
+                $padid = $client->create_group_pad($groupid, $config->padname . $group->id);
             } catch (Exception $e) {
                 continue;
             }

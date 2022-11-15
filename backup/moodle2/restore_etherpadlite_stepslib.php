@@ -57,21 +57,21 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
         $data->course = $this->get_courseid();
 
         try {
-            $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
+            $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url.'api');
         } catch (\InvalidArgumentException $e) {
             \core\notification::add($e->getMessage(), \core\notification::ERROR);
             return;
         }
 
-        if (!empty($instance)) {
-            $groupid = $instance->create_group();
+        if (!empty($client)) {
+            $groupid = $client->create_group();
         }
 
         if (!$groupid) {
             \core\notification::add('Could not create etherpad group', \core\notification::ERROR);
             return;
         } else {
-            $padid = $instance->create_group_pad($groupid, $config->padname);
+            $padid = $client->create_group_pad($groupid, $config->padname);
         }
 
         if (!$padid) {
@@ -102,7 +102,7 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
                 array_push($mgroupdb, $mgroup);
 
                 try {
-                    $padid = $instance->create_group_pad($groupid, $config->padname . $group->id);
+                    $padid = $client->create_group_pad($groupid, $config->padname . $group->id);
                 } catch (Exception $e) {
                     continue;
                 }
@@ -124,7 +124,7 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
         $data = (object)$data;
 
         try {
-            $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
+            $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url.'api');
         } catch (\InvalidArgumentException $e) {
             \core\notification::add($e->getMessage(), \core\notification::ERROR);
             return;
@@ -135,8 +135,8 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
         $padid = $etherpadlite->uri;
 
         try {
-            $instance->set_text($padid, $data->text);
-            $instance->set_html($padid, $data->html);
+            $client->set_text($padid, $data->text);
+            $client->set_html($padid, $data->html);
         } catch (Exception $e) {
             // Something went wrong.
             echo "\n\nsetHTML Failed with message ". $e->getMessage();

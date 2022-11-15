@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace mod_etherpadlite;
+namespace mod_etherpadlite\api;
 
 /**
  * This is a helper class to communicate with the etherpadlite server
@@ -57,7 +57,7 @@ class client {
      * @param string $apikey
      * @param string $baseurl
      */
-    public function __construct($apikey, $baseurl = null) {
+    protected function __construct($apikey, $baseurl = null) {
         global $CFG;
         require_once($CFG->libdir.'/filelib.php');
 
@@ -397,17 +397,22 @@ class client {
      *
      * @param string $groupid
      * @param string $authorid
-     * @param int $validuntil
      * @return string|boolean the new session id or false
      */
-    public function create_session($groupid, $authorid, $validuntil) {
+    public function create_session($groupid, $authorid) {
+        $validuntil = time() + $this->config->cookietime;
         $session = $this->post('createSession', [
             'groupID' => $groupid,
             'authorID' => $authorid,
             'validUntil' => $validuntil
         ]);
+
         if ($session) {
-            return $session->sessionID;
+            // If we reach the etherpadlite server over https, then the cookie should only be delivered over ssl.
+            $ssl = (stripos($this->config->url, 'https://') === 0) ? true : false;
+            setcookie('sessionID', $session->sessionID, $validuntil, '/', $this->config->cookiedomain, $ssl); // Set a cookie.
+
+            return true;
         }
         return false;
     }
@@ -714,6 +719,41 @@ class client {
             return $url->get_host().'('.$ipstring.')';
         }
 
+        return false;
+    }
+
+    /**
+     * Get an instance of the client communicating with the etherpad server
+     * If the site is in testing mode (behat or unit test) a dummy client is created, which only pretend to communicate.
+     *
+     * @param string $apikey
+     * @param string $baseurl
+     * @return static
+     */
+    public static function get_instance($apikey, $baseurl = null) {
+        static $client;
+        if (empty($client)) {
+            if (self::is_testing()) {
+                $client = new dummy_client($apikey, $baseurl);
+            } else {
+                $client = new static($apikey, $baseurl);
+            }
+        }
+        return $client;
+    }
+
+    /**
+     * Checks whether or not the current site is running a test (behat or unit test).
+     *
+     * @return boolean
+     */
+    public static function is_testing() {
+        if (defined('BEHAT_SITE_RUNNING')) {
+            return true;
+        }
+        if ((defined('PHPUNIT_TEST') && PHPUNIT_TEST)) {
+            return true;
+        }
         return false;
     }
 }

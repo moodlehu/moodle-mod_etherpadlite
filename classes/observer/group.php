@@ -43,7 +43,7 @@ class group {
         $config = get_config('etherpadlite');
 
         try {
-            $instance = new \mod_etherpadlite\client($config->apikey, $config->url .'api');
+            $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url .'api');
         } catch (\InvalidArgumentException $e) {
             \core\notification::add($e->getMessage(), \core\notification::ERROR);
             return;
@@ -63,7 +63,7 @@ class group {
                 $mgroup['padid'] = $etherpad->id;
                 $mgroup['groupid'] = $event->objectid;
                 try {
-                    $padid = $instance->create_group_pad($groupid, $config->padname . $event->objectid);
+                    $padid = $client->create_group_pad($groupid, $config->padname . $event->objectid);
                 } catch (\Exception $e) {
                     continue;
                 }
@@ -111,7 +111,7 @@ class group {
         $config = get_config('etherpadlite');
 
         try {
-            $instance = new \mod_etherpadlite\client($config->apikey, $config->url .'api');
+            $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url .'api');
         } catch (\InvalidArgumentException $e) {
             \core\notification::add($e->getMessage(), \core\notification::ERROR);
             return;
@@ -127,7 +127,7 @@ class group {
                 $mgroup['padid'] = $etherpad->id;
                 $mgroup['groupid'] = $other['groupid'];
                 try {
-                    $padid = $instance->create_group_pad($groupid, $config->padname . $event->objectid);
+                    $padid = $client->create_group_pad($groupid, $config->padname . $event->objectid);
                 } catch (\Exception $e) {
                     continue;
                 }
@@ -182,7 +182,7 @@ class group {
             $config = get_config("etherpadlite");
 
             try {
-                $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
+                $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url.'api');
             } catch (\InvalidArgumentException $e) {
                 return;
             }
@@ -213,7 +213,7 @@ class group {
                         $mgroup->groupid = $group->id;
                         array_push($mgroupdb, $mgroup);
                         try {
-                            $padid = $instance->create_group_pad($groupid, $config->padname . $group->id);
+                            $padid = $client->create_group_pad($groupid, $config->padname . $group->id);
                         } catch (\Exception $e) {
                             continue;
                         }

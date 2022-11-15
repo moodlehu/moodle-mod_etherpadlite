@@ -30,7 +30,7 @@ $urldesc = get_string('urldesc', 'etherpadlite');
 $urldescinfo = '';
 $urldescinfotype = '';
 if ($baseurl = get_config('etherpadlite', 'url')) {
-    if ($urldescinfo = \mod_etherpadlite\client::is_url_blocked($baseurl)) {
+    if ($urldescinfo = \mod_etherpadlite\api\client::is_url_blocked($baseurl)) {
         $urldescinfo = get_string('urlisblocked', 'etherpadlite', $urldescinfo);
         if (get_config('etherpadlite', 'ignoresecurity')) {
             $urldescinfotype = 'warning';
