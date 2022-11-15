@@ -30,17 +30,7 @@ require_once(dirname(__FILE__).'/lib.php');
 $id = optional_param('id', 0, PARAM_INT); // The course_module id.
 $a = optional_param('a', 0, PARAM_INT);  // The etherpadlite instance id.
 
-if ($id) {
-    $cm = get_coursemodule_from_id('etherpadlite', $id, 0, false, MUST_EXIST);
-    $course = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
-    $etherpadlite = $DB->get_record('etherpadlite', ['id' => $cm->instance], '*', MUST_EXIST);
-} else if ($a) {
-    $etherpadlite = $DB->get_record('etherpadlite', ['id' => $a], '*', MUST_EXIST);
-    $course = $DB->get_record('course', ['id' => $etherpadlite->course], '*', MUST_EXIST);
-    $cm = get_coursemodule_from_instance('etherpadlite', $etherpadlite->id, $course->id, false, MUST_EXIST);
-} else {
-    throw new \moodle_exception('You must specify a course_module ID or an instance ID');
-}
+list($course, $cm, $etherpadlite) = \mod_etherpadlite\util::get_coursemodule($id, $a);
 
 $context = context_module::instance($cm->id);
 

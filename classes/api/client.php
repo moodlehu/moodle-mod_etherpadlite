@@ -733,7 +733,7 @@ class client {
     public static function get_instance($apikey, $baseurl = null) {
         static $client;
         if (empty($client)) {
-            if (self::is_testing()) {
+            if (static::is_testing()) {
                 $client = new dummy_client($apikey, $baseurl);
             } else {
                 $client = new static($apikey, $baseurl);
@@ -748,6 +748,7 @@ class client {
      * @return boolean
      */
     public static function is_testing() {
+        return true;
         if (defined('BEHAT_SITE_RUNNING')) {
             return true;
         }

@@ -28,6 +28,42 @@ namespace mod_etherpadlite\api;
 class dummy_client extends client {
 
     /**
+     * Constructor
+     *
+     * @param string $apikey
+     * @param string $baseurl
+     */
+    protected function __construct($apikey, $baseurl = null) {
+        global $CFG;
+        require_once($CFG->libdir.'/filelib.php');
+
+        $this->config = get_config('etherpadlite');
+
+        if (strlen($apikey) < 1) {
+            throw new \InvalidArgumentException('Config has no API key');
+        }
+        $this->apikey = $apikey;
+
+        if (isset($baseurl)) {
+            $this->baseurl = $baseurl;
+        }
+        if (!filter_var($this->baseurl, FILTER_VALIDATE_URL)) {
+            throw new \InvalidArgumentException('Config has no valid baseurl');
+        }
+
+        // Sometimes the etherpad host is located on an internal network like 127.0.0.1 or 10.0.0.0/8.
+        // Since Moodle 4.0 this kind of host are blocked by default.
+        $settings = array();
+        if (!empty($this->config->ignoresecurity)) {
+            $settings['ignoresecurity'] = true;
+        }
+
+        if (empty($this->config->apiversion)) {
+            $this->config->apiversion = self::DEFAULT_API_VERSION;
+        }
+    }
+
+    /**
      * Creates a new session
      *
      * @param string $groupid
@@ -56,7 +92,7 @@ class dummy_client extends client {
      * @return string|boolean The new pad id or false
      */
     public function create_group_pad($groupid, $padname, $text = null) {
-        return 'g.' . random_string(20);
+        return 'g.' . random_string(20).'$'.$padname;
     }
 
     /**

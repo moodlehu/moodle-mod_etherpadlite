@@ -91,7 +91,7 @@ class mod_etherpadlite_mod_form extends moodleform_mod {
         $mform->addRule('name', get_string('maximumchars', '', 150), 'maxlength', 150, 'client');
 
         // Adding the required "intro" field to hold the description of the instance.
-        $this->standard_intro_elements(false);
+        $this->standard_intro_elements(get_string('etherpadliteintro', 'mod_etherpadlite'));
 
         // Is writing for guests allowed?
         if (get_config("etherpadlite", "adminguests") == 1) {
