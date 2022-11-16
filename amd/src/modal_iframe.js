@@ -23,12 +23,12 @@
 define(['jquery'], function($) {
     return {
         'init': function(frameurl, id) {
-            $("#etherpadmodal_" + id).on("show.bs.modal", function () {
+            $("#etherpadmodal_" + id).on("show.bs.modal", function() {
                 $("#etherpadiframe_" + id).attr("src", "about:blank");
                 $("#etherpadiframe2_" + id).attr("src", frameurl);
                 $("body").addClass("modal-open");
             });
-            $("#etherpadmodal_" + id).on("hide.bs.modal", function () {
+            $("#etherpadmodal_" + id).on("hide.bs.modal", function() {
                 $("#etherpadiframe2_" + id).attr("src", "about:blank");
                 $("#etherpadiframe_" + id).attr("src", frameurl);
                 $("body").removeClass("modal-open");

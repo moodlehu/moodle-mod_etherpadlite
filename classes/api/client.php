@@ -748,7 +748,6 @@ class client {
      * @return boolean
      */
     public static function is_testing() {
-        return true;
         if (defined('BEHAT_SITE_RUNNING')) {
             return true;
         }

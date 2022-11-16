@@ -53,8 +53,6 @@ function xmldb_etherpadlite_upgrade($oldversion=0) {
 
     $dbman = $DB->get_manager(); // Loads ddl manager and xmldb classes.
 
-    $result = true;
-
     if ($oldversion < 2013042901) {
         set_config("url", $CFG->etherpadlite_url, "etherpadlite");
         set_config("apikey", $CFG->etherpadlite_apikey, "etherpadlite");
@@ -117,5 +115,5 @@ function xmldb_etherpadlite_upgrade($oldversion=0) {
         upgrade_mod_savepoint(true, 2022083102, 'etherpadlite');
     }
 
-    return $result;
+    return true;
 }
