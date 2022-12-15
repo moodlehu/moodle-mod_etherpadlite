@@ -27,8 +27,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version    = 2022022506;  // Don't go higher than 202203xxyy because there starts the version for 4.0.
-$plugin->release    = 'v3.11-r5 (2022-11-14)';
+$plugin->version    = 2022022507;  // Don't go higher than 202203xxyy because there starts the version for 4.0.
+$plugin->release    = 'v3.11-r6 (2022-12-15)';
 $plugin->requires   = 2018050800;
 $plugin->cron       = 0;           // Period for cron to check this module (secs).
 $plugin->component  = 'mod_etherpadlite';
