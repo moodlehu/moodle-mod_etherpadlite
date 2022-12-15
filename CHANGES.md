@@ -4,6 +4,11 @@ moodle-mod_etherpadlite
 Changes
 -------
 
+### v4.0-r7
+
+* 2022-12-15 -  Add support for course reset
+* 2022-12-15 -  Add backup/restore for group pads
+
 ### v4.0-r6
 
 * 2022-11-16 -  Add testing support for behat and phpunit test
