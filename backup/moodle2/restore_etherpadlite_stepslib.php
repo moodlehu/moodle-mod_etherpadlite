@@ -109,7 +109,7 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
         $data = (object)$data;
 
         try {
-            $instance = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
+            $client = new \mod_etherpadlite\client($config->apikey, $config->url.'api');
         } catch (\InvalidArgumentException $e) {
             \core\notification::add($e->getMessage(), \core\notification::ERROR);
             return null;
@@ -119,12 +119,28 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
         $etherpadlite = $DB->get_record('etherpadlite', ['id' => $newid]);
         $padid = $etherpadlite->uri;
 
+        // Set the content for the main pad.
         try {
-            $instance->set_text($padid, $data->text);
-            $instance->set_html($padid, $data->html);
+            $client->set_text($padid, $data->text);
+            $client->set_html($padid, $data->html);
         } catch (Exception $e) {
             // Something went wrong.
             echo "\n\nsetHTML Failed with message ". $e->getMessage();
+        }
+
+        if (!empty($data->grouppaddata)) {
+            $grouppaddata = unserialize($data->grouppaddata);
+            foreach ($grouppaddata as $oldgroupid => $grouppadcontent) {
+                $newgroupid = $this->get_mappingid('group', $oldgroupid);
+                $grouppadid = $padid . $newgroupid;
+                try {
+                    $client->set_text($grouppadid, $grouppadcontent->text);
+                    $client->set_html($grouppadid, $grouppadcontent->html);
+                } catch (Exception $e) {
+                    // Something went wrong.
+                    echo "\n\nsetHTML Failed with message ". $e->getMessage();
+                }
+            }
         }
     }
 
