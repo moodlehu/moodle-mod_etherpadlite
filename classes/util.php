@@ -61,4 +61,38 @@ class util {
 
         return array($course, $cm, $etherpadlite);
     }
+
+    /**
+     * Reset the content of an etherpadlite instance. This affects the main pad and also all related group pads.
+     *
+     * @param \stdClass $etherpadlite
+     * @param \mod_etherpadlite\api\client $client
+     * @return bool
+     */
+    public static function reset_etherpad_content(\stdClass $etherpadlite, \mod_etherpadlite\api\client $client) {
+        $config = get_config('etherpadlite');
+
+        $padid = $etherpadlite->uri;
+        $groups = groups_get_all_groups($etherpadlite->course);
+
+        $epgroupid = explode('$', $padid);
+        $epgroupid = $epgroupid[0];
+
+        try {
+            if ($groups) {
+                // Empty the content of the group pads.
+                foreach ($groups as $group) {
+                    $grouppadid = $padid . $group->id;
+                    $client->delete_pad($grouppadid);
+                    $client->create_group_pad($epgroupid, $config->padname . $group->id, '');
+                }
+            }
+            $client->delete_pad($padid);
+            $client->create_group_pad($epgroupid, $config->padname);
+            $result = true;
+        } catch (\Exception $e) {
+            $result = false;
+        }
+        return $result;
+    }
 }

@@ -57,8 +57,8 @@ function mod_etherpadlite_add_mgrouppads($formdata, $mpadid, $paduri, $client) {
     $config = get_config("etherpadlite");
     $groups = groups_get_all_groups($formdata->course, 0, $formdata->groupingid);
 
-    $groupid = explode('$', $paduri);
-    $groupid = $groupid[0];
+    $epgroupid = explode('$', $paduri);
+    $epgroupid = $epgroupid[0];
 
     $mgroupdb = [];
     foreach ($groups as $group) {
@@ -68,7 +68,7 @@ function mod_etherpadlite_add_mgrouppads($formdata, $mpadid, $paduri, $client) {
             $mgroup->groupid = $group->id;
             array_push($mgroupdb, $mgroup);
             try {
-                $padid = $client->create_group_pad($groupid, $config->padname . $group->id);
+                $padid = $client->create_group_pad($epgroupid, $config->padname . $group->id);
             } catch (Exception $e) {
                 continue;
             }

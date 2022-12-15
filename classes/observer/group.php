@@ -53,8 +53,8 @@ class group {
         $mgroupdb = [];
         foreach ($etherpads as $etherpad) {
             $padid = $etherpad->uri;
-            $groupid = explode('$', $padid);
-            $groupid = $groupid[0];
+            $epgroupid = explode('$', $padid);
+            $epgroupid = $epgroupid[0];
 
             $cm = get_coursemodule_from_instance('etherpadlite', $etherpad->id);
 
@@ -63,7 +63,7 @@ class group {
                 $mgroup['padid'] = $etherpad->id;
                 $mgroup['groupid'] = $event->objectid;
                 try {
-                    $padid = $client->create_group_pad($groupid, $config->padname . $event->objectid);
+                    $padid = $client->create_group_pad($epgroupid, $config->padname . $event->objectid);
                 } catch (\Exception $e) {
                     continue;
                 }
@@ -119,15 +119,15 @@ class group {
 
         foreach ($etherpads as $etherpad) {
             $padid = $etherpad->uri;
-            $groupid = explode('$', $padid);
-            $groupid = $groupid[0];
+            $epgroupid = explode('$', $padid);
+            $epgroupid = $epgroupid[0];
             $cm = get_coursemodule_from_instance('etherpadlite', $etherpad->id);
             if ($cm->groupmode != 0 && $cm->groupingid == $event->objectid) {
                 $mgroup = [];
                 $mgroup['padid'] = $etherpad->id;
                 $mgroup['groupid'] = $other['groupid'];
                 try {
-                    $padid = $client->create_group_pad($groupid, $config->padname . $event->objectid);
+                    $padid = $client->create_group_pad($epgroupid, $config->padname . $event->objectid);
                 } catch (\Exception $e) {
                     continue;
                 }
@@ -202,8 +202,8 @@ class group {
                 $config = get_config("etherpadlite");
                 $groups = groups_get_all_groups($data['course'], 0, $cm->groupingid);
 
-                $groupid = explode('$', $etherpadlite->uri);
-                $groupid = $groupid[0];
+                $epgroupid = explode('$', $etherpadlite->uri);
+                $epgroupid = $epgroupid[0];
 
                 $mgroupdb = [];
                 foreach ($groups as $group) {
@@ -213,7 +213,7 @@ class group {
                         $mgroup->groupid = $group->id;
                         array_push($mgroupdb, $mgroup);
                         try {
-                            $padid = $client->create_group_pad($groupid, $config->padname . $group->id);
+                            $padid = $client->create_group_pad($epgroupid, $config->padname . $group->id);
                         } catch (\Exception $e) {
                             continue;
                         }

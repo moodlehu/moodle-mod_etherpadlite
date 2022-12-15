@@ -64,14 +64,14 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
         }
 
         if (!empty($client)) {
-            $groupid = $client->create_group();
+            $epgroupid = $client->create_group();
         }
 
-        if (!$groupid) {
+        if (!$epgroupid) {
             \core\notification::add('Could not create etherpad group', \core\notification::ERROR);
             return;
         } else {
-            $padid = $client->create_group_pad($groupid, $config->padname);
+            $padid = $client->create_group_pad($epgroupid, $config->padname);
         }
 
         if (!$padid) {
@@ -102,7 +102,7 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
                 array_push($mgroupdb, $mgroup);
 
                 try {
-                    $padid = $client->create_group_pad($groupid, $config->padname . $group->id);
+                    $padid = $client->create_group_pad($epgroupid, $config->padname . $group->id);
                 } catch (Exception $e) {
                     continue;
                 }
@@ -134,12 +134,28 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
         $etherpadlite = $DB->get_record('etherpadlite', ['id' => $newid]);
         $padid = $etherpadlite->uri;
 
+        // Set the content for the main pad.
         try {
             $client->set_text($padid, $data->text);
             $client->set_html($padid, $data->html);
         } catch (Exception $e) {
             // Something went wrong.
             echo "\n\nsetHTML Failed with message ". $e->getMessage();
+        }
+
+        if (!empty($data->grouppaddata)) {
+            $grouppaddata = unserialize($data->grouppaddata);
+            foreach ($grouppaddata as $oldgroupid => $grouppadcontent) {
+                $newgroupid = $this->get_mappingid('group', $oldgroupid);
+                $grouppadid = $padid . $newgroupid;
+                try {
+                    $client->set_text($grouppadid, $grouppadcontent->text);
+                    $client->set_html($grouppadid, $grouppadcontent->html);
+                } catch (Exception $e) {
+                    // Something went wrong.
+                    echo "\n\nsetHTML Failed with message ". $e->getMessage();
+                }
+            }
         }
     }
 

@@ -66,11 +66,11 @@ class dummy_client extends client {
     /**
      * Creates a new session
      *
-     * @param string $groupid
+     * @param string $epgroupid
      * @param string $authorid
      * @return string|boolean the new session id or false
      */
-    public function create_session($groupid, $authorid) {
+    public function create_session($epgroupid, $authorid) {
         return true;
     }
 
@@ -86,22 +86,22 @@ class dummy_client extends client {
     /**
      * Creates a new pad in this group.
      *
-     * @param string $groupid
+     * @param string $epgroupid
      * @param string $padname
      * @param string $text
      * @return string|boolean The new pad id or false
      */
-    public function create_group_pad($groupid, $padname, $text = null) {
+    public function create_group_pad($epgroupid, $padname, $text = null) {
         return 'g.' . random_string(20).'$'.$padname;
     }
 
     /**
      * Deletes a group
      *
-     * @param string $groupid
+     * @param string $epgroupid
      * @return boolean
      */
-    public function delete_group($groupid) {
+    public function delete_group($epgroupid) {
         return true;
     }
 

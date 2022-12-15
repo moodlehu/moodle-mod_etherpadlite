@@ -276,38 +276,38 @@ class client {
     /**
      * Deletes a group
      *
-     * @param string $groupid
+     * @param string $epgroupid
      * @return boolean
      */
-    public function delete_group($groupid) {
+    public function delete_group($epgroupid) {
         return $this->post('deleteGroup', [
-            'groupID' => $groupid
+            'groupID' => $epgroupid
         ]);
     }
 
     /**
      * Returns all pads of this group.
      *
-     * @param string $groupid
+     * @param string $epgroupid
      * @return array
      */
-    public function list_pads($groupid) {
+    public function list_pads($epgroupid) {
         return $this->get('listPads', [
-            'groupID' => $groupid
+            'groupID' => $epgroupid
         ]);
     }
 
     /**
      * Creates a new pad in this group.
      *
-     * @param string $groupid
+     * @param string $epgroupid
      * @param string $padname
      * @param string $text
      * @return string|boolean The new pad id or false
      */
-    public function create_group_pad($groupid, $padname, $text = null) {
+    public function create_group_pad($epgroupid, $padname, $text = null) {
         $pad = $this->post('createGroupPad', [
-            'groupID' => $groupid,
+            'groupID' => $epgroupid,
             'padName' => $padname,
             'text' => $text
         ]);
@@ -395,14 +395,14 @@ class client {
     /**
      * Creates a new session
      *
-     * @param string $groupid
+     * @param string $epgroupid
      * @param string $authorid
      * @return string|boolean the new session id or false
      */
-    public function create_session($groupid, $authorid) {
+    public function create_session($epgroupid, $authorid) {
         $validuntil = time() + $this->config->cookietime;
         $session = $this->post('createSession', [
-            'groupID' => $groupid,
+            'groupID' => $epgroupid,
             'authorID' => $authorid,
             'validUntil' => $validuntil
         ]);
@@ -444,12 +444,12 @@ class client {
     /**
      * Returns all sessions of a group.
      *
-     * @param string $groupid
+     * @param string $epgroupid
      * @return array
      */
-    public function list_sessions_of_group($groupid) {
+    public function list_sessions_of_group($epgroupid) {
         return $this->get('listSessionsOfGroup', [
-            'groupID' => $groupid
+            'groupID' => $epgroupid
         ]);
     }
 
@@ -473,7 +473,7 @@ class client {
      *
      * @param string $padid
      * @param string $rev
-     * @return string
+     * @return \stdClass The text is defined in $obj->text.
      */
     public function get_text($padid, $rev = null) {
         $params = ['padID' => $padid];
@@ -488,7 +488,7 @@ class client {
      *
      * @param string $padid
      * @param string $rev
-     * @return string
+     * @return \stdClass The html is defined in $obj->html.
      */
     public function get_html($padid, $rev = null) {
         $params = ['padID' => $padid];

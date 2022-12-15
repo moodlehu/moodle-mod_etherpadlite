@@ -47,7 +47,10 @@ class backup_etherpadlite_activity_structure_step extends backup_activity_struct
         $eplite = new backup_nested_element('etherpadlite', array('id'), array(
             'name', 'intro', 'introformat', 'guestsallowed', 'timecreated', 'timemodified'));
 
-        $content = new backup_nested_element('content', null, array('html', 'text', ));
+        // Define elements of the content structure.
+        // The elements "html" and "text" get the content of the main etherpad.
+        // The element grouppaddata get the serialized data as array with objects (->text and ->html).
+        $content = new backup_nested_element('content', null, array('html', 'text', 'grouppaddata'));
 
         // Build the tree.
         $eplite->add_child($content);
@@ -58,13 +61,37 @@ class backup_etherpadlite_activity_structure_step extends backup_activity_struct
 
         // All the rest of elements only happen if we are including user info.
         if ($userinfo) {
-            // The HTML content of the pad.
             $modid = $this->task->get_activityid();
-            $padid = $DB->get_field('etherpadlite', 'uri', array('id' => $modid));
             if (!empty($client)) {
-                $html = $client->get_html($padid);
-                $text = $client->get_text($padid);
-                $content->set_source_array(array((object)array('html' => $html->html, 'text' => $text->text)));
+                if ($etherpadlite = $DB->get_record('etherpadlite', array('id' => $modid))) {
+                    $padid = $etherpadlite->uri;
+                    // Get all groups.
+                    $groups = groups_get_all_groups($etherpadlite->course);
+                    $grouppaddata = array();
+                    // Get group pads if exist.
+                    $cm = get_coursemodule_from_instance('etherpadlite', $modid);
+                    if ($cm->groupmode != 0 && $groups) {
+                        // Get the HTML content of the group pads.
+                        foreach ($groups as $group) {
+                            $grouppadid = $padid . $group->id;
+                            $html = $client->get_html($grouppadid);
+                            $text = $client->get_text($grouppadid);
+                            $groupcontent = new \stdClass();
+                            $groupcontent->html = $html->html;
+                            $groupcontent->text = $text->text;
+                            $grouppaddata[$group->id] = $groupcontent;
+                        }
+                    }
+
+                    $data = new \stdClass();
+                    $data->grouppaddata = serialize($grouppaddata);
+                    // The HTML content of the main pad.
+                    $html = $client->get_html($padid);
+                    $text = $client->get_text($padid);
+                    $data->html = $html->html;
+                    $data->text = $text->text;
+                    $content->set_source_array(array($data));
+                }
             }
         }
 

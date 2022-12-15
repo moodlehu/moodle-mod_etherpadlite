@@ -96,8 +96,8 @@ if ($guestrestricted || $grouprestricted || $timerestricted) {
 }
 
 // Get the groupID.
-$groupid = explode('$', $padid);
-$groupid = $groupid[0];
+$epgroupid = explode('$', $padid);
+$epgroupid = $epgroupid[0];
 
 // Create author if not exists for logged in user (with full name as it is obtained from Moodle core library).
 if ((isguestuser() && etherpadlite_guestsallowed($etherpadlite)) || !$isgroupmember) {
@@ -110,7 +110,7 @@ if (!$authorid) {
 }
 
 // Create a browser session to the etherpad lite server.
-if (!$client->create_session($groupid, $authorid)) {
+if (!$client->create_session($epgroupid, $authorid)) {
     throw new \moodle_exception('could not create etherpad session');
 }
 

@@ -36,6 +36,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+define('ETHERPADLITE_RESETFORM_RESET', 'etherpadlite_reset_data_');
+
 /**
  * Create a new etherpadlite instance.
  *
@@ -58,12 +60,12 @@ function etherpadlite_add_instance(stdClass $etherpadlite, mod_etherpadlite_mod_
         return false;
     }
 
-    if (!$groupid = $client->create_group()) {
+    if (!$epgroupid = $client->create_group()) {
         // The group already exists or something else went wrong.
         throw new \moodle_exception('could not create etherpad group');
     }
 
-    if (!$padid = $client->create_group_pad($groupid, $config->padname)) {
+    if (!$padid = $client->create_group_pad($epgroupid, $config->padname)) {
         // The pad already exists or something else went wrong.
         throw new \moodle_exception('could not create etherpad group pad');
     }
@@ -86,7 +88,7 @@ function etherpadlite_add_instance(stdClass $etherpadlite, mod_etherpadlite_mod_
             array_push($mgroupdb, $mgroup);
 
             try {
-                $padid = $client->create_group_pad($groupid, $config->padname . $group->id);
+                $padid = $client->create_group_pad($epgroupid, $config->padname . $group->id);
             } catch (Exception $e) {
                 continue;
             }
@@ -161,14 +163,14 @@ function etherpadlite_delete_instance($id) {
         $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url.'api');
 
         $padid = $etherpadlite->uri;
-        $groupid = explode('$', $padid);
-        $groupid = $groupid[0];
+        $epgroupid = explode('$', $padid);
+        $epgroupid = $epgroupid[0];
 
         // Delete pads for moodle groups and respective DB entry.
         mod_etherpadlite_delete_all_mgrouppads($id, $padid, $client);
 
         $client->delete_pad($padid);
-        $client->delete_group($groupid);
+        $client->delete_group($epgroupid);
 
     } catch (\InvalidArgumentException $e) {
         \core\notification::add($e->getMessage(), \core\notification::ERROR);
@@ -441,4 +443,106 @@ function etherpadlite_get_coursemodule_info($coursemodule) {
     }
 
     return $result;
+}
+
+
+/**
+ * This function is used by the reset_course_userdata function in moodlelib.
+ * This function will remove all data from the specified etherpadlite.
+ *
+ * @param object $data the data submitted from the reset course.
+ * @return array status array
+ */
+function etherpadlite_reset_userdata($data) {
+    global $DB;
+    $config = get_config("etherpadlite");
+
+    $resetetherpadlites = array();
+    $status = array();
+    $componentstr = get_string('modulenameplural', 'etherpadlite');
+
+    // Get the relevant entries from $data.
+    foreach ($data as $key => $value) {
+        switch(true) {
+            case substr($key, 0, strlen(ETHERPADLITE_RESETFORM_RESET)) == ETHERPADLITE_RESETFORM_RESET:
+                if ($value == 1) {
+                    $templist = explode('_', $key);
+                    if (isset($templist[3])) {
+                        $resetetherpadlites[] = intval($templist[3]);
+                    }
+                }
+                break;
+        }
+    }
+
+    if (empty($resetetherpadlites)) {
+        return $status;
+    }
+
+    try {
+        $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url.'api');
+    } catch (\InvalidArgumentException $e) {
+        \core\notification::add($e->getMessage(), \core\notification::ERROR);
+        return $status;
+    }
+
+    // Reset the selected etherpadlites.
+    foreach ($resetetherpadlites as $id) {
+        $etherpadlite = $DB->get_record('etherpadlite', array('id' => $id));
+        // Delete etherpad lite data.
+        $result = \mod_etherpadlite\util::reset_etherpad_content($etherpadlite, $client);
+        $status[] = array(
+            'component' => $componentstr.': '.$etherpadlite->name,
+            'item' => get_string('resetting_data', 'etherpadlite'),
+            'error' => !$result,
+        );
+    }
+
+    // Updating dates - shift may be negative too.
+    if ($data->timeshift) {
+        // Any changes to the list of dates that needs to be rolled should be same during course restore and course reset.
+        // See MDL-9367.
+        $shifterror = !shift_course_mod_dates('etherpadlite', array('timeopen', 'timeclose'), $data->timeshift, $data->courseid);
+        $status[] = array('component' => $componentstr, 'item' => get_string('datechanged'), 'error' => $shifterror);
+    }
+
+    return $status;
+}
+
+/**
+ * Called by course/reset.php
+ *
+ * @param object $mform form passed by reference
+ */
+function etherpadlite_reset_course_form_definition(&$mform) {
+    global $COURSE, $DB;
+
+    $mform->addElement('header', 'etherpadliteheader', get_string('modulenameplural', 'etherpadlite'));
+
+    if (!$etherpadlites = $DB->get_records('etherpadlite', array('course' => $COURSE->id), 'name')) {
+        return;
+    }
+
+    $mform->addElement('static', 'hint', get_string('resetting_data', 'etherpadlite'));
+    foreach ($etherpadlites as $etherpadlite) {
+        $mform->addElement('checkbox', ETHERPADLITE_RESETFORM_RESET.$etherpadlite->id, $etherpadlite->name);
+    }
+}
+
+/**
+ * Course reset form defaults.
+ *
+ * @param object $course
+ */
+function etherpadlite_reset_course_form_defaults($course) {
+    global $DB;
+
+    $return = array();
+    if (!$etherpadlites = $DB->get_records('etherpadlite', array('course' => $course->id), 'name')) {
+        return;
+    }
+    foreach ($etherpadlites as $etherpadlite) {
+        $return[ETHERPADLITE_RESETFORM_RESET.$etherpadlite->id] = true;
+    }
+    return $return;
 }
