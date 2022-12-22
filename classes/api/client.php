@@ -83,6 +83,13 @@ class client {
         }
         $this->curl = new \curl($settings);
 
+        $this->curl->setopt(
+            [
+                'CURLOPT_CONNECTTIMEOUT' => $this->config->connecttimeout,
+                'CURLOPT_TIMEOUT'  => $this->config->timeout
+            ]
+        );
+
         if (empty($this->config->apiversion)) {
             $this->config->apiversion = self::DEFAULT_API_VERSION;
         }

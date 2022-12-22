@@ -52,6 +52,12 @@ $settings->add(new admin_setting_configtext('etherpadlite/apikey', get_string('a
 $settings->add(new admin_setting_configselect('etherpadlite/apiversion', get_string('apiversion', 'etherpadlite'),
                    get_string('apiversiondesc', 'etherpadlite'), '1.2', array('1.1' => '1.1', '1.2' => '1.2')));
 
+$settings->add(new admin_setting_configtext('etherpadlite/connecttimeout', get_string('connecttimeout', 'etherpadlite'),
+                    get_string('connecttimeoutdesc', 'etherpadlite'), '5'));
+
+$settings->add(new admin_setting_configtext('etherpadlite/timeout', get_string('timeout', 'etherpadlite'),
+                    get_string('timeoutdesc', 'etherpadlite'), '10'));
+
 $settings->add(new admin_setting_configtext('etherpadlite/padname', get_string('padname', 'etherpadlite'),
                    get_string('padnamedesc', 'etherpadlite'), 'mymoodle2'));
 
