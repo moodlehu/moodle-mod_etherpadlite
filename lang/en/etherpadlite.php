@@ -80,6 +80,7 @@ $string['restorewindowsize'] = 'Restore window size';
 $string['url'] = 'Server URL';
 $string['urldesc'] = 'This is the URL to your Etherpadlite server in the form: http[s]://host[:port]/[subDir/]';
 $string['urlisblocked'] = 'The current host "{$a}" is blocked';
+$string['urlnotset'] = 'The etherpad server url is not configured for this site';
 $string['ssl'] = 'HTTPS Redirect';
 $string['ssldesc'] = 'With this set, your site will redirect itself to HTTPS, if an etherpadlite is opened (eye candy for the user)';
 $string['summaryguest'] = 'You are logged in as guest. That\'s why you can only see the readonly version of this Pad. Reload the page to get new changes.';

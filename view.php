@@ -53,11 +53,10 @@ if ($config->ssl) {
 
 // START of Initialise the session for the Author.
 // Set vars.
-$domain = $config->url;
 $padid = $etherpadlite->uri;
 
 // Make a new intance from the etherpadlite client. It might throw an exception.
-$client = \mod_etherpadlite\api\client::get_instance($config->apikey, $domain.'api');
+$client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url);
 
 // Get group mode.
 $groupmode = groups_get_activity_groupmode($cm);
@@ -90,9 +89,9 @@ if ($guestrestricted || $grouprestricted || $timerestricted) {
     if (!$readonlyid = $client->get_readonly_id($urlpadid)) {
         throw new \moodle_exception('could not get readonly id');
     }
-    $fullurl = $domain . 'p/' . $readonlyid;
+    $fullurl = $config->url . 'p/' . $readonlyid;
 } else {
-    $fullurl = $domain . 'p/' . $urlpadid;
+    $fullurl = $config->url . 'p/' . $urlpadid;
 }
 
 // Get the groupID.

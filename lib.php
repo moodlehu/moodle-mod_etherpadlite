@@ -54,7 +54,7 @@ function etherpadlite_add_instance(stdClass $etherpadlite, mod_etherpadlite_mod_
     $config = get_config("etherpadlite");
 
     try {
-        $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url.'api');
+        $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url);
     } catch (\InvalidArgumentException $e) {
         \core\notification::add($e->getMessage(), \core\notification::ERROR);
         return false;
@@ -124,7 +124,7 @@ function etherpadlite_update_instance(stdClass $etherpadlite, mod_etherpadlite_m
     $etherpadliteuri = $DB->get_field('etherpadlite', 'uri', ['id' => $etherpadlite->id]);
     $config = get_config("etherpadlite");
     try {
-        $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url.'api');
+        $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url);
     } catch (\InvalidArgumentException $e) {
         \core\notification::add($e->getMessage(), \core\notification::ERROR);
         return false;
@@ -160,7 +160,7 @@ function etherpadlite_delete_instance($id) {
 
     $config = get_config("etherpadlite");
     try {
-        $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url.'api');
+        $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url);
 
         $padid = $etherpadlite->uri;
         $epgroupid = explode('$', $padid);
@@ -480,7 +480,7 @@ function etherpadlite_reset_userdata($data) {
     }
 
     try {
-        $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url.'api');
+        $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url);
     } catch (\InvalidArgumentException $e) {
         \core\notification::add($e->getMessage(), \core\notification::ERROR);
         return $status;

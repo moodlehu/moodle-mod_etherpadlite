@@ -33,7 +33,7 @@ class dummy_client extends client {
      * @param string $apikey
      * @param string $baseurl
      */
-    protected function __construct($apikey, $baseurl = null) {
+    protected function __construct($apikey, $baseurl) {
         global $CFG;
         require_once($CFG->libdir.'/filelib.php');
 
@@ -44,11 +44,12 @@ class dummy_client extends client {
         }
         $this->apikey = $apikey;
 
-        if (isset($baseurl)) {
-            $this->baseurl = $baseurl;
-        }
-        if (!filter_var($this->baseurl, FILTER_VALIDATE_URL)) {
-            throw new \InvalidArgumentException('Config has no valid baseurl');
+        if (!empty($baseurl)) {
+            $this->baseurl = trim($baseurl, '/');
+            $this->baseurl .= '/api';
+            if (!filter_var($this->baseurl, FILTER_VALIDATE_URL)) {
+                throw new \InvalidArgumentException('Config has no valid baseurl');
+            }
         }
 
         // Sometimes the etherpad host is located on an internal network like 127.0.0.1 or 10.0.0.0/8.

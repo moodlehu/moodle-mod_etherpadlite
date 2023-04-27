@@ -57,7 +57,7 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
         $data->course = $this->get_courseid();
 
         try {
-            $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url.'api');
+            $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url);
         } catch (\InvalidArgumentException $e) {
             \core\notification::add($e->getMessage(), \core\notification::ERROR);
             return;
@@ -124,7 +124,7 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
         $data = (object)$data;
 
         try {
-            $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url.'api');
+            $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url);
         } catch (\InvalidArgumentException $e) {
             \core\notification::add($e->getMessage(), \core\notification::ERROR);
             return;

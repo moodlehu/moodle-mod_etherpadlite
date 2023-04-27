@@ -41,7 +41,7 @@ if ($baseurl = get_config('etherpadlite', 'url')) {
 }
 $urldescwidget = new \mod_etherpadlite\output\component\urlsettingsnote($urldesc, $urldescinfo, $urldescinfotype);
 $settings->add(new admin_setting_configtext('etherpadlite/url', get_string('url', 'etherpadlite'),
-                   $OUTPUT->render($urldescwidget), 'https://myserver.mydomain.local/moodle/', PARAM_RAW, 40));
+                   $OUTPUT->render($urldescwidget), '', PARAM_RAW, 40));
 
 $settings->add(new admin_setting_configcheckbox('etherpadlite/ignoresecurity', get_string('ignoresecurity', 'etherpadlite'),
                     get_string('ignoresecuritydesc', 'etherpadlite'), false));

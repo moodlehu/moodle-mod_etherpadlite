@@ -53,6 +53,13 @@ class renderer extends \plugin_renderer_base {
             $content->legacy = true;
         }
 
+        // Add a warning notice.
+        if (\mod_etherpadlite\api\client::is_testing()) {
+            $content->hasnotice = true;
+            $content->noticetype = \core\notification::WARNING;
+            $content->notice = get_string('urlnotset', 'mod_etherpadlite');
+        }
+
         return $this->render_from_template('mod_etherpadlite/content', $content);
     }
 

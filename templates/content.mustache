@@ -27,11 +27,18 @@
         "summaryguest" : "...",
         "responsiveiframe" : 1,
         "minwidth" : "400px",
-        "frameurl" : "https://...."
+        "frameurl" : "https://example.com",
+        "hasnotice" : 1,
+        "noticetype" : "warning",
+        "notice" : "The etherpad server url is not configured for this site"
     }
 
 }}
-
+{{#hasnotice}}
+<div class="alert alert-{{noticetype}} alert-block " role="alert">
+    {{notice}}
+</div>
+{{/hasnotice}}
 <h2>
     <button type="button" title="{{#str}}fullscreen, mod_etherpadlite{{/str}}" class="etherpadmodal btn btn-primary" data-toggle="modal" data-target="#etherpadmodal_{{id}}">
         <i class="fa fa-expand fa-lg" aria-hidden="true"></i>

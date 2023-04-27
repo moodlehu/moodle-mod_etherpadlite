@@ -4,6 +4,10 @@ moodle-mod_etherpadlite
 Changes
 -------
 
+### v4.2-r1
+
+* 2023-04-27 -  Switch to testing mode if etherpadlite|url is empty
+
 ### v4.0-r7
 
 * 2022-12-15 -  Add support for course reset
