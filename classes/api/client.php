@@ -748,7 +748,8 @@ class client {
      * @return boolean
      */
     public static function is_testing() {
-        $mycfg = get_config('mod_etherpadlite');
+        $mycfg = get_config('etherpadlite');
+
         if (empty($mycfg->url)) {
             return true;
         }
