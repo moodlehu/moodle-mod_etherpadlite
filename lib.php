@@ -144,7 +144,7 @@ function etherpadlite_update_instance(stdClass $etherpadlite, mod_etherpadlite_m
 function etherpadlite_delete_instance($id) {
 
     global $DB;
-    require_once(__DIR__.'locallib.php');
+    require_once(__DIR__.'/locallib.php');
 
     if (! $etherpadlite = $DB->get_record('etherpadlite', array('id' => $id))) {
         return false;
