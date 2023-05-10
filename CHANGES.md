@@ -4,6 +4,10 @@ moodle-mod_etherpadlite
 Changes
 -------
 
+### v3.11-r8
+
+* 2023-05-10 -  add missing slash
+
 ### v3.11-r7
 
 * 2023-05-10 -  Fix require_once into stable path
