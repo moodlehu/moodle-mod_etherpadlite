@@ -110,7 +110,7 @@ function etherpadlite_add_instance(stdClass $etherpadlite, mod_etherpadlite_mod_
  */
 function etherpadlite_update_instance(stdClass $etherpadlite, mod_etherpadlite_mod_form $mform = null) {
     global $DB;
-    require_once('locallib.php');
+    require_once(__DIR__.'/locallib.php');
 
     $etherpadlite->timemodified = time();
     $etherpadlite->id = $etherpadlite->instance;
@@ -148,7 +148,7 @@ function etherpadlite_update_instance(stdClass $etherpadlite, mod_etherpadlite_m
 function etherpadlite_delete_instance($id) {
 
     global $DB;
-    require_once('locallib.php');
+    require_once(__DIR__.'locallib.php');
 
     if (! $etherpadlite = $DB->get_record('etherpadlite', array('id' => $id))) {
         return false;
