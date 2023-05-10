@@ -4,6 +4,10 @@ moodle-mod_etherpadlite
 Changes
 -------
 
+### v4.2-r2
+
+* 2023-05-10 -  Fix require_once into stable path
+
 ### v4.2-r1
 
 * 2023-04-27 -  Switch to testing mode if etherpadlite|url is empty
