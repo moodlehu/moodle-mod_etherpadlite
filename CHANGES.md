@@ -4,6 +4,10 @@ moodle-mod_etherpadlite
 Changes
 -------
 
+### v4.2-r4
+
+* 2023-06-12 -  add new settings to adjust CURLOPT_CONNECTTIMEOUT and CURLOPT_TIMEOUT (Thanks to Vincent Schneider)
+
 ### v4.2-r3
 
 * 2023-05-10 -  add missing slash

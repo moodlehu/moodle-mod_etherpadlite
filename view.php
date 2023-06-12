@@ -146,7 +146,7 @@ groups_print_activity_menu($cm, $groupselecturl);
 
 // Print the etherpad content.
 if (\mod_etherpadlite\api\client::is_testing()) {
-    $fullurl = new \moodle_url('/mod/etherpadlite/tests/fixtures/dummyoutput.php');
+    $fullurl = new \moodle_url('/mod/etherpadlite/tests/fixtures/dummyoutput.html');
 }
 echo $renderer->render_etherpad($etherpadlite, $cm, $fullurl);
 
