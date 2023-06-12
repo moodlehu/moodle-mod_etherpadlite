@@ -52,13 +52,19 @@ $settings->add(new admin_setting_configtext('etherpadlite/apikey', get_string('a
 $settings->add(new admin_setting_configselect('etherpadlite/apiversion', get_string('apiversion', 'etherpadlite'),
                    get_string('apiversiondesc', 'etherpadlite'), '1.2', array('1.1' => '1.1', '1.2' => '1.2')));
 
+$settings->add(new admin_setting_configtext('etherpadlite/connecttimeout', get_string('connecttimeout', 'etherpadlite'),
+                    get_string('connecttimeoutdesc', 'etherpadlite'), 300, PARAM_INT));
+
+$settings->add(new admin_setting_configtext('etherpadlite/timeout', get_string('timeout', 'etherpadlite'),
+                    get_string('timeoutdesc', 'etherpadlite'), 0, PARAM_INT));
+
 $settings->add(new admin_setting_configtext('etherpadlite/padname', get_string('padname', 'etherpadlite'),
                    get_string('padnamedesc', 'etherpadlite'), 'mymoodle2'));
 
 $settings->add(new admin_setting_configtext('etherpadlite/cookiedomain', get_string('cookiedomain', 'etherpadlite'),
                    get_string('cookiedomaindesc', 'etherpadlite'), '.mydomain.local'));
 $settings->add(new admin_setting_configtext('etherpadlite/cookietime', get_string('cookietime', 'etherpadlite'),
-                   get_string('cookietimedesc', 'etherpadlite'), '10800'));
+                   get_string('cookietimedesc', 'etherpadlite'), '10800', PARAM_INT));
 
 $settings->add(new admin_setting_configcheckbox('etherpadlite/ssl', get_string('ssl', 'etherpadlite'),
                    get_string('ssldesc', 'etherpadlite'), '0'));

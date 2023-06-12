@@ -36,6 +36,9 @@ $string['apiversiondesc'] = 'The default version is "1.2". You only should use v
 $string['apikeydesc'] = 'This is the API Key which this module needs to communicate with your etherpadlite server. This API key is stored on your etherpadliste server and can be copied from there.';
 $string['checkssl'] = 'Verify HTTPS cert';
 $string['checkssldesc'] = 'With this set, the HTTPS certificate of the etherpadlite server will be checked, to prevent man in the middle attacks';
+$string['connecttimeout'] = 'Connect Timeout';
+$string['connecttimeoutdesc'] = 'Connect timeout is the maximum amount of time in seconds allowed to connect to the server. It can be set to 0 to disable this limit, but this is not advisable in a production environment.<br>
+See also: <a href="https://curl.se/libcurl/c/CURLOPT_CONNECTTIMEOUT.html" target="blank">CURLOPT_CONNECTTIMEOUT</a>';
 $string['copylink'] = 'Copy pad link';
 $string['copylinkdesc'] = 'Add a button to the module navigation settings, which allows teachers and managers to easily get the full link for the current pad.';
 $string['cookiedomain'] = 'Cookie Domain';
@@ -77,6 +80,9 @@ $string['resetting_data'] = 'Reset Etherpad Lite data';
 $string['responsiveiframe'] = 'Responsive iFrame';
 $string['responsiveiframedesc'] = 'With this set, the iFrame for the Etherpad Lite editor will fit nicely into a responsive Moodle theme and will scale its width according to the browser window. If not, the Etherpad Lite editor will have a fixed width which basically adapts to the width of the browser window at page load time, but will not scale when the window is resized.';
 $string['restorewindowsize'] = 'Restore window size';
+$string['timeout'] = 'Timeout';
+$string['timeoutdesc'] = 'Timeout is the total time in seconds that we wait for a response to a given request, including the time it takes to establish the connection and the time it takes for the server to respond. It can be set to 0 to disable this limit, but this is not advisable in a production environment.<br>
+See also: <a href="https://curl.se/libcurl/c/CURLOPT_TIMEOUT.html" target="blank">CURLOPT_TIMEOUT</a>';
 $string['url'] = 'Server URL';
 $string['urldesc'] = 'This is the URL to your Etherpadlite server in the form: http[s]://host[:port]/[subDir/]';
 $string['urlisblocked'] = 'The current host "{$a}" is blocked';

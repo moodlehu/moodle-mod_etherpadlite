@@ -42,6 +42,11 @@ class client {
     /** Return value for invalid api key */
     const CODE_INVALID_API_KEY = 4;
 
+    /** The default value for connecttimeout */
+    const DEFAULT_CONNECTTIMEOUT = 300;
+    /** The default value for timeout */
+    const DEFAULT_TIMEOUT = 0;
+
     /** @var string */
     protected $apikey = '';
     /** @var string */
@@ -50,6 +55,8 @@ class client {
     protected $curl; // Use the moodle curl class.
     /** @var \stdClass */
     protected $config;
+    /** @var array */
+    protected $curloptions; // The curl options.
 
     /**
      * Constructor
@@ -81,7 +88,25 @@ class client {
         if (!empty($this->config->ignoresecurity)) {
             $settings['ignoresecurity'] = true;
         }
+
         $this->curl = new \curl($settings);
+        $this->curloptions = [];
+
+        // Set the connect and connection timeout from settings.
+        if (!isset($this->config->connecttimeout)) {
+            $this->config->connecttimeout = static::DEFAULT_CONNECTTIMEOUT;
+        }
+        if (!isset($this->config->timeout)) {
+            $this->config->timeout = static::DEFAULT_TIMEOUT;
+        }
+        $this->curloptions['CURLOPT_CONNECTTIMEOUT'] = $this->config->connecttimeout;
+        $this->curloptions['CURLOPT_TIMEOUT'] = $this->config->timeout;
+
+        // Should the certificate be verified.
+        if (empty($this->config->check_ssl)) {
+            $curloptions['CURLOPT_SSL_VERIFYHOST'] = 0;
+            $curloptions['CURLOPT_SSL_VERIFYPEER'] = 0;
+        }
 
         if (empty($this->config->apiversion)) {
             $this->config->apiversion = self::DEFAULT_API_VERSION;
@@ -131,19 +156,10 @@ class client {
         $arguments['apikey'] = $this->apikey;
         $url = $this->baseurl.'/'.$this->config->apiversion.'/'.$function;
 
-        // All posts and gets use the moodle curl class.
-        $options = [];
-        // Should the certificate be verified.
-        if (empty($this->config->check_ssl)) {
-            $options = [
-                'CURLOPT_SSL_VERIFYHOST' => 0,
-                'CURLOPT_SSL_VERIFYPEER' => 0,
-            ];
-        }
         if ($method === 'POST') {
-            $result = $this->curl->post($url, $arguments, $options);
+            $result = $this->curl->post($url, $arguments, $this->curloptions);
         } else {
-            $result = $this->curl->get($url, $arguments, $options);
+            $result = $this->curl->get($url, $arguments, $this->curloptions);
         }
 
         if (!$result) {
@@ -198,15 +214,7 @@ class client {
      */
     public function get_version() {
         $url = $this->baseurl;
-        $options = [];
-        // Should the certificate be verified.
-        if (empty($this->config->check_ssl)) {
-            $options = [
-                'CURLOPT_SSL_VERIFYHOST' => 0,
-                'CURLOPT_SSL_VERIFYPEER' => 0,
-            ];
-        }
-        $result = $this->curl->get($url, array(), $options);
+        $result = $this->curl->get($url, array(), $this->curloptions);
 
         $result = json_decode($result);
         if (!empty($result->currentVersion)) {
