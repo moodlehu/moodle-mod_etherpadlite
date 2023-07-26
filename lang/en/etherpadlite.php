@@ -73,6 +73,7 @@ $string['padname'] = 'Padname for all instances';
 $string['padnamedesc'] = 'A general padname can be helpful, if you want to find all pads from this Moodle installation on your etherpadlite server. Pad groups are generated autmatically.';
 $string['pluginadministration'] = 'Etherpad Lite administration';
 $string['pluginname'] = 'Etherpad Lite';
+$string['privacy:metadata'] = 'Ethepadlite plugin does not store any personal data.';
 $string['resetting_data'] = 'Reset Etherpad Lite data';
 $string['responsiveiframe'] = 'Responsive iFrame';
 $string['responsiveiframedesc'] = 'With this set, the iFrame for the Etherpad Lite editor will fit nicely into a responsive Moodle theme and will scale its width according to the browser window. If not, the Etherpad Lite editor will have a fixed width which basically adapts to the width of the browser window at page load time, but will not scale when the window is resized.';
