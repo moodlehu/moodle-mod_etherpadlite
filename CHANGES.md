@@ -4,6 +4,10 @@ moodle-mod_etherpadlite
 Changes
 -------
 
+### v4.2-r5
+
+* 2023-05-10 -  Added provider.php to pass test (Thanks to Karl Michael Reyes from Catalyst IT Canada LTD)
+
 ### v4.2-r4
 
 * 2023-06-12 -  add new settings to adjust CURLOPT_CONNECTTIMEOUT and CURLOPT_TIMEOUT (Thanks to Vincent Schneider)
