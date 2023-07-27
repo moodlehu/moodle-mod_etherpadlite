@@ -4,6 +4,10 @@ moodle-mod_etherpadlite
 Changes
 -------
 
+### v4.0-r10
+
+* 2023-05-10 -  Added provider.php to pass test (Thanks to Karl Michael Reyes from Catalyst IT Canada LTD)
+
 ### v4.0-r9
 
 * 2023-05-10 -  add missing slash
