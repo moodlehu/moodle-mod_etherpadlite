@@ -88,8 +88,8 @@ class backup_etherpadlite_activity_structure_step extends backup_activity_struct
                     // The HTML content of the main pad.
                     $html = $client->get_html($padid);
                     $text = $client->get_text($padid);
-                    $data->html = $html->html;
-                    $data->text = $text->text;
+                    $data->html = $html;
+                    $data->text = $text;
                     $content->set_source_array(array($data));
                 }
             }
