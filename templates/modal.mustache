@@ -21,9 +21,10 @@
 
     Example context (json):
     {
-        "id" : 1,
-        "legacy" : 1,
-        "name" : "Test pad"
+        "id"        : 1,
+        "legacy"    : 1,
+        "name"      : "Test pad"
+        "courseurl" : "https://example.com/course/view.php?id=2",
     }
 
 }}
@@ -40,6 +41,7 @@
             </button>
             {{name}}
         </h3>
+        {{> mod_etherpadlite/closebutton }}
       </div>
 
       <!-- Modal body -->

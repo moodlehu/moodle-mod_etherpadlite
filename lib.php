@@ -47,7 +47,7 @@ define('ETHERPADLITE_RESETFORM_RESET', 'etherpadlite_reset_data_');
  * @param  mod_etherpadlite_mod_form $mform
  * @return int                       The id of the newly inserted etherpadlite record
  */
-function etherpadlite_add_instance(stdClass $etherpadlite, ?mod_etherpadlite_mod_form $mform = null) {
+function etherpadlite_add_instance(stdClass $etherpadlite, $mform = null) {
     global $DB;
     $config = get_config('etherpadlite');
 
@@ -108,7 +108,7 @@ function etherpadlite_add_instance(stdClass $etherpadlite, ?mod_etherpadlite_mod
  * @param  mod_etherpadlite_mod_form $mform
  * @return bool                      Success/Fail
  */
-function etherpadlite_update_instance(stdClass $etherpadlite, ?mod_etherpadlite_mod_form $mform = null) {
+function etherpadlite_update_instance(stdClass $etherpadlite, $mform = null) {
     global $DB;
     require_once(__DIR__ . '/locallib.php');
 

@@ -48,6 +48,7 @@ class renderer extends \plugin_renderer_base {
         $content->frameurl         = $frameurl;
         $content->minwidth         = (empty($config->minwidth) ? 10 : $config->minwidth) . 'px';
         $content->responsiveiframe = !empty($config->responsiveiframe);
+        $content->courseurl        = new \moodle_url('/course/view.php', ['id' => $etherpadlite->course]);
         if (!$this->is_boost_based()) {
             $content->legacy = true;
         }

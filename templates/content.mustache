@@ -21,16 +21,17 @@
 
     Example context (json):
     {
-        "id" : 46,
-        "legacy" : 1,
-        "name" : "Test pad",
-        "summaryguest" : "...",
+        "id"               : 46,
+        "legacy"           : 1,
+        "name"             : "Test pad",
+        "summaryguest"     : "...",
         "responsiveiframe" : 1,
-        "minwidth" : "400px",
-        "frameurl" : "https://example.com",
-        "hasnotice" : 1,
-        "noticetype" : "warning",
-        "notice" : "The etherpad server url is not configured for this site"
+        "minwidth"         : "400px",
+        "frameurl"         : "https://example.com",
+        "hasnotice"        : 1,
+        "noticetype"       : "warning",
+        "courseurl"        : "https://example.com/course/view.php?id=2",
+        "notice"           : "The etherpad server url is not configured for this site"
     }
 
 }}
@@ -39,12 +40,13 @@
     {{notice}}
 </div>
 {{/hasnotice}}
-<h2>
+<h3>
     <button type="button" title="{{#str}}fullscreen, mod_etherpadlite{{/str}}" class="etherpadmodal btn btn-primary" data-toggle="modal" data-target="#etherpadmodal_{{id}}">
         <i class="fa fa-expand fa-lg" aria-hidden="true"></i>
     </button>
     {{name}}
-</h2>
+    {{> mod_etherpadlite/closebutton }}
+</h3>
 
 {{#summaryguest}}
     <div class="box generalbox mod_introbox py-3">

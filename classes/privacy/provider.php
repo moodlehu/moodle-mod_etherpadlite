@@ -14,6 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+
+namespace mod_etherpadlite\privacy;
+
 /**
  * Privacy Subsystem implementation for mod_etherpadlite.
  *
@@ -22,9 +25,6 @@
  * @author      Karl Michael Reyes <michaelreyes@catalyst-ca.net>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-namespace mod_etherpadlite\privacy;
-
 class provider implements \core_privacy\local\metadata\null_provider {
     /**
      * Get the language string identifier with the component's language

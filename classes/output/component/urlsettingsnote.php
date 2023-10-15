@@ -31,9 +31,7 @@ class urlsettingsnote implements \renderable, \templatable {
     /**
      * Constructor.
      *
-     * @param string $msg     the main message
-     * @param string $msginfo the additional message which will be displayed depended on the msgtype value
-     * @param string $msgtype the message type can be "info", "warning", "danger" or empty
+     * @param \stdClass $config The plugin configuration
      */
     public function __construct(\stdClass $config) {
         if (!empty($config->url)) {

@@ -64,7 +64,7 @@ class client {
      * Constructor.
      *
      * @param string $apikey
-     * @param string $apiurl
+     * @param string $baseurl
      */
     protected function __construct($apikey, $baseurl) {
         global $CFG;
@@ -124,6 +124,11 @@ class client {
         }
     }
 
+    /**
+     * Get the base url.
+     *
+     * @return string The url
+     */
     public function get_baseurl() {
         return $this->baseurl;
     }

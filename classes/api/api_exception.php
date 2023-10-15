@@ -26,6 +26,11 @@ namespace mod_etherpadlite\api;
  * @license    Apache License
  */
 class api_exception extends \moodle_exception {
+    /**
+     * Constructor.
+     *
+     * @param string $errorcode
+     */
     public function __construct($errorcode) {
         parent::__construct($errorcode, 'mod_etherpadlite', '', null, null);
     }
