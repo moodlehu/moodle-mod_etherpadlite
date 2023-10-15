@@ -17,29 +17,28 @@
 namespace mod_etherpadlite\api;
 
 /**
- * This is a dummy class for testing purpose to simulate the communicate with the etherpadlite server
+ * This is a dummy class for testing purpose to simulate the communicate with the etherpadlite server.
  *
  * @package    mod_etherpadlite
  *
  * @author     Andreas Grabs <moodle@grabs-edv.de>
- * @link       https://github.com/TomNomNom/etherpad-lite-client
+ * @see       https://github.com/TomNomNom/etherpad-lite-client
  * @license    Apache License
  */
 class dummy_client extends client {
-
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $apikey
      * @param string $baseurl
      */
     protected function __construct($apikey, $baseurl) {
         global $CFG;
-        require_once($CFG->libdir.'/filelib.php');
+        require_once($CFG->libdir . '/filelib.php');
 
         $this->config = get_config('etherpadlite');
 
-        if (strlen($apikey) < 1) {
+        if ($apikey === '') {
             throw new \InvalidArgumentException('Config has no API key');
         }
         $this->apikey = $apikey;
@@ -54,7 +53,7 @@ class dummy_client extends client {
 
         // Sometimes the etherpad host is located on an internal network like 127.0.0.1 or 10.0.0.0/8.
         // Since Moodle 4.0 this kind of host are blocked by default.
-        $settings = array();
+        $settings = [];
         if (!empty($this->config->ignoresecurity)) {
             $settings['ignoresecurity'] = true;
         }
@@ -65,20 +64,20 @@ class dummy_client extends client {
     }
 
     /**
-     * Creates a new session
+     * Creates a new session.
      *
-     * @param string $epgroupid
-     * @param string $authorid
-     * @return string|boolean the new session id or false
+     * @param  string      $epgroupid
+     * @param  string      $authorid
+     * @return string|bool the new session id or false
      */
     public function create_session($epgroupid, $authorid) {
         return true;
     }
 
     /**
-     * Create a new group
+     * Create a new group.
      *
-     * @return string|boolean The new group id or false
+     * @return string|bool The new group id or false
      */
     public function create_group() {
         return random_string(20);
@@ -87,20 +86,20 @@ class dummy_client extends client {
     /**
      * Creates a new pad in this group.
      *
-     * @param string $epgroupid
-     * @param string $padname
-     * @param string $text
-     * @return string|boolean The new pad id or false
+     * @param  string      $epgroupid
+     * @param  string      $padname
+     * @param  string      $text
+     * @return string|bool The new pad id or false
      */
     public function create_group_pad($epgroupid, $padname, $text = null) {
-        return 'g.' . random_string(20).'$'.$padname;
+        return 'g.' . random_string(20) . '$' . $padname;
     }
 
     /**
-     * Deletes a group
+     * Deletes a group.
      *
-     * @param string $epgroupid
-     * @return boolean
+     * @param  string $epgroupid
+     * @return bool
      */
     public function delete_group($epgroupid) {
         return true;
@@ -109,8 +108,8 @@ class dummy_client extends client {
     /**
      * Deletes a pad.
      *
-     * @param string $padid
-     * @return boolean
+     * @param  string $padid
+     * @return bool
      */
     public function delete_pad($padid) {
         return true;
@@ -119,8 +118,8 @@ class dummy_client extends client {
     /**
      * Returns the read only link of a pad.
      *
-     * @param string $padid
-     * @return string|boolean The readonly id or false
+     * @param  string      $padid
+     * @return string|bool The readonly id or false
      */
     public function get_readonly_id($padid) {
         return random_string(20);
@@ -129,8 +128,8 @@ class dummy_client extends client {
     /**
      * Create a new author.
      *
-     * @param string $name
-     * @return string|boolean The new author id or false
+     * @param  string      $name
+     * @return string|bool The new author id or false
      */
     public function create_author($name) {
         return random_string(20);
@@ -139,9 +138,9 @@ class dummy_client extends client {
     /**
      * This functions helps you to map your application author ids to etherpad lite author ids.
      *
-     * @param string $authormapper
-     * @param string $name
-     * @return string|boolean the new author id or false
+     * @param  string      $authormapper
+     * @param  string      $name
+     * @return string|bool the new author id or false
      */
     public function create_author_if_not_exists_for($authormapper, $name) {
         return $this->create_author($name);
@@ -150,8 +149,8 @@ class dummy_client extends client {
     /**
      * Returns the text of a pad.
      *
-     * @param string $padid
-     * @param string $rev
+     * @param  string $padid
+     * @param  string $rev
      * @return string
      */
     public function get_text($padid, $rev = null) {
@@ -161,8 +160,8 @@ class dummy_client extends client {
     /**
      * Returns the text of a pad as html.
      *
-     * @param string $padid
-     * @param string $rev
+     * @param  string $padid
+     * @param  string $rev
      * @return string
      */
     public function get_html($padid, $rev = null) {
@@ -172,9 +171,9 @@ class dummy_client extends client {
     /**
      * Sets the text for a pad.
      *
-     * @param string $padid
-     * @param string $text
-     * @return boolean
+     * @param  string $padid
+     * @param  string $text
+     * @return bool
      */
     public function set_text($padid, $text) {
         return true;
@@ -183,12 +182,11 @@ class dummy_client extends client {
     /**
      * Sets the html text of a pad.
      *
-     * @param string $padid
-     * @param string $html
-     * @return boolean
+     * @param  string $padid
+     * @param  string $html
+     * @return bool
      */
     public function set_html($padid, $html) {
         return true;
     }
-
 }

@@ -38,41 +38,41 @@ class util {
      *     $course,
      *     $cm,
      *     $etherpadlite,
-     * ]
+     * ].
      *
-     * @param int $id The coursemodule id
-     * @param int $a The instance id from table etherpadlite
+     * @param  int   $id The coursemodule id
+     * @param  int   $a  The instance id from table etherpadlite
      * @return array
      */
     public static function get_coursemodule($id, $a) {
         global $DB;
 
         if ($id) {
-            $cm = get_coursemodule_from_id('etherpadlite', $id, 0, false, MUST_EXIST);
-            $course = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
+            $cm           = get_coursemodule_from_id('etherpadlite', $id, 0, false, MUST_EXIST);
+            $course       = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
             $etherpadlite = $DB->get_record('etherpadlite', ['id' => $cm->instance], '*', MUST_EXIST);
         } else if ($a) {
             $etherpadlite = $DB->get_record('etherpadlite', ['id' => $a], '*', MUST_EXIST);
-            $course = $DB->get_record('course', ['id' => $etherpadlite->course], '*', MUST_EXIST);
-            $cm = get_coursemodule_from_instance('etherpadlite', $etherpadlite->id, $course->id, false, MUST_EXIST);
+            $course       = $DB->get_record('course', ['id' => $etherpadlite->course], '*', MUST_EXIST);
+            $cm           = get_coursemodule_from_instance('etherpadlite', $etherpadlite->id, $course->id, false, MUST_EXIST);
         } else {
             throw new \moodle_exception('You must specify a course_module ID or an instance ID');
         }
 
-        return array($course, $cm, $etherpadlite);
+        return [$course, $cm, $etherpadlite];
     }
 
     /**
      * Reset the content of an etherpadlite instance. This affects the main pad and also all related group pads.
      *
-     * @param \stdClass $etherpadlite
-     * @param \mod_etherpadlite\api\client $client
+     * @param  \stdClass                    $etherpadlite
+     * @param  \mod_etherpadlite\api\client $client
      * @return bool
      */
-    public static function reset_etherpad_content(\stdClass $etherpadlite, \mod_etherpadlite\api\client $client) {
+    public static function reset_etherpad_content(\stdClass $etherpadlite, api\client $client) {
         $config = get_config('etherpadlite');
 
-        $padid = $etherpadlite->uri;
+        $padid  = $etherpadlite->uri;
         $groups = groups_get_all_groups($etherpadlite->course);
 
         $epgroupid = explode('$', $padid);
@@ -93,6 +93,7 @@ class util {
         } catch (\Exception $e) {
             $result = false;
         }
+
         return $result;
     }
 }

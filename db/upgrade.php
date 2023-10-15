@@ -22,6 +22,7 @@
  * @author     Timo Welde <tjwelde@gmail.com>
  * @copyright  2012 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @param mixed $oldversion
  */
 
 // This file keeps track of upgrades to
@@ -42,34 +43,32 @@
 // using the functions defined in lib/ddllib.php.
 
 /**
- * Process the upgrade of this plugin
+ * Process the upgrade of this plugin.
  *
- * @param integer $oldversion
- * @return boolean
+ * @param  int  $oldversion
+ * @return bool
  */
-function xmldb_etherpadlite_upgrade($oldversion=0) {
-
+function xmldb_etherpadlite_upgrade($oldversion = 0) {
     global $CFG, $THEME, $DB;
 
     $dbman = $DB->get_manager(); // Loads ddl manager and xmldb classes.
 
     if ($oldversion < 2013042901) {
-        set_config("url", $CFG->etherpadlite_url, "etherpadlite");
-        set_config("apikey", $CFG->etherpadlite_apikey, "etherpadlite");
-        set_config("padname", $CFG->etherpadlite_padname, "etherpadlite");
-        set_config("cookiedomain", $CFG->etherpadlite_cookiedomain, "etherpadlite");
-        set_config("cookietime", $CFG->etherpadlite_cookietime, "etherpadlite");
-        set_config("ssl", $CFG->etherpadlite_ssl, "etherpadlite");
-        set_config("check_ssl", $CFG->etherpadlite_check_ssl, "etherpadlite");
-        set_config("adminguests", $CFG->etherpadlite_adminguests, "etherpadlite");
+        set_config('url', $CFG->etherpadlite_url, 'etherpadlite');
+        set_config('apikey', $CFG->etherpadlite_apikey, 'etherpadlite');
+        set_config('padname', $CFG->etherpadlite_padname, 'etherpadlite');
+        set_config('cookiedomain', $CFG->etherpadlite_cookiedomain, 'etherpadlite');
+        set_config('cookietime', $CFG->etherpadlite_cookietime, 'etherpadlite');
+        set_config('ssl', $CFG->etherpadlite_ssl, 'etherpadlite');
+        set_config('check_ssl', $CFG->etherpadlite_check_ssl, 'etherpadlite');
+        set_config('adminguests', $CFG->etherpadlite_adminguests, 'etherpadlite');
 
-        $DB->delete_records_select("config", "name LIKE 'etherpadlite_%'");
+        $DB->delete_records_select('config', "name LIKE 'etherpadlite_%'");
 
-        upgrade_mod_savepoint(true, 2013042901, "etherpadlite");
+        upgrade_mod_savepoint(true, 2013042901, 'etherpadlite');
     }
 
     if ($oldversion < 2022041400) {
-
         // Define table etherpadlite_mgroups to be created.
         $table = new xmldb_table('etherpadlite_mgroups');
 
@@ -93,7 +92,6 @@ function xmldb_etherpadlite_upgrade($oldversion=0) {
     }
 
     if ($oldversion < 2022083102) {
-
         // Define field timeopen to be added to etherpadlite.
         $table = new xmldb_table('etherpadlite');
         $field = new xmldb_field('timeopen', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'timemodified');

@@ -21,31 +21,31 @@
  * @copyright  2022 University of vienna
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die;
 
 $observers = [
     [
-        'eventname'   => '\core\event\group_created',
-        'callback'    => '\mod_etherpadlite\observer\group::group_created',
+        'eventname' => '\core\event\group_created',
+        'callback'  => '\mod_etherpadlite\observer\group::group_created',
     ],
     [
-        'eventname'   => '\core\event\group_deleted',
-        'callback'    => '\mod_etherpadlite\observer\group::group_deleted',
-        'internal'    => true,
+        'eventname' => '\core\event\group_deleted',
+        'callback'  => '\mod_etherpadlite\observer\group::group_deleted',
+        'internal'  => true,
     ],
     [
-        'eventname'   => '\core\event\grouping_group_assigned',
-        'callback'    => '\mod_etherpadlite\observer\group::grouping_group_assigned',
-        'internal'    => true,
+        'eventname' => '\core\event\grouping_group_assigned',
+        'callback'  => '\mod_etherpadlite\observer\group::grouping_group_assigned',
+        'internal'  => true,
     ],
     [
-        'eventname'   => '\core\event\grouping_group_unassigned',
-        'callback'    => '\mod_etherpadlite\observer\group::grouping_group_unassigned',
-        'internal'    => true,
+        'eventname' => '\core\event\grouping_group_unassigned',
+        'callback'  => '\mod_etherpadlite\observer\group::grouping_group_unassigned',
+        'internal'  => true,
     ],
     [
-        'eventname'   => '\core\event\course_module_updated',
-        'callback'    => '\mod_etherpadlite\observer\group::course_module_updated',
-        'internal'    => true,
+        'eventname' => '\core\event\course_module_updated',
+        'callback'  => '\mod_etherpadlite\observer\group::course_module_updated',
+        'internal'  => true,
     ],
 ];

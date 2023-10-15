@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Code fragment to define the version of etherpadlite
+ * Code fragment to define the version of etherpadlite.
  *
  * This fragment is called by moodle_needs_upgrading() and /admin/index.php
  *
@@ -24,11 +24,10 @@
  * @copyright  2012 Humboldt-UniversitÃ¤t zu Berlin <moodle-support@cms.hu-berlin.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+defined('MOODLE_INTERNAL') || die;
 
-defined('MOODLE_INTERNAL') || die();
-
-$plugin->version    = 2023072700;  // The current module version (Date: YYYYMMDDXX).
-$plugin->release    = 'v4.2-r5 (2023-07-27)';
-$plugin->requires   = 2022041200;
-$plugin->component  = 'mod_etherpadlite';
-$plugin->maturity   = MATURITY_STABLE;
+$plugin->version   = 2023072700;  // The current module version (Date: YYYYMMDDXX).
+$plugin->release   = 'v4.2-r5 (2023-07-27)';
+$plugin->requires  = 2022041200;
+$plugin->component = 'mod_etherpadlite';
+$plugin->maturity  = MATURITY_STABLE;

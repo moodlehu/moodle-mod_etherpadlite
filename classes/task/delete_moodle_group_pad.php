@@ -40,7 +40,7 @@ class delete_moodle_group_pad extends \core\task\adhoc_task {
     public function execute() {
         global $DB;
 
-        $data = $this->get_custom_data();
+        $data     = $this->get_custom_data();
         $etherpad = $DB->get_record('etherpadlite', ['id' => $data->etherpadliteid]);
         try {
             list($course, $cm) = get_course_and_cm_from_instance($data->etherpadliteid, 'etherpadlite');
@@ -54,7 +54,7 @@ class delete_moodle_group_pad extends \core\task\adhoc_task {
             \core\notification::add($e->getMessage(), \core\notification::ERROR);
         }
 
-        $config = get_config("etherpadlite");
+        $config = get_config('etherpadlite');
         try {
             $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url);
             $client->delete_pad($data->paduri);

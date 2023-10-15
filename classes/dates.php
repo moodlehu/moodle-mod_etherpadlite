@@ -35,33 +35,32 @@ use core\activity_dates;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class dates extends activity_dates {
-
     /**
-     * Returns a list of important dates in mod_wordcloud
+     * Returns a list of important dates in mod_wordcloud.
      *
      * @return array
      */
     protected function get_dates(): array {
         global $DB;
 
-        $timeopen = $this->cm->customdata['timeopen'] ?? null;
+        $timeopen  = $this->cm->customdata['timeopen'] ?? null;
         $timeclose = $this->cm->customdata['timeclose'] ?? null;
 
-        $now = time();
+        $now   = time();
         $dates = [];
 
         if ($timeopen) {
             $openlabelid = $timeopen > $now ? 'activitydate:opens' : 'activitydate:opened';
-            $dates[] = [
-                    'label' => get_string($openlabelid, 'core_course'),
+            $dates[]     = [
+                    'label'     => get_string($openlabelid, 'core_course'),
                     'timestamp' => (int) $timeopen,
             ];
         }
 
         if ($timeclose) {
             $closelabelid = $timeclose > $now ? 'activitydate:closes' : 'activitydate:closed';
-            $dates[] = [
-                    'label' => get_string($closelabelid, 'core_course'),
+            $dates[]      = [
+                    'label'     => get_string($closelabelid, 'core_course'),
                     'timestamp' => (int) $timeclose,
             ];
         }

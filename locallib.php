@@ -15,19 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Etherpadlite locallib
+ * Etherpadlite locallib.
  *
  * @package mod_etherpadlite
  * @copyright  20222 University of Vienna
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @param mixed $padid
+ * @param mixed $paduri
+ * @param mixed $client
  */
 
 /**
- * Delete all grouppads
+ * Delete all grouppads.
  *
- * @param string $padid
- * @param string $paduri
- * @param \mod_etherpadlite\api\client $client
+ * @param  string                       $padid
+ * @param  string                       $paduri
+ * @param  \mod_etherpadlite\api\client $client
  * @return void
  */
 function mod_etherpadlite_delete_all_mgrouppads($padid, $paduri, $client) {
@@ -43,18 +46,18 @@ function mod_etherpadlite_delete_all_mgrouppads($padid, $paduri, $client) {
 }
 
 /**
- * Add an etherpadlite grouppad
+ * Add an etherpadlite grouppad.
  *
- * @param \stdClass $formdata
- * @param string $mpadid
- * @param string $paduri
- * @param \mod_etherpadlite\api\client $client
+ * @param  \stdClass                    $formdata
+ * @param  string                       $mpadid
+ * @param  string                       $paduri
+ * @param  \mod_etherpadlite\api\client $client
  * @return void
  */
 function mod_etherpadlite_add_mgrouppads($formdata, $mpadid, $paduri, $client) {
     global $DB;
 
-    $config = get_config("etherpadlite");
+    $config = get_config('etherpadlite');
     $groups = groups_get_all_groups($formdata->course, 0, $formdata->groupingid);
 
     $epgroupid = explode('$', $paduri);
@@ -64,9 +67,9 @@ function mod_etherpadlite_add_mgrouppads($formdata, $mpadid, $paduri, $client) {
     foreach ($groups as $group) {
         $mgroup = new stdClass();
         if (!$DB->record_exists('etherpadlite_mgroups', ['padid' => $mpadid, 'groupid' => $group->id])) {
-            $mgroup->padid = $mpadid;
+            $mgroup->padid   = $mpadid;
             $mgroup->groupid = $group->id;
-            array_push($mgroupdb, $mgroup);
+            $mgroupdb[]      = $mgroup;
             try {
                 $padid = $client->create_group_pad($epgroupid, $config->padname . $group->id);
             } catch (Exception $e) {

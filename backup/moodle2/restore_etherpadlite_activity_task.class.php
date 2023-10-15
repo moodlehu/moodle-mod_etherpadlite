@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->dirroot . '/mod/etherpadlite/backup/moodle2/restore_etherpadlite_stepslib.php');
 
 /**
- * Etherpadlite restore task that provides all the settings and steps to perform one complete restore of the activity
+ * Etherpadlite restore task that provides all the settings and steps to perform one complete restore of the activity.
  *
  * @package    mod_etherpadlite
  * @author     Timo Welde <tjwelde@gmail.com>
@@ -27,16 +27,15 @@ require_once($CFG->dirroot . '/mod/etherpadlite/backup/moodle2/restore_etherpadl
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_etherpadlite_activity_task extends restore_activity_task {
-
     /**
-     * Define (add) particular settings this activity can have
+     * Define (add) particular settings this activity can have.
      */
     protected function define_my_settings() {
         // No particular settings for this activity.
     }
 
     /**
-     * Define (add) particular steps this activity can have
+     * Define (add) particular steps this activity can have.
      */
     protected function define_my_steps() {
         // Etherpadlite only has one structure step.
@@ -45,10 +44,10 @@ class restore_etherpadlite_activity_task extends restore_activity_task {
 
     /**
      * Define the contents in the activity that must be
-     * processed by the link decoder
+     * processed by the link decoder.
      */
     public static function define_decode_contents() {
-        $contents = array();
+        $contents = [];
 
         // Nothing to decode.
 
@@ -57,11 +56,11 @@ class restore_etherpadlite_activity_task extends restore_activity_task {
 
     /**
      * Define the decoding rules for links belonging
-     * to the activity to be executed by the link decoder
+     * to the activity to be executed by the link decoder.
      */
     public static function define_decode_rules() {
         global $DB;
-        $rules = array();
+        $rules = [];
 
         // Nothing to decode.
 
@@ -72,10 +71,10 @@ class restore_etherpadlite_activity_task extends restore_activity_task {
      * Define the restore log rules that will be applied
      * by the {@see restore_logs_processor} when restoring
      * etherpadlite logs. It must return one array
-     * of {@see restore_log_rule} objects
+     * of {@see restore_log_rule} objects.
      */
     public static function define_restore_log_rules() {
-        $rules = array();
+        $rules = [];
 
         $rules[] = new restore_log_rule('etherpadlite', 'add', 'view.php?id={course_module}', '{etherpadlite}');
         $rules[] = new restore_log_rule('etherpadlite', 'update', 'view.php?id={course_module}', '{etherpadlite}');
@@ -91,21 +90,20 @@ class restore_etherpadlite_activity_task extends restore_activity_task {
      * Define the restore log rules that will be applied
      * by the {@see restore_logs_processor} when restoring
      * course logs. It must return one array
-     * of {@see restore_log_rule} objects
+     * of {@see restore_log_rule} objects.
      *
      * Note this rules are applied when restoring course logs
      * by the restore final task, but are defined here at
      * activity level. All them are rules not linked to any module instance (cmid = 0)
      */
     public static function define_restore_log_rules_for_course() {
-        $rules = array();
+        $rules = [];
 
         // Fix old wrong uses (missing extension).
         $rules[] = new restore_log_rule('etherpadlite', 'view all', 'index?id={course}', null,
-                                        null, null, 'index.php?id={course}');
+            null, null, 'index.php?id={course}');
         $rules[] = new restore_log_rule('etherpadlite', 'view all', 'index.php?id={course}', null);
 
         return $rules;
     }
-
 }

@@ -17,7 +17,7 @@
 namespace mod_etherpadlite\output\component;
 
 /**
- * Output component to render a notification
+ * Output component to render a notification.
  *
  * @package    mod_etherpadlite
  * @author     Andreas Grabs <moodle@grabs-edv.de>
@@ -36,35 +36,35 @@ class urlsettingsnote implements \renderable, \templatable {
     protected $data;
 
     /** @var array Fa icons for message types */
-    protected $msgtypes = array(
-        self::MSGTYPE_INFO => 'info-circle',
+    protected $msgtypes = [
+        self::MSGTYPE_INFO    => 'info-circle',
         self::MSGTYPE_WARNING => 'exclamation-triangle',
-        self::MSGTYPE_DANGER => 'exclamation-triangle',
-    );
+        self::MSGTYPE_DANGER  => 'exclamation-triangle',
+    ];
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param string $msg The main message.
-     * @param string $msginfo The additional message which will be displayed depended on the msgtype value.
-     * @param string $msgtype The message type can be "info", "warning", "danger" or empty.
+     * @param string $msg     the main message
+     * @param string $msginfo the additional message which will be displayed depended on the msgtype value
+     * @param string $msgtype the message type can be "info", "warning", "danger" or empty
      */
     public function __construct(string $msg, string $msginfo = '', string $msgtype = '') {
-        $this->data = array();
+        $this->data        = [];
         $this->data['msg'] = $msg;
         if (!empty($msginfo)) {
             $this->data['msginfo'] = $msginfo;
             if (isset($this->msgtypes[$msgtype])) {
                 $this->data['msgtype'] = $msgtype;
-                $this->data['icon'] = $this->msgtypes[$msgtype];
+                $this->data['icon']    = $this->msgtypes[$msgtype];
             }
         }
     }
 
     /**
-     * Get the mustache context data
+     * Get the mustache context data.
      *
-     * @param \renderer_base $output
+     * @param  \renderer_base  $output
      * @return \stdClass|array
      */
     public function export_for_template(\renderer_base $output) {

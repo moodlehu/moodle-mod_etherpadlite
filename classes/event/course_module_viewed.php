@@ -25,7 +25,6 @@ namespace mod_etherpadlite\event;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class course_module_viewed extends \core\event\course_module_viewed {
-
     /**
      * Init method.
      *
@@ -37,11 +36,11 @@ class course_module_viewed extends \core\event\course_module_viewed {
     }
 
     /**
-     * Get URL related to the action
+     * Get URL related to the action.
      *
      * @return \moodle_url
      */
     public function get_url() {
-        return new \moodle_url('/mod/etherpadlite/view.php', array('id' => $this->contextinstanceid));
+        return new \moodle_url('/mod/etherpadlite/view.php', ['id' => $this->contextinstanceid]);
     }
 }

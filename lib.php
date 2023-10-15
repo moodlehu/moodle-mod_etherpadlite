@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Library of functions and constants for module etherpadlite
+ * Library of functions and constants for module etherpadlite.
  *
  * This file should have two well differenced parts:
  *   - All the core Moodle functions, neeeded to allow
@@ -35,7 +35,6 @@
  * @copyright  2012 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 define('ETHERPADLITE_RESETFORM_RESET', 'etherpadlite_reset_data_');
 
 /**
@@ -44,19 +43,19 @@ define('ETHERPADLITE_RESETFORM_RESET', 'etherpadlite_reset_data_');
  * Given an object containing all the necessary data, (defined by the form in mod_form.php) this function
  * will create a new instance and return the id number of the new instance.
  *
- * @param stdClass $etherpadlite An object from the form in mod_form.php
- * @param mod_etherpadlite_mod_form $mform
- * @return int The id of the newly inserted etherpadlite record
+ * @param  stdClass                  $etherpadlite An object from the form in mod_form.php
+ * @param  mod_etherpadlite_mod_form $mform
+ * @return int                       The id of the newly inserted etherpadlite record
  */
-function etherpadlite_add_instance(stdClass $etherpadlite, mod_etherpadlite_mod_form $mform = null) {
-
+function etherpadlite_add_instance(stdClass $etherpadlite, ?mod_etherpadlite_mod_form $mform = null) {
     global $DB;
-    $config = get_config("etherpadlite");
+    $config = get_config('etherpadlite');
 
     try {
         $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url);
     } catch (\InvalidArgumentException $e) {
         \core\notification::add($e->getMessage(), \core\notification::ERROR);
+
         return false;
     }
 
@@ -82,10 +81,10 @@ function etherpadlite_add_instance(stdClass $etherpadlite, mod_etherpadlite_mod_
     if ($etherpadlite->groupmode != 0 && $groups) {
         $mgroupdb = [];
         foreach ($groups as $group) {
-            $mgroup = new stdClass();
-            $mgroup->padid = $padinstanceid;
+            $mgroup          = new stdClass();
+            $mgroup->padid   = $padinstanceid;
             $mgroup->groupid = $group->id;
-            array_push($mgroupdb, $mgroup);
+            $mgroupdb[]      = $mgroup;
 
             try {
                 $padid = $client->create_group_pad($epgroupid, $config->padname . $group->id);
@@ -95,6 +94,7 @@ function etherpadlite_add_instance(stdClass $etherpadlite, mod_etherpadlite_mod_
         }
         $DB->insert_records('etherpadlite_mgroups', $mgroupdb);
     }
+
     return $padinstanceid;
 }
 
@@ -104,29 +104,30 @@ function etherpadlite_add_instance(stdClass $etherpadlite, mod_etherpadlite_mod_
  * Given an object containing all the necessary data, (defined by the form in mod_form.php) this function
  * will update an existing instance with new data.
  *
- * @param stdClass $etherpadlite An object from the form in mod_form.php
- * @param mod_etherpadlite_mod_form $mform
- * @return boolean Success/Fail
+ * @param  stdClass                  $etherpadlite An object from the form in mod_form.php
+ * @param  mod_etherpadlite_mod_form $mform
+ * @return bool                      Success/Fail
  */
-function etherpadlite_update_instance(stdClass $etherpadlite, mod_etherpadlite_mod_form $mform = null) {
+function etherpadlite_update_instance(stdClass $etherpadlite, ?mod_etherpadlite_mod_form $mform = null) {
     global $DB;
-    require_once(__DIR__.'/locallib.php');
+    require_once(__DIR__ . '/locallib.php');
 
     $etherpadlite->timemodified = time();
-    $etherpadlite->id = $etherpadlite->instance;
+    $etherpadlite->id           = $etherpadlite->instance;
 
     // You may have to add extra stuff in here.
     if (empty($etherpadlite->guestsallowed)) {
         $etherpadlite->guestsallowed = 0;
     }
     // If groupmode is not set anymore, delete mgroupspads if exist.
-    $formdata = $mform->get_data();
+    $formdata        = $mform->get_data();
     $etherpadliteuri = $DB->get_field('etherpadlite', 'uri', ['id' => $etherpadlite->id]);
-    $config = get_config("etherpadlite");
+    $config          = get_config('etherpadlite');
     try {
         $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url);
     } catch (\InvalidArgumentException $e) {
         \core\notification::add($e->getMessage(), \core\notification::ERROR);
+
         return false;
     }
     if ($formdata->groupmode != 0) {
@@ -142,15 +143,14 @@ function etherpadlite_update_instance(stdClass $etherpadlite, mod_etherpadlite_m
  * this function will permanently delete the instance
  * and any data that depends on it.
  *
- * @param int $id Id of the module instance
- * @return boolean Success/Failure
+ * @param  int  $id Id of the module instance
+ * @return bool Success/Failure
  */
 function etherpadlite_delete_instance($id) {
-
     global $DB;
-    require_once(__DIR__.'/locallib.php');
+    require_once(__DIR__ . '/locallib.php');
 
-    if (! $etherpadlite = $DB->get_record('etherpadlite', array('id' => $id))) {
+    if (!$etherpadlite = $DB->get_record('etherpadlite', ['id' => $id])) {
         return false;
     }
 
@@ -158,11 +158,11 @@ function etherpadlite_delete_instance($id) {
 
     // Delete any dependent records here.
 
-    $config = get_config("etherpadlite");
+    $config = get_config('etherpadlite');
     try {
         $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url);
 
-        $padid = $etherpadlite->uri;
+        $padid     = $etherpadlite->uri;
         $epgroupid = explode('$', $padid);
         $epgroupid = $epgroupid[0];
 
@@ -171,12 +171,11 @@ function etherpadlite_delete_instance($id) {
 
         $client->delete_pad($padid);
         $client->delete_group($epgroupid);
-
     } catch (\InvalidArgumentException $e) {
         \core\notification::add($e->getMessage(), \core\notification::ERROR);
     }
 
-    if (! $DB->delete_records('etherpadlite', array('id' => $etherpadlite->id))) {
+    if (!$DB->delete_records('etherpadlite', ['id' => $etherpadlite->id])) {
         $result = false;
     }
 
@@ -188,34 +187,32 @@ function etherpadlite_delete_instance($id) {
  * user has done with a given particular instance of this module
  * Used for user activity reports.
  * $return->time = the time they did it
- * $return->info = a short text description
+ * $return->info = a short text description.
  *
- * @param \stdClass $course
- * @param \stdClass $user
- * @param \stdClass $mod
- * @param \stdClass $etherpadlite
+ * @param  \stdClass      $course
+ * @param  \stdClass      $user
+ * @param  \stdClass      $mod
+ * @param  \stdClass      $etherpadlite
  * @return \stdClass|null
  */
 function etherpadlite_user_outline($course, $user, $mod, $etherpadlite) {
     return null;
 }
 
-
 /**
- * Print a detailed representation
+ * Print a detailed representation.
  *
  * Print a reprensentation of what a user has done with a given particular instance of this module, for user activity reports.
  *
- * @param \stdClass $course
- * @param \stdClass $user
- * @param \stdClass $mod
- * @param \stdClass $etherpadlite
- * @return boolean
+ * @param  \stdClass $course
+ * @param  \stdClass $user
+ * @param  \stdClass $mod
+ * @param  \stdClass $etherpadlite
+ * @return bool
  */
 function etherpadlite_user_complete($course, $user, $mod, $etherpadlite) {
     return true;
 }
-
 
 /**
  * Return true if there was output, or false is there was none.
@@ -223,29 +220,27 @@ function etherpadlite_user_complete($course, $user, $mod, $etherpadlite) {
  * Given a course and a time, this module should find recent activity
  * that has occurred in etherpadlite activities and print it out.
  *
- * @param \stdClass $course
- * @param boolean $isteacher
- * @param int $timestart
- * @return boolean
+ * @param  \stdClass $course
+ * @param  bool      $isteacher
+ * @param  int       $timestart
+ * @return bool
  * @todo Finish documenting this function
  */
 function etherpadlite_print_recent_activity($course, $isteacher, $timestart) {
     return false;  // True if anything was printed, otherwise false.
 }
 
-
 /**
  * Function to be run periodically according to the moodle cron
  * This function searches for things that need to be done, such
  * as sending out mail, toggling flags etc ...
  *
- * @return boolean
+ * @return bool
  * @todo Finish documenting this function
  **/
-function etherpadlite_cron () {
+function etherpadlite_cron() {
     return true;
 }
-
 
 /**
  * Must return an array of user records (all data) who are participants
@@ -253,30 +248,28 @@ function etherpadlite_cron () {
  * in the instance, independient of his role (student, teacher, admin...)
  * See other modules as example.
  *
- * @param int $etherpadliteid ID of an instance of this module
+ * @param  int   $etherpadliteid ID of an instance of this module
  * @return mixed boolean/array of students
  */
 function etherpadlite_get_participants($etherpadliteid) {
     return false;
 }
 
-
 /**
  * Execute post-install custom actions for the module
- * This function was added in 1.9
+ * This function was added in 1.9.
  *
- * @return boolean true if success, false on error
+ * @return bool true if success, false on error
  */
 function etherpadlite_install() {
     return true;
 }
 
-
 /**
  * Execute post-uninstall custom actions for the module
- * This function was added in 1.9
+ * This function was added in 1.9.
  *
- * @return boolean true if success, false on error
+ * @return bool true if success, false on error
  */
 function etherpadlite_uninstall() {
     return true;
@@ -285,11 +278,11 @@ function etherpadlite_uninstall() {
 /**
  * Checks whether or not a given feature is supported.
  *
- * @param string $feature FEATURE_xx constant for requested feature
- * @return boolean True if module supports feature, null if doesn't know
+ * @param  string $feature FEATURE_xx constant for requested feature
+ * @return bool   True if module supports feature, null if doesn't know
  */
 function etherpadlite_supports($feature) {
-    switch($feature) {
+    switch ($feature) {
         case FEATURE_GROUPS:
             return true;
         case FEATURE_GROUPINGS:
@@ -312,7 +305,6 @@ function etherpadlite_supports($feature) {
             return true;
         case FEATURE_MOD_PURPOSE:
             return MOD_PURPOSE_COLLABORATION;
-
         default:
             return false;
     }
@@ -322,24 +314,22 @@ function etherpadlite_supports($feature) {
  * Optionally extend the module settings menu for teachers and managers:
  * add a button which copies the url of the current pad to the clipboard.
  *
- * @param settings_navigation $settingsnav The settings navigation object
- * @param navigation_node $navigationnode The node to add module settings to
- * @return boolean true if success, false on error
+ * @param  settings_navigation $settingsnav    The settings navigation object
+ * @param  navigation_node     $navigationnode The node to add module settings to
+ * @return bool                true if success, false on error
  */
 function etherpadlite_extend_settings_navigation($settingsnav, $navigationnode) {
     global $USER, $PAGE;
 
     if (has_capability('mod/etherpadlite:addinstance', $PAGE->cm->context)) {
-
         $config = get_config('etherpadlite');
 
         // Check if getting the pad url via the menu is enabled in the plugin settings.
         if ($config->copylink) {
-
             // Create navigation item with pseudo link.
             // It's just used as a button which triggers some javascript to copy the
             // pad url to the clipboard.
-            $url = new moodle_url( '#' );
+            $url                   = new moodle_url('#');
             $copytoclipboardbutton = navigation_node::create(
                 get_string('copylink', 'mod_etherpadlite'),
                 $url,
@@ -348,22 +338,22 @@ function etherpadlite_extend_settings_navigation($settingsnav, $navigationnode) 
                 'testkey',
                 new pix_icon('t/copy', '')
             );
-            $copytoclipboardbutton->classes = array( 'copy_etherpadlink_to_clipboard_button' );
+            $copytoclipboardbutton->classes = ['copy_etherpadlink_to_clipboard_button'];
 
             // Add the copy to clipboard button to the module menu navigation.
-            $navigationnode->add_node( $copytoclipboardbutton );
+            $navigationnode->add_node($copytoclipboardbutton);
 
             // Get the full etherpad url and pass it as a variable to the
             // javascript which handles the copying and the notification.
             global $DB;
-            $paduri  = $DB->get_record( 'etherpadlite',   array( 'id' => $PAGE->cm->instance ), 'uri', MUST_EXIST );
-            $url     = $config->url . 'p/' . $paduri->uri;
+            $paduri = $DB->get_record('etherpadlite', ['id' => $PAGE->cm->instance], 'uri', MUST_EXIST);
+            $url    = $config->url . 'p/' . $paduri->uri;
 
             // Include the javascript file, which handles the copy-to-clipboard process.
             $PAGE->requires->js_call_amd(
                 'mod_etherpadlite/copy_to_clipboard',
                 'init',
-                array( $url )
+                [$url]
             );
         }
     }
@@ -380,29 +370,31 @@ function etherpadlite_extend_settings_navigation($settingsnav, $navigationnode) 
  * @return string
  */
 function etherpadlite_gen_random_string() {
-    $length = 5;
-    $characters = "0123456789";
-    $string = "";
-    for ($p = 0; $p < $length; $p++) {
+    $length     = 5;
+    $characters = '0123456789';
+    $string     = '';
+    for ($p = 0; $p < $length; ++$p) {
         $string .= $characters[mt_rand(0, strlen($characters) - 1)];
     }
+
     return $string;
 }
 
 /**
- * Check whether or not guests are allowed
+ * Check whether or not guests are allowed.
  *
- * @param \stdClass $etherpadlite
+ * @param  \stdClass $etherpadlite
  * @return void
  */
 function etherpadlite_guestsallowed($etherpadlite) {
     global $CFG;
 
-    if (get_config("etherpadlite", "adminguests") == 1) {
+    if (get_config('etherpadlite', 'adminguests') == 1) {
         if ($etherpadlite->guestsallowed) {
             return true;
         }
     }
+
     return false;
 }
 
@@ -413,20 +405,20 @@ function etherpadlite_guestsallowed($etherpadlite) {
  * Given a course_module object, this function returns any "extra" information that may be needed
  * when printing this activity in a course listing.  See get_array_of_activities() in course/lib.php.
  *
- * @param stdClass $coursemodule The coursemodule object (record).
- * @return cached_cm_info An object on information that the courses
- *                        will know about (most noticeably, an icon).
+ * @param  stdClass       $coursemodule the coursemodule object (record)
+ * @return cached_cm_info an object on information that the courses
+ *                        will know about (most noticeably, an icon)
  */
 function etherpadlite_get_coursemodule_info($coursemodule) {
     global $DB;
 
-    $dbparams = array('id' => $coursemodule->instance);
-    $fields = 'id, course, name, timeopen, timeclose';
-    if (! $etherpad = $DB->get_record('etherpadlite', $dbparams)) {
+    $dbparams = ['id' => $coursemodule->instance];
+    $fields   = 'id, course, name, timeopen, timeclose';
+    if (!$etherpad = $DB->get_record('etherpadlite', $dbparams)) {
         return false;
     }
 
-    $result = new cached_cm_info();
+    $result       = new cached_cm_info();
     $result->name = $etherpad->name;
 
     if ($coursemodule->showdescription) {
@@ -445,30 +437,29 @@ function etherpadlite_get_coursemodule_info($coursemodule) {
     return $result;
 }
 
-
 /**
  * This function is used by the reset_course_userdata function in moodlelib.
  * This function will remove all data from the specified etherpadlite.
  *
- * @param object $data the data submitted from the reset course.
- * @return array status array
+ * @param  object $data the data submitted from the reset course
+ * @return array  status array
  */
 function etherpadlite_reset_userdata($data) {
     global $DB;
-    $config = get_config("etherpadlite");
+    $config = get_config('etherpadlite');
 
-    $resetetherpadlites = array();
-    $status = array();
-    $componentstr = get_string('modulenameplural', 'etherpadlite');
+    $resetetherpadlites = [];
+    $status             = [];
+    $componentstr       = get_string('modulenameplural', 'etherpadlite');
 
     // Get the relevant entries from $data.
     foreach ($data as $key => $value) {
-        switch(true) {
+        switch (true) {
             case substr($key, 0, strlen(ETHERPADLITE_RESETFORM_RESET)) == ETHERPADLITE_RESETFORM_RESET:
                 if ($value == 1) {
                     $templist = explode('_', $key);
                     if (isset($templist[3])) {
-                        $resetetherpadlites[] = intval($templist[3]);
+                        $resetetherpadlites[] = (int) $templist[3];
                     }
                 }
                 break;
@@ -483,34 +474,35 @@ function etherpadlite_reset_userdata($data) {
         $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url);
     } catch (\InvalidArgumentException $e) {
         \core\notification::add($e->getMessage(), \core\notification::ERROR);
+
         return $status;
     }
 
     // Reset the selected etherpadlites.
     foreach ($resetetherpadlites as $id) {
-        $etherpadlite = $DB->get_record('etherpadlite', array('id' => $id));
+        $etherpadlite = $DB->get_record('etherpadlite', ['id' => $id]);
         // Delete etherpad lite data.
-        $result = \mod_etherpadlite\util::reset_etherpad_content($etherpadlite, $client);
-        $status[] = array(
-            'component' => $componentstr.': '.$etherpadlite->name,
-            'item' => get_string('resetting_data', 'etherpadlite'),
-            'error' => !$result,
-        );
+        $result   = \mod_etherpadlite\util::reset_etherpad_content($etherpadlite, $client);
+        $status[] = [
+            'component' => $componentstr . ': ' . $etherpadlite->name,
+            'item'      => get_string('resetting_data', 'etherpadlite'),
+            'error'     => !$result,
+        ];
     }
 
     // Updating dates - shift may be negative too.
     if ($data->timeshift) {
         // Any changes to the list of dates that needs to be rolled should be same during course restore and course reset.
         // See MDL-9367.
-        $shifterror = !shift_course_mod_dates('etherpadlite', array('timeopen', 'timeclose'), $data->timeshift, $data->courseid);
-        $status[] = array('component' => $componentstr, 'item' => get_string('datechanged'), 'error' => $shifterror);
+        $shifterror = !shift_course_mod_dates('etherpadlite', ['timeopen', 'timeclose'], $data->timeshift, $data->courseid);
+        $status[]   = ['component' => $componentstr, 'item' => get_string('datechanged'), 'error' => $shifterror];
     }
 
     return $status;
 }
 
 /**
- * Called by course/reset.php
+ * Called by course/reset.php.
  *
  * @param object $mform form passed by reference
  */
@@ -519,13 +511,13 @@ function etherpadlite_reset_course_form_definition(&$mform) {
 
     $mform->addElement('header', 'etherpadliteheader', get_string('modulenameplural', 'etherpadlite'));
 
-    if (!$etherpadlites = $DB->get_records('etherpadlite', array('course' => $COURSE->id), 'name')) {
+    if (!$etherpadlites = $DB->get_records('etherpadlite', ['course' => $COURSE->id], 'name')) {
         return;
     }
 
     $mform->addElement('static', 'hint', get_string('resetting_data', 'etherpadlite'));
     foreach ($etherpadlites as $etherpadlite) {
-        $mform->addElement('checkbox', ETHERPADLITE_RESETFORM_RESET.$etherpadlite->id, $etherpadlite->name);
+        $mform->addElement('checkbox', ETHERPADLITE_RESETFORM_RESET . $etherpadlite->id, $etherpadlite->name);
     }
 }
 
@@ -537,12 +529,13 @@ function etherpadlite_reset_course_form_definition(&$mform) {
 function etherpadlite_reset_course_form_defaults($course) {
     global $DB;
 
-    $return = array();
-    if (!$etherpadlites = $DB->get_records('etherpadlite', array('course' => $course->id), 'name')) {
+    $return = [];
+    if (!$etherpadlites = $DB->get_records('etherpadlite', ['course' => $course->id], 'name')) {
         return;
     }
     foreach ($etherpadlites as $etherpadlite) {
-        $return[ETHERPADLITE_RESETFORM_RESET.$etherpadlite->id] = true;
+        $return[ETHERPADLITE_RESETFORM_RESET . $etherpadlite->id] = true;
     }
+
     return $return;
 }

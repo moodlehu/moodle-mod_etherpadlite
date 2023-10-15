@@ -44,30 +44,27 @@
  * @copyright  2012 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+defined('MOODLE_INTERNAL') || die;
 
-defined('MOODLE_INTERNAL') || die();
-
-require_once($CFG->dirroot.'/course/moodleform_mod.php');
+require_once($CFG->dirroot . '/course/moodleform_mod.php');
 
 /**
- * Etherpadlite configuration form
+ * Etherpadlite configuration form.
  *
  * @author     Timo Welde <tjwelde@gmail.com>
  * @copyright  2012 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class mod_etherpadlite_mod_form extends moodleform_mod {
-
     /**
-     * Defines the mform elements
+     * Defines the mform elements.
      *
      * @return void
      */
     public function definition() {
-
         global $COURSE, $CFG;
-        $mform = $this->_form;
-        $config = get_config("etherpadlite");
+        $mform  = $this->_form;
+        $config = get_config('etherpadlite');
 
         try {
             $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url);
@@ -81,7 +78,7 @@ class mod_etherpadlite_mod_form extends moodleform_mod {
         $mform->addElement('header', 'general', get_string('general', 'form'));
 
         // Adding the standard "name" field.
-        $mform->addElement('text', 'name', get_string('etherpadlitename', 'etherpadlite'), array('size' => '64'));
+        $mform->addElement('text', 'name', get_string('etherpadlitename', 'etherpadlite'), ['size' => '64']);
         if (!empty($CFG->formatstringstriptags)) {
             $mform->setType('name', PARAM_TEXT);
         } else {
@@ -94,22 +91,21 @@ class mod_etherpadlite_mod_form extends moodleform_mod {
         $this->standard_intro_elements(get_string('etherpadliteintro', 'mod_etherpadlite'));
 
         // Is writing for guests allowed?
-        if (get_config("etherpadlite", "adminguests") == 1) {
+        if (get_config('etherpadlite', 'adminguests') == 1) {
             $mform->addElement('checkbox', 'guestsallowed', get_string('guestsallowed', 'etherpadlite'));
             $mform->addHelpButton('guestsallowed', 'guestsallowed', 'etherpadlite');
         }
 
         $mform->addElement('header', 'availabilityhdr', get_string('availability'));
         $mform->addElement('date_time_selector', 'timeopen', get_string('activityopen', 'etherpadlite'),
-            array('optional' => true));
+            ['optional' => true]);
         $mform->addHelpButton('timeopen', 'activityopenclose', 'etherpadlite');
         $mform->addElement('date_time_selector', 'timeclose', get_string('activityclose', 'etherpadlite'),
-            array('optional' => true));
+            ['optional' => true]);
 
         $this->standard_coursemodule_elements();
 
         // Add standard buttons, common to all modules.
         $this->add_action_buttons();
-
     }
 }

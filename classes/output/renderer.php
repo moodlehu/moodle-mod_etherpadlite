@@ -17,7 +17,7 @@
 namespace mod_etherpadlite\output;
 
 /**
- * Renderer class for this plugin
+ * Renderer class for this plugin.
  *
  * @package    mod_etherpadlite
  * @author     Andreas Grabs <moodle@grabs-edv.de>
@@ -25,14 +25,13 @@ namespace mod_etherpadlite\output;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class renderer extends \plugin_renderer_base {
-
     /**
-     * Renders the etherpad frame
+     * Renders the etherpad frame.
      *
-     * @param \stdClass $etherpadlite
-     * @param \stdClass $cm
-     * @param string $frameurl
-     * @return string The rendered html output
+     * @param  \stdClass $etherpadlite
+     * @param  \stdClass $cm
+     * @param  string    $frameurl
+     * @return string    The rendered html output
      */
     public function render_etherpad($etherpadlite, $cm, $frameurl) {
         $config = get_config('etherpadlite');
@@ -42,12 +41,12 @@ class renderer extends \plugin_renderer_base {
             $summaryguest = get_string('summaryguest', 'etherpadlite');
         }
 
-        $content = new \stdClass();
-        $content->id = $cm->id;
-        $content->name = $etherpadlite->name;
-        $content->summaryguest = $summaryguest;
-        $content->frameurl = $frameurl;
-        $content->minwidth = (empty($config->minwidth) ? 10 : $config->minwidth).'px';
+        $content                   = new \stdClass();
+        $content->id               = $cm->id;
+        $content->name             = $etherpadlite->name;
+        $content->summaryguest     = $summaryguest;
+        $content->frameurl         = $frameurl;
+        $content->minwidth         = (empty($config->minwidth) ? 10 : $config->minwidth) . 'px';
         $content->responsiveiframe = !empty($config->responsiveiframe);
         if (!$this->is_boost_based()) {
             $content->legacy = true;
@@ -55,9 +54,9 @@ class renderer extends \plugin_renderer_base {
 
         // Add a warning notice.
         if (\mod_etherpadlite\api\client::is_testing()) {
-            $content->hasnotice = true;
+            $content->hasnotice  = true;
             $content->noticetype = \core\notification::WARNING;
-            $content->notice = get_string('urlnotset', 'mod_etherpadlite');
+            $content->notice     = get_string('urlnotset', 'mod_etherpadlite');
         }
 
         return $this->render_from_template('mod_etherpadlite/content', $content);
@@ -66,7 +65,7 @@ class renderer extends \plugin_renderer_base {
     /**
      * Checks whether or not the current theme is based on boost.
      *
-     * @return boolean
+     * @return bool
      */
     public function is_boost_based() {
         if (strcmp($this->page->theme->name, 'boost') === 0) {
@@ -76,6 +75,7 @@ class renderer extends \plugin_renderer_base {
                 return true;
             }
         }
+
         return false;
     }
 }

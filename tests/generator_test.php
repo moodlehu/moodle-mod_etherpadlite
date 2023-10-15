@@ -23,6 +23,7 @@
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace mod_etherpadlite;
 
 /**
@@ -35,9 +36,8 @@ namespace mod_etherpadlite;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class generator_test extends \advanced_testcase {
-
     /**
-     * Test create an instance
+     * Test create an instance.
      *
      * @covers ::etherpadlite_add_instance()
      * @return void
@@ -49,34 +49,34 @@ class generator_test extends \advanced_testcase {
 
         $course = $this->getDataGenerator()->create_course();
 
-        $this->assertFalse($DB->record_exists('etherpadlite', array('course' => $course->id)));
+        $this->assertFalse($DB->record_exists('etherpadlite', ['course' => $course->id]));
         $etherpadlite = $this->getDataGenerator()->create_module(
             'etherpadlite',
-            array(
-                'course'       => $course->id,
-                'idnumber'     => 'mh1',
-                'name'         => 'testpad1',
-                'intro'        => 'Intro to Testpad1',
+            [
+                'course'        => $course->id,
+                'idnumber'      => 'mh1',
+                'name'          => 'testpad1',
+                'intro'         => 'Intro to Testpad1',
                 'guestsallowed' => false,
-                'timeopen' => 0,
-                'timeclose' => 0,
-            )
+                'timeopen'      => 0,
+                'timeclose'     => 0,
+            ]
         );
-        $records = $DB->get_records('etherpadlite', array('course' => $course->id), 'id');
+        $records = $DB->get_records('etherpadlite', ['course' => $course->id], 'id');
         $this->assertEquals(1, count($records));
         $this->assertTrue(array_key_exists($etherpadlite->id, $records));
 
-        $params = array(
-            'course'       => $course->id,
-            'idnumber'     => 'mh2',
-            'name'         => 'testpad2',
-            'intro'        => 'Intro to Testpad2',
+        $params = [
+            'course'        => $course->id,
+            'idnumber'      => 'mh2',
+            'name'          => 'testpad2',
+            'intro'         => 'Intro to Testpad2',
             'guestsallowed' => false,
-            'timeopen' => 0,
-            'timeclose' => 0,
-        );
+            'timeopen'      => 0,
+            'timeclose'     => 0,
+        ];
         $etherpadlite = $this->getDataGenerator()->create_module('etherpadlite', $params);
-        $records = $DB->get_records('etherpadlite', array('course' => $course->id), 'id');
+        $records      = $DB->get_records('etherpadlite', ['course' => $course->id], 'id');
         $this->assertEquals(2, count($records));
         $this->assertEquals('testpad2', $records[$etherpadlite->id]->name);
     }

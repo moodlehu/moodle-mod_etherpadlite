@@ -23,6 +23,7 @@
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace mod_etherpadlite;
 
 /**
@@ -36,7 +37,7 @@ namespace mod_etherpadlite;
  */
 class lib_test extends \advanced_testcase {
     /**
-     * Test create an instance
+     * Test create an instance.
      *
      * @covers ::etherpadlite_add_instance()
      * @return void
@@ -50,16 +51,16 @@ class lib_test extends \advanced_testcase {
         $course = $this->getDataGenerator()->create_course();
 
         // Now create a etherpadlite instance.
-        $params['course'] = $course->id;
-        $params['timeopen'] = 0;
+        $params['course']    = $course->id;
+        $params['timeopen']  = 0;
         $params['timeclose'] = 0;
-        $params['name'] = 'testpad1';
-        $params['intro'] = 'Intro to Testpad1';
-        $etherpadlite = $this->getDataGenerator()->create_module('etherpadlite', $params);
+        $params['name']      = 'testpad1';
+        $params['intro']     = 'Intro to Testpad1';
+        $etherpadlite        = $this->getDataGenerator()->create_module('etherpadlite', $params);
 
         // Test different ways to construct the structure object.
         $pseudocm = get_coursemodule_from_instance('etherpadlite', $etherpadlite->id); // Object similar to cm_info.
-        $cm = get_fast_modinfo($course)->instances['etherpadlite'][$etherpadlite->id]; // Instance of cm_info.
+        $cm       = get_fast_modinfo($course)->instances['etherpadlite'][$etherpadlite->id]; // Instance of cm_info.
 
         $this->assertTrue($cm->instance == $etherpadlite->id);
         $this->assertTrue($DB->count_records('etherpadlite', null) == 1);
@@ -67,7 +68,7 @@ class lib_test extends \advanced_testcase {
     }
 
     /**
-     * Try to get an existing instance
+     * Try to get an existing instance.
      *
      * @covers \mod_etherpadlite\util::get_coursemodule()
      * @return void
@@ -81,21 +82,21 @@ class lib_test extends \advanced_testcase {
         $coursenew = $this->getDataGenerator()->create_course();
 
         // Now create a new etherpadlite instance.
-        $params['course'] = $coursenew->id;
-        $params['timeopen'] = 0;
+        $params['course']    = $coursenew->id;
+        $params['timeopen']  = 0;
         $params['timeclose'] = 0;
-        $params['name'] = 'testpad1';
-        $params['intro'] = 'Intro to Testpad1';
-        $etherpadlitenew = $this->getDataGenerator()->create_module('etherpadlite', $params);
-        $cmnew = get_coursemodule_from_instance('etherpadlite', $etherpadlitenew->id);
+        $params['name']      = 'testpad1';
+        $params['intro']     = 'Intro to Testpad1';
+        $etherpadlitenew     = $this->getDataGenerator()->create_module('etherpadlite', $params);
+        $cmnew               = get_coursemodule_from_instance('etherpadlite', $etherpadlitenew->id);
 
-        $course = $cm = $etherpadlite = null;
+        $course                           = $cm = $etherpadlite = null;
         list($course, $cm, $etherpadlite) = \mod_etherpadlite\util::get_coursemodule($cmnew->id, 0);
         $this->assertIsObject($course);
         $this->assertIsObject($cm);
         $this->assertIsObject($etherpadlite);
 
-        $course = $cm = $etherpadlite = null;
+        $course                           = $cm = $etherpadlite = null;
         list($course, $cm, $etherpadlite) = \mod_etherpadlite\util::get_coursemodule(0, $etherpadlitenew->id);
         $this->assertIsObject($course);
         $this->assertIsObject($cm);
@@ -117,55 +118,54 @@ class lib_test extends \advanced_testcase {
         $course = $this->getDataGenerator()->create_course();
 
         // Now create the first etherpadlite instance.
-        $params['course'] = $course->id;
-        $params['timeopen'] = 0;
+        $params['course']    = $course->id;
+        $params['timeopen']  = 0;
         $params['timeclose'] = 0;
-        $params['name'] = 'testpad1';
-        $params['intro'] = 'Intro to Testpad1';
+        $params['name']      = 'testpad1';
+        $params['intro']     = 'Intro to Testpad1';
         $params['groupmode'] = 2;
-        $etherpadlite1 = $this->getDataGenerator()->create_module('etherpadlite', $params);
+        $etherpadlite1       = $this->getDataGenerator()->create_module('etherpadlite', $params);
 
         // Now create the second etherpadlite instance.
-        $params['course'] = $course->id;
-        $params['timeopen'] = 0;
+        $params['course']    = $course->id;
+        $params['timeopen']  = 0;
         $params['timeclose'] = 0;
-        $params['name'] = 'testpad2';
-        $params['intro'] = 'Intro to Testpad2';
+        $params['name']      = 'testpad2';
+        $params['intro']     = 'Intro to Testpad2';
         $params['groupmode'] = 2;
-        $etherpadlite2 = $this->getDataGenerator()->create_module('etherpadlite', $params);
+        $etherpadlite2       = $this->getDataGenerator()->create_module('etherpadlite', $params);
 
-        $this->assertFalse($DB->record_exists('etherpadlite_mgroups', array('padid' => $etherpadlite1->id)));
-        $this->assertFalse($DB->record_exists('etherpadlite_mgroups', array('padid' => $etherpadlite2->id)));
+        $this->assertFalse($DB->record_exists('etherpadlite_mgroups', ['padid' => $etherpadlite1->id]));
+        $this->assertFalse($DB->record_exists('etherpadlite_mgroups', ['padid' => $etherpadlite2->id]));
 
         // We create a group and after that there should be a group pad for each pad.
         $group1 = $this->getDataGenerator()->create_group(
-            array(
+            [
                 'courseid' => $course->id,
-                'name' => 'testgroup-1',
-            )
+                'name'     => 'testgroup-1',
+            ]
         );
-        $this->assertTrue($DB->count_records('etherpadlite_mgroups', array('padid' => $etherpadlite1->id)) == 1);
-        $this->assertTrue($DB->count_records('etherpadlite_mgroups', array('padid' => $etherpadlite2->id)) == 1);
+        $this->assertTrue($DB->count_records('etherpadlite_mgroups', ['padid' => $etherpadlite1->id]) == 1);
+        $this->assertTrue($DB->count_records('etherpadlite_mgroups', ['padid' => $etherpadlite2->id]) == 1);
 
         // We create a group and after that there should be a group pad for each pad.
         $group2 = $this->getDataGenerator()->create_group(
-            array(
+            [
                 'courseid' => $course->id,
-                'name' => 'testgroup-2',
-            )
+                'name'     => 'testgroup-2',
+            ]
         );
-        $this->assertTrue($DB->count_records('etherpadlite_mgroups', array('padid' => $etherpadlite1->id)) == 2);
-        $this->assertTrue($DB->count_records('etherpadlite_mgroups', array('padid' => $etherpadlite2->id)) == 2);
+        $this->assertTrue($DB->count_records('etherpadlite_mgroups', ['padid' => $etherpadlite1->id]) == 2);
+        $this->assertTrue($DB->count_records('etherpadlite_mgroups', ['padid' => $etherpadlite2->id]) == 2);
 
         // Now create the third etherpadlite instance afterwards and check the group pad is created too.
-        $params['course'] = $course->id;
-        $params['timeopen'] = 0;
+        $params['course']    = $course->id;
+        $params['timeopen']  = 0;
         $params['timeclose'] = 0;
-        $params['name'] = 'testpad3';
-        $params['intro'] = 'Intro to Testpad3';
+        $params['name']      = 'testpad3';
+        $params['intro']     = 'Intro to Testpad3';
         $params['groupmode'] = 2;
-        $etherpadlite3 = $this->getDataGenerator()->create_module('etherpadlite', $params);
-        $this->assertTrue($DB->count_records('etherpadlite_mgroups', array('padid' => $etherpadlite3->id)) == 2);
-
+        $etherpadlite3       = $this->getDataGenerator()->create_module('etherpadlite', $params);
+        $this->assertTrue($DB->count_records('etherpadlite_mgroups', ['padid' => $etherpadlite3->id]) == 2);
     }
 }

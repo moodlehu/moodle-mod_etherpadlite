@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This page prints a particular instance of etherpadlite
+ * This page prints a particular instance of etherpadlite.
  *
  * @package    mod_etherpadlite
  *
@@ -24,11 +24,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
-require_once(dirname(__FILE__).'/lib.php');
+require_once(dirname(__DIR__, 2) . '/config.php');
+require_once(__DIR__ . '/lib.php');
 
 $id = optional_param('id', 0, PARAM_INT); // The course_module id.
-$a = optional_param('a', 0, PARAM_INT);  // The etherpadlite instance id.
+$a  = optional_param('a', 0, PARAM_INT);  // The etherpadlite instance id.
 
 list($course, $cm, $etherpadlite) = \mod_etherpadlite\util::get_coursemodule($id, $a);
 
@@ -45,7 +45,7 @@ if ($config->ssl) {
     // The https_required doesn't work, if $CFG->loginhttps doesn't work.
     $CFG->httpswwwroot = str_replace('http:', 'https:', $CFG->wwwroot);
     if (!isset($_SERVER['HTTPS'])) {
-        $url = $CFG->httpswwwroot.'/mod/etherpadlite/view.php?id='.$id;
+        $url = $CFG->httpswwwroot . '/mod/etherpadlite/view.php?id=' . $id;
 
         redirect($url);
     }
@@ -59,24 +59,24 @@ $padid = $etherpadlite->uri;
 $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url);
 
 // Get group mode.
-$groupmode = groups_get_activity_groupmode($cm);
+$groupmode      = groups_get_activity_groupmode($cm);
 $canaddinstance = has_capability('mod/etherpadlite:addinstance', $context);
-$isgroupmember = true;
-$urlpadid = $padid;
+$isgroupmember  = true;
+$urlpadid       = $padid;
 
 if ($groupmode) {
     $activegroup = groups_get_activity_group($cm, true);
     if ($activegroup != 0) {
-        $urlpadid = $urlpadid . $activegroup;
+        $urlpadid .= $activegroup;
         $isgroupmember = groups_is_member($activegroup);
     }
 }
 
 // Check if Activity is in the open timeframe.
-$time = time();
-$openrestricted = !empty($etherpadlite->timeopen) && ($etherpadlite->timeopen >= $time);
+$time            = time();
+$openrestricted  = !empty($etherpadlite->timeopen) && ($etherpadlite->timeopen >= $time);
 $closerestricted = !empty($etherpadlite->timeclose) && ($etherpadlite->timeclose <= $time);
-$timerestricted = ($openrestricted || $closerestricted) && !$canaddinstance;
+$timerestricted  = ($openrestricted || $closerestricted) && !$canaddinstance;
 
 // Are there some guest restrictions?
 $guestrestricted = isguestuser() && !etherpadlite_guestsallowed($etherpadlite);
@@ -100,7 +100,7 @@ $epgroupid = $epgroupid[0];
 
 // Create author if not exists for logged in user (with full name as it is obtained from Moodle core library).
 if ((isguestuser() && etherpadlite_guestsallowed($etherpadlite)) || !$isgroupmember) {
-    $authorid = $client->create_author('Guest-'.etherpadlite_gen_random_string());
+    $authorid = $client->create_author('Guest-' . etherpadlite_gen_random_string());
 } else {
     $authorid = $client->create_author_if_not_exists_for($USER->id, fullname($USER));
 }
@@ -116,8 +116,8 @@ if (!$client->create_session($epgroupid, $authorid)) {
 // END of Etherpad Lite init.
 // Display the etherpadlite and possibly results.
 $eventparams = [
-    'context' => $context,
-    'objectid' => $etherpadlite->id
+    'context'  => $context,
+    'objectid' => $etherpadlite->id,
 ];
 $event = \mod_etherpadlite\event\course_module_viewed::create($eventparams);
 $event->add_record_snapshot('course_modules', $cm);
@@ -125,7 +125,7 @@ $event->add_record_snapshot('course', $course);
 $event->add_record_snapshot('etherpadlite', $etherpadlite);
 $event->trigger();
 
-$PAGE->set_title(get_string('modulename', 'mod_etherpadlite').': '.format_string($etherpadlite->name));
+$PAGE->set_title(get_string('modulename', 'mod_etherpadlite') . ': ' . format_string($etherpadlite->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
 
@@ -139,8 +139,8 @@ echo $renderer->header();
 
 require_once($CFG->libdir . '/grouplib.php');
 $groupselecturl = new moodle_url($CFG->wwwroot . '/mod/etherpadlite/view.php',
-    array('id' => $cm->id
-    ));
+    ['id' => $cm->id,
+    ]);
 
 groups_print_activity_menu($cm, $groupselecturl);
 

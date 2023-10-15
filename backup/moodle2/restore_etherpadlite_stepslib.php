@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Structure step to restore one etherpadlite activity
+ * Structure step to restore one etherpadlite activity.
  *
  * @package    mod_etherpadlite
  * @author     Timo Welde <tjwelde@gmail.com>
@@ -23,14 +23,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_etherpadlite_activity_structure_step extends restore_activity_structure_step {
-
     /**
-     * Define the restore structure for the etherpadlite plugin
+     * Define the restore structure for the etherpadlite plugin.
      *
      * @return array
      */
     protected function define_structure() {
-        $paths = [];
+        $paths    = [];
         $userinfo = $this->get_setting_value('userinfo');
 
         $paths[] = new restore_path_element('etherpadlite', '/activity/etherpadlite');
@@ -44,22 +43,23 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
     }
 
     /**
-     * Process the restore
+     * Process the restore.
      *
-     * @param \stdClass|array $data
+     * @param  \stdClass|array $data
      * @return void
      */
     protected function process_etherpadlite($data) {
         global $DB;
-        $config = get_config('etherpadlite');
-        $data = (object)$data;
-        $oldid = $data->id;
+        $config       = get_config('etherpadlite');
+        $data         = (object) $data;
+        $oldid        = $data->id;
         $data->course = $this->get_courseid();
 
         try {
             $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url);
         } catch (\InvalidArgumentException $e) {
             \core\notification::add($e->getMessage(), \core\notification::ERROR);
+
             return;
         }
 
@@ -69,19 +69,20 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
 
         if (!$epgroupid) {
             \core\notification::add('Could not create etherpad group', \core\notification::ERROR);
+
             return;
-        } else {
-            $padid = $client->create_group_pad($epgroupid, $config->padname);
         }
+        $padid = $client->create_group_pad($epgroupid, $config->padname);
 
         if (!$padid) {
             \core\notification::add('Could not create etherpad group pad', \core\notification::ERROR);
+
             return;
         }
 
         $data->uri = $padid;
 
-        $data->timecreated = $this->apply_date_offset($data->timecreated);
+        $data->timecreated  = $this->apply_date_offset($data->timecreated);
         $data->timemodified = $this->apply_date_offset($data->timemodified);
 
         // Insert the etherpadlite record.
@@ -96,10 +97,10 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
         if ($cm->groupmode != 0 && $groups) {
             $mgroupdb = [];
             foreach ($groups as $group) {
-                $mgroup = [];
-                $mgroup['padid'] = $newitemid;
+                $mgroup            = [];
+                $mgroup['padid']   = $newitemid;
                 $mgroup['groupid'] = $group->id;
-                array_push($mgroupdb, $mgroup);
+                $mgroupdb[]        = $mgroup;
 
                 try {
                     $padid = $client->create_group_pad($epgroupid, $config->padname . $group->id);
@@ -109,30 +110,30 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
             }
             $DB->insert_records('etherpadlite_mgroups', $mgroupdb);
         }
-
     }
 
     /**
-     * Restore the etherpadlite content
+     * Restore the etherpadlite content.
      *
-     * @param \stdClass|array $data
+     * @param  \stdClass|array $data
      * @return void
      */
     protected function process_etherpadlite_content($data) {
         global $DB;
         $config = get_config('etherpadlite');
-        $data = (object)$data;
+        $data   = (object) $data;
 
         try {
             $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url);
         } catch (\InvalidArgumentException $e) {
             \core\notification::add($e->getMessage(), \core\notification::ERROR);
+
             return;
         }
 
-        $newid = $this->get_new_parentid('etherpadlite');
+        $newid        = $this->get_new_parentid('etherpadlite');
         $etherpadlite = $DB->get_record('etherpadlite', ['id' => $newid]);
-        $padid = $etherpadlite->uri;
+        $padid        = $etherpadlite->uri;
 
         // Set the content for the main pad.
         try {
@@ -140,7 +141,7 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
             $client->set_html($padid, $data->html);
         } catch (Exception $e) {
             // Something went wrong.
-            echo "\n\nsetHTML Failed with message ". $e->getMessage();
+            echo "\n\nsetHTML Failed with message " . $e->getMessage();
         }
 
         if (!empty($data->grouppaddata)) {
@@ -153,14 +154,14 @@ class restore_etherpadlite_activity_structure_step extends restore_activity_stru
                     $client->set_html($grouppadid, $grouppadcontent->html);
                 } catch (Exception $e) {
                     // Something went wrong.
-                    echo "\n\nsetHTML Failed with message ". $e->getMessage();
+                    echo "\n\nsetHTML Failed with message " . $e->getMessage();
                 }
             }
         }
     }
 
     /**
-     * Add files after the database structure is restored
+     * Add files after the database structure is restored.
      *
      * @return void
      */

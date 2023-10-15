@@ -24,21 +24,20 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class behat_mod_etherpadlite_generator extends behat_generator_base {
-
     /**
      * Get a list of the entities that Behat can create using the generator step.
      *
      * @return array
      */
     protected function get_creatable_entities(): array {
-        return array();
+        return [];
     }
 
     /**
      * Get the assignment CMID using an activity idnumber.
      *
-     * @param string $idnumber
-     * @return int The cmid
+     * @param  string $idnumber
+     * @return int    The cmid
      */
     protected function get_etherpadlite_id(string $idnumber): int {
         return $this->get_activity_id($idnumber);

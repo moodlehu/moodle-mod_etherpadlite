@@ -28,9 +28,6 @@
 
 require_once(__DIR__ . '/../../../../lib/behat/behat_base.php');
 
-use Behat\Gherkin\Node\TableNode as TableNode,
-    Behat\Mink\Exception\ExpectationException as ExpectationException;
-
 /**
  * Steps definitions related to mod_feedback.
  *
@@ -38,5 +35,4 @@ use Behat\Gherkin\Node\TableNode as TableNode,
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class behat_mod_etherpadlite extends behat_base {
-
 }
