@@ -53,7 +53,7 @@ function etherpadlite_add_instance(stdClass $etherpadlite, ?mod_etherpadlite_mod
 
     try {
         $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url);
-    } catch (\InvalidArgumentException $e) {
+    } catch (\mod_etherpadlite\api\api_exception $e) {
         \core\notification::add($e->getMessage(), \core\notification::ERROR);
 
         return false;
@@ -125,7 +125,7 @@ function etherpadlite_update_instance(stdClass $etherpadlite, ?mod_etherpadlite_
     $config          = get_config('etherpadlite');
     try {
         $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url);
-    } catch (\InvalidArgumentException $e) {
+    } catch (\mod_etherpadlite\api\api_exception $e) {
         \core\notification::add($e->getMessage(), \core\notification::ERROR);
 
         return false;
@@ -171,7 +171,7 @@ function etherpadlite_delete_instance($id) {
 
         $client->delete_pad($padid);
         $client->delete_group($epgroupid);
-    } catch (\InvalidArgumentException $e) {
+    } catch (\mod_etherpadlite\api\api_exception $e) {
         \core\notification::add($e->getMessage(), \core\notification::ERROR);
     }
 
@@ -347,7 +347,8 @@ function etherpadlite_extend_settings_navigation($settingsnav, $navigationnode) 
             // javascript which handles the copying and the notification.
             global $DB;
             $paduri = $DB->get_record('etherpadlite', ['id' => $PAGE->cm->instance], 'uri', MUST_EXIST);
-            $url    = $config->url . 'p/' . $paduri->uri;
+            $url    = trim($config->url, '/');
+            $url    .= '/p/' . $paduri->uri;
 
             // Include the javascript file, which handles the copy-to-clipboard process.
             $PAGE->requires->js_call_amd(
@@ -472,7 +473,7 @@ function etherpadlite_reset_userdata($data) {
 
     try {
         $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url);
-    } catch (\InvalidArgumentException $e) {
+    } catch (\mod_etherpadlite\api\api_exception $e) {
         \core\notification::add($e->getMessage(), \core\notification::ERROR);
 
         return $status;

@@ -89,9 +89,9 @@ if ($guestrestricted || $grouprestricted || $timerestricted) {
     if (!$readonlyid = $client->get_readonly_id($urlpadid)) {
         throw new \moodle_exception('could not get readonly id');
     }
-    $fullurl = $config->url . 'p/' . $readonlyid;
+    $fullurl = $client->get_baseurl() . '/p/' . $readonlyid;
 } else {
-    $fullurl = $config->url . 'p/' . $urlpadid;
+    $fullurl = $client->get_baseurl() . '/p/' . $urlpadid;
 }
 
 // Get the groupID.

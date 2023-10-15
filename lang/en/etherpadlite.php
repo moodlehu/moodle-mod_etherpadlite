@@ -35,24 +35,28 @@ $string['apiversiondesc']         = 'The default version is "1.2". You only shou
 $string['apikeydesc']             = 'This is the API Key which this module needs to communicate with your etherpadlite server. This API key is stored on your etherpadliste server and can be copied from there.';
 $string['checkssl']               = 'Verify HTTPS cert';
 $string['checkssldesc']           = 'With this set, the HTTPS certificate of the etherpadlite server will be checked, to prevent man in the middle attacks';
+$string['connected']              = 'Connected';
 $string['connecttimeout']         = 'Connect Timeout';
 $string['connecttimeoutdesc']     = 'Connect timeout is the maximum amount of time in seconds allowed to connect to the server. It can be set to 0 to disable this limit, but this is not advisable in a production environment.<br>
 See also: <a href="https://curl.se/libcurl/c/CURLOPT_CONNECTTIMEOUT.html" target="blank">CURLOPT_CONNECTTIMEOUT</a>';
-$string['copylink']         = 'Copy pad link';
-$string['copylinkdesc']     = 'Add a button to the module navigation settings, which allows teachers and managers to easily get the full link for the current pad.';
-$string['cookiedomain']     = 'Cookie Domain';
-$string['cookiedomaindesc'] = 'Here you can enter the domain, which should be stored in the session cookie, so that the etherpadlite server recognize it. When moodle runs on the domain moodle.example.com and your etherpadlite server on etherpadlite.example.com, then your cookie domain should be .example.com.';
-$string['cookietime']       = 'Session elapse time';
-$string['cookietimedesc']   = 'Here you have to enter the time (in seconds) until the etherpadlite session should be valid';
-
-$string['deletenow']           = 'Immediately';
-$string['deleteinonehour']     = '1 hour';
-$string['deleteintwelvehours'] = '12 hours';
-$string['deletein24hours']     = '24 hours';
-$string['deletemgroupads']     = 'Delete moodle group pads in';
-$string['deletemgroupadsdesc'] = 'Delete all group pads created in association with moodle group mode';
-$string['donotdelete']         = 'Do not delete';
-
+$string['copylink']                              = 'Copy pad link';
+$string['copylinkdesc']                          = 'Add a button to the module navigation settings, which allows teachers and managers to easily get the full link for the current pad.';
+$string['cookiedomain']                          = 'Cookie Domain';
+$string['cookiedomaindesc']                      = 'Here you can enter the domain, which should be stored in the session cookie, so that the etherpadlite server recognize it. When moodle runs on the domain moodle.example.com and your etherpadlite server on etherpadlite.example.com, then your cookie domain should be .example.com.';
+$string['cookietime']                            = 'Session elapse time';
+$string['cookietimedesc']                        = 'Here you have to enter the time (in seconds) until the etherpadlite session should be valid';
+$string['deletenow']                             = 'Immediately';
+$string['deleteinonehour']                       = '1 hour';
+$string['deleteintwelvehours']                   = '12 hours';
+$string['deletein24hours']                       = '24 hours';
+$string['deletemgroupads']                       = 'Delete moodle group pads in';
+$string['deletemgroupadsdesc']                   = 'Delete all group pads created in association with moodle group mode';
+$string['donotdelete']                           = 'Do not delete';
+$string['error_config_has_no_api_key']           = 'The api key is not configured yet! Please check your configuration!';
+$string['error_config_has_no_valid_baseurl']     = 'The configured server url is not valid! Please check your configuration!';
+$string['error_could_not_get_api_version']       = 'The Moodle server could not get the api version! Your Moodle server may not be able to connect to the Etherpad server. Please check your configuration!';
+$string['error_invalid_api_key']                 = 'The api key is not valid! Please check your configuration!';
+$string['error_wrong_api_version']               = 'The api version is not compatible! Please check the version of your Etherpad server!';
 $string['etherpadlite']                          = 'Etherpad Lite';
 $string['etherpadliteintro']                     = 'Etherpadlite Intro';
 $string['etherpadlitename']                      = 'Etherpadlite Name';
@@ -71,6 +75,7 @@ $string['modulenameplural']                      = 'Etherpad Lites';
 $string['modulename_help']                       = 'The Etherpad Lite module enables students and teachers to write text in a collaborative way. The text is synced automatically as they type.
 
 (The etherpadlite server, which stands behind this module, is still in beta stage. That\'s why problems might occur in rare circumstances, but aren\'t expected)';
+$string['not_connected']        = 'Not connected';
 $string['padname']              = 'Padname for all instances';
 $string['padnamedesc']          = 'A general padname can be helpful, if you want to find all pads from this Moodle installation on your etherpadlite server. Pad groups are generated autmatically.';
 $string['pluginadministration'] = 'Etherpad Lite administration';
@@ -86,6 +91,7 @@ See also: <a href="https://curl.se/libcurl/c/CURLOPT_TIMEOUT.html" target="blank
 $string['url']          = 'Server URL';
 $string['urldesc']      = 'This is the URL to your Etherpadlite server in the form: http[s]://host[:port]/[subDir/]';
 $string['urlisblocked'] = 'The current host "{$a}" is blocked';
+$string['urlisblocked_but_ignored'] = 'The current host "{$a}" is blocked but "ignoresecurity" is activated.';
 $string['urlnotset']    = 'The etherpad server url is not configured for this site';
 $string['ssl']          = 'HTTPS Redirect';
 $string['ssldesc']      = 'With this set, your site will redirect itself to HTTPS, if an etherpadlite is opened (eye candy for the user)';

@@ -30,24 +30,24 @@ class dummy_client extends client {
      * Constructor.
      *
      * @param string $apikey
-     * @param string $baseurl
+     * @param string $apiurl
      */
-    protected function __construct($apikey, $baseurl) {
+    protected function __construct($apikey, $apiurl) {
         global $CFG;
         require_once($CFG->libdir . '/filelib.php');
 
         $this->config = get_config('etherpadlite');
 
         if ($apikey === '') {
-            throw new \InvalidArgumentException('Config has no API key');
+            throw new api_exception('error_config_has_no_api_key');
         }
         $this->apikey = $apikey;
 
-        if (!empty($baseurl)) {
-            $this->baseurl = trim($baseurl, '/');
-            $this->baseurl .= '/api';
-            if (!filter_var($this->baseurl, FILTER_VALIDATE_URL)) {
-                throw new \InvalidArgumentException('Config has no valid baseurl');
+        if (!empty($apiurl)) {
+            $this->apiurl = trim($apiurl, '/');
+            $this->apiurl .= '/api';
+            if (!filter_var($this->apiurl, FILTER_VALIDATE_URL)) {
+                throw new api_exception('error_config_has_no_valid_baseurl');
             }
         }
 

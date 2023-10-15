@@ -25,22 +25,8 @@ namespace mod_etherpadlite\output\component;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class urlsettingsnote implements \renderable, \templatable {
-    /** Value for message type "info" */
-    public const MSGTYPE_INFO = 'info';
-    /** Value for message type "warning" */
-    public const MSGTYPE_WARNING = 'warning';
-    /** Value for message type "danger" */
-    public const MSGTYPE_DANGER = 'danger';
-
     /** @var array */
-    protected $data;
-
-    /** @var array Fa icons for message types */
-    protected $msgtypes = [
-        self::MSGTYPE_INFO    => 'info-circle',
-        self::MSGTYPE_WARNING => 'exclamation-triangle',
-        self::MSGTYPE_DANGER  => 'exclamation-triangle',
-    ];
+    protected $data = [];
 
     /**
      * Constructor.
@@ -49,15 +35,55 @@ class urlsettingsnote implements \renderable, \templatable {
      * @param string $msginfo the additional message which will be displayed depended on the msgtype value
      * @param string $msgtype the message type can be "info", "warning", "danger" or empty
      */
-    public function __construct(string $msg, string $msginfo = '', string $msgtype = '') {
-        $this->data        = [];
-        $this->data['msg'] = $msg;
-        if (!empty($msginfo)) {
-            $this->data['msginfo'] = $msginfo;
-            if (isset($this->msgtypes[$msgtype])) {
-                $this->data['msgtype'] = $msgtype;
-                $this->data['icon']    = $this->msgtypes[$msgtype];
+    public function __construct(\stdClass $config) {
+        if (!empty($config->url)) {
+            // Is the current host blocked?
+            $blockedhost = \mod_etherpadlite\api\client::is_url_blocked($config->url);
+            if ($blockedhost && empty($config->ignoresecurity)) {
+                $connected = false;
+            } else {
+                // Check the connection with the current config, but only if the host is not blocked.
+                try {
+                    $client    = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url);
+                    $connected = true;
+                } catch (\mod_etherpadlite\api\api_exception $e) {
+                    $connected = false;
+                    $infotext = $e->getMessage();
+                }
             }
+
+            if ($connected) {
+                $connectiontext = get_string('connected', 'etherpadlite');
+                $connectiontextclass = 'success';
+                $connectionicon = 'fa-check-square-o';
+            } else {
+                $connectiontext = get_string('not_connected', 'etherpadlite');
+                $connectiontextreason = $infotext ?? '';
+                $connectiontextclass = 'danger';
+                $connectionicon = 'fa-times-circle-o';
+            }
+
+            $blockedhostinfo = '';
+            if ($blockedhost) {
+                $blockingicon = 'fa-exclamation-triangle';
+                if (empty($config->ignoresecurity)) {
+                    $blockedhostinfo = get_string('urlisblocked', 'etherpadlite', $blockedhost);
+                    $blockingtextclass = 'danger';
+                } else {
+                    $blockedhostinfo = get_string('urlisblocked_but_ignored', 'etherpadlite', $blockedhost);
+                    $blockingtextclass = 'warning';
+                }
+            }
+
+            $this->data['urlinfo'] = get_string('urldesc', 'etherpadlite');
+            $this->data['blockingmsg'] = $blockedhostinfo ?? '';
+            $this->data['blockingicon'] = $blockingicon ?? '';
+            $this->data['blockingtextclass'] = $blockingtextclass ?? '';
+            $this->data['connectiontext'] = $connectiontext;
+            $this->data['connectiontextreason'] = $connectiontextreason ?? '';
+            $this->data['connectionicon'] = $connectionicon;
+            $this->data['connectiontextclass'] = $connectiontextclass;
+
         }
     }
 

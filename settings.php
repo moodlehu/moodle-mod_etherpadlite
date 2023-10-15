@@ -25,22 +25,15 @@
  */
 defined('MOODLE_INTERNAL') || die;
 
-$urldesc         = get_string('urldesc', 'etherpadlite');
-$urldescinfo     = '';
-$urldescinfotype = '';
-if ($baseurl = get_config('etherpadlite', 'url')) {
-    if ($urldescinfo = \mod_etherpadlite\api\client::is_url_blocked($baseurl)) {
-        $urldescinfo = get_string('urlisblocked', 'etherpadlite', $urldescinfo);
-        if (get_config('etherpadlite', 'ignoresecurity')) {
-            $urldescinfotype = 'warning';
-        } else {
-            $urldescinfotype = 'danger';
-        }
-    }
+$urlblockinfo    = '';
+$config = get_config('etherpadlite');
+$infotext = '';
+if (!empty($config->url)) {
+    $urldescwidget = new \mod_etherpadlite\output\component\urlsettingsnote($config);
+    $infotext = $OUTPUT->render($urldescwidget);
 }
-$urldescwidget = new \mod_etherpadlite\output\component\urlsettingsnote($urldesc, $urldescinfo, $urldescinfotype);
 $settings->add(new admin_setting_configtext('etherpadlite/url', get_string('url', 'etherpadlite'),
-    $OUTPUT->render($urldescwidget), '', PARAM_RAW, 40));
+    $infotext, '', PARAM_URL, 40));
 
 $settings->add(new admin_setting_configcheckbox('etherpadlite/ignoresecurity', get_string('ignoresecurity', 'etherpadlite'),
     get_string('ignoresecuritydesc', 'etherpadlite'), false));

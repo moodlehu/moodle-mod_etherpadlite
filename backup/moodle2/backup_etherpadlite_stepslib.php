@@ -35,7 +35,7 @@ class backup_etherpadlite_activity_structure_step extends backup_activity_struct
 
         try {
             $client = \mod_etherpadlite\api\client::get_instance($config->apikey, $config->url);
-        } catch (\InvalidArgumentException $e) {
+        } catch (\mod_etherpadlite\api\api_exception $e) {
             \core\notification::add($e->getMessage(), \core\notification::ERROR);
         }
 

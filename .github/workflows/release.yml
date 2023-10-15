@@ -40,7 +40,7 @@ jobs:
       matrix:
         php: ['8.0', '8.1']
         database: ['mariadb', 'pgsql']
-        moodlebranch: ['MOODLE_401_STABLE', 'MOODLE_402_STABLE']
+        moodlebranch: ['MOODLE_401_STABLE', 'MOODLE_402_STABLE', 'MOODLE_403_STABLE']
         include:
           - node: 16.20
 

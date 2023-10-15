@@ -50,7 +50,9 @@ class client {
     /** @var string */
     protected $apikey = '';
     /** @var string */
-    protected $baseurl = 'http://localhost:9001/api';
+    protected $baseurl = '';
+    /** @var string */
+    protected $apiurl = '';
     /** @var \curl */
     protected $curl; // Use the moodle curl class.
     /** @var \stdClass */
@@ -62,7 +64,7 @@ class client {
      * Constructor.
      *
      * @param string $apikey
-     * @param string $baseurl
+     * @param string $apiurl
      */
     protected function __construct($apikey, $baseurl) {
         global $CFG;
@@ -71,15 +73,15 @@ class client {
         $this->config = get_config('etherpadlite');
 
         if ($apikey === '') {
-            throw new \InvalidArgumentException('Config has no API key');
+            throw new api_exception('error_config_has_no_api_key');
         }
         $this->apikey = $apikey;
 
         $this->baseurl = trim($baseurl, '/');
-        $this->baseurl .= '/api';
+        $this->apiurl = $baseurl . '/api';
 
-        if (!filter_var($this->baseurl, FILTER_VALIDATE_URL)) {
-            throw new \InvalidArgumentException('Config has no valid baseurl');
+        if (!filter_var($this->apiurl, FILTER_VALIDATE_URL)) {
+            throw new api_exception('error_config_has_no_valid_baseurl');
         }
 
         // Sometimes the etherpad host is located on an internal network like 127.0.0.1 or 10.0.0.0/8.
@@ -112,14 +114,18 @@ class client {
             $this->config->apiversion = self::DEFAULT_API_VERSION;
         }
         if (!$this->check_version($this->config->apiversion)) {
-            throw new \InvalidArgumentException('Config has wrong api version');
+            throw new api_exception('error_wrong_api_version');
         }
 
         if ($this->check_version('1.2', $this->config->apiversion)) {
             if (!$this->check_token()) {
-                throw new \InvalidArgumentException('Config has an invalid API key');
+                throw new api_exception('error_invalid_api_key');
             }
         }
+    }
+
+    public function get_baseurl() {
+        return $this->baseurl;
     }
 
     /**
@@ -154,7 +160,7 @@ class client {
      */
     protected function call($function, array $arguments = [], $method = 'GET') {
         $arguments['apikey'] = $this->apikey;
-        $url                 = $this->baseurl . '/' . $this->config->apiversion . '/' . $function;
+        $url                 = $this->apiurl . '/' . $this->config->apiversion . '/' . $function;
 
         if ($method === 'POST') {
             $result = $this->curl->post($url, $arguments, $this->curloptions);
@@ -210,18 +216,18 @@ class client {
     /**
      * Get the api version from the etherpadlite server.
      *
-     * @throws \InvalidArgumentException
+     * @throws \mod_etherpadlite\api\api_exception
      * @return string
      */
     public function get_version() {
-        $url    = $this->baseurl;
+        $url    = $this->apiurl;
         $result = $this->curl->get($url, [], $this->curloptions);
 
         $result = json_decode($result);
         if (!empty($result->currentVersion)) {
             return $result->currentVersion;
         }
-        throw new \InvalidArgumentException('Could not get api version');
+        throw new api_exception('error_could_not_get_api_version');
     }
 
     /**
@@ -726,7 +732,7 @@ class client {
      * Checks whether or not the server url is blocked by moodle settings.
      *
      * @param  string $urlstring
-     * @return bool
+     * @return string|bool The blocked host or false
      */
     public static function is_url_blocked($urlstring) {
         $curl = new \curl(['ignoresecurity' => true]);
@@ -748,16 +754,16 @@ class client {
      * If the site is in testing mode (behat or unit test) a dummy client is created, which only pretend to communicate.
      *
      * @param  string $apikey
-     * @param  string $baseurl
+     * @param  string $apiurl
      * @return static
      */
-    public static function get_instance($apikey, $baseurl = null) {
+    public static function get_instance($apikey, $apiurl = null) {
         static $client;
         if (empty($client)) {
             if (static::is_testing()) {
-                $client = new dummy_client($apikey, $baseurl);
+                $client = new dummy_client($apikey, $apiurl);
             } else {
-                $client = new static($apikey, $baseurl);
+                $client = new static($apikey, $apiurl);
             }
         }
 
