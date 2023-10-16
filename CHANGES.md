@@ -4,6 +4,12 @@ moodle-mod_etherpadlite
 Changes
 -------
 
+### v4.3
+
+* 2023-10-15 -  Add close button to the etherpad page
+* 2023-10-15 -  Optimize error handling
+* 2023-10-15 -  Adjust coding style to new rules
+
 ### v4.2-r5
 
 * 2023-05-10 -  Added provider.php to pass test (Thanks to Karl Michael Reyes from Catalyst IT Canada LTD)
