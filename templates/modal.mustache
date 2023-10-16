@@ -23,32 +23,32 @@
     {
         "id"        : 1,
         "legacy"    : 1,
-        "name"      : "Test pad"
-        "courseurl" : "https://example.com/course/view.php?id=2",
+        "name"      : "Test pad",
+        "courseurl" : "https://example.com/course/view.php?id=2"
     }
 
 }}
 
 <div class="etherpadmodal modal fade{{#legacy}} legacy{{/legacy}}" id="etherpadmodal_{{id}}">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
 
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h3 class="my-0 py-0">
-            <button type="button" class="btn btn-primary" data-dismiss="modal" title="{{#str}}restorewindowsize, mod_etherpadlite{{/str}}" >
-                <i class="fa fa-compress fa-lg" aria-hidden="true"></i>
-            </button>
-            {{name}}
-        </h3>
-        {{> mod_etherpadlite/closebutton }}
-      </div>
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h3 class="my-0 py-0">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" title="{{#str}}restorewindowsize, mod_etherpadlite{{/str}}" >
+                        <i class="fa fa-compress fa-lg" aria-hidden="true"></i>
+                    </button>
+                    {{name}}
+                </h3>
+                {{> mod_etherpadlite/closebutton }}
+            </div>
 
-      <!-- Modal body -->
-      <div class="modal-body">
-        <iframe class="etherpadiframe2 border" id="etherpadiframe2_{{id}}" src="about:blank" allowFullscreen></iframe>
-      </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <iframe class="etherpadiframe2 border" id="etherpadiframe2_{{id}}" src="about:blank" allowFullscreen></iframe>
+            </div>
 
+        </div>
     </div>
-  </div>
 </div>
