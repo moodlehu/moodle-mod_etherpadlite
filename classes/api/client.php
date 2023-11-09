@@ -78,7 +78,7 @@ class client {
         $this->apikey = $apikey;
 
         $this->baseurl = trim($baseurl, '/');
-        $this->apiurl = $baseurl . '/api';
+        $this->apiurl = $this->baseurl . '/api';
 
         if (!filter_var($this->apiurl, FILTER_VALIDATE_URL)) {
             throw new api_exception('error_config_has_no_valid_baseurl');
