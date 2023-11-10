@@ -61,7 +61,7 @@ class client {
     protected $curloptions; // The curl options.
 
     /**
-     * Constructor.
+     * Constructor. Does not validate the configuration! See `validate()` method.
      *
      * @param string $apikey
      * @param string $baseurl
@@ -71,18 +71,10 @@ class client {
         require_once($CFG->libdir . '/filelib.php');
 
         $this->config = get_config('etherpadlite');
-
-        if ($apikey === '') {
-            throw new api_exception('error_config_has_no_api_key');
-        }
         $this->apikey = $apikey;
 
         $this->baseurl = trim($baseurl, '/');
         $this->apiurl = $this->baseurl . '/api';
-
-        if (!filter_var($this->apiurl, FILTER_VALIDATE_URL)) {
-            throw new api_exception('error_config_has_no_valid_baseurl');
-        }
 
         // Sometimes the etherpad host is located on an internal network like 127.0.0.1 or 10.0.0.0/8.
         // Since Moodle 4.0 this kind of host are blocked by default.
@@ -113,10 +105,25 @@ class client {
         if (empty($this->config->apiversion)) {
             $this->config->apiversion = self::DEFAULT_API_VERSION;
         }
+    }
+
+    /**
+     * Ensure the client's configuration is valid and compatible with that of the server.
+     *
+     * @return void
+     * @throws api_exception If the base URL is invalid, the API versions do not match,
+     *                       or the API token is missing or invalid.
+     */
+    public function validate() {
+        if ($this->apikey === '') {
+            throw new api_exception('error_config_has_no_api_key');
+        }
+        if (!filter_var($this->apiurl, FILTER_VALIDATE_URL)) {
+            throw new api_exception('error_config_has_no_valid_baseurl');
+        }
         if (!$this->check_version($this->config->apiversion)) {
             throw new api_exception('error_wrong_api_version');
         }
-
         if ($this->check_version('1.2', $this->config->apiversion)) {
             if (!$this->check_token()) {
                 throw new api_exception('error_invalid_api_key');
@@ -769,6 +776,7 @@ class client {
                 $client = new dummy_client($apikey, $apiurl);
             } else {
                 $client = new static($apikey, $apiurl);
+                $client->validate();
             }
         }
 
