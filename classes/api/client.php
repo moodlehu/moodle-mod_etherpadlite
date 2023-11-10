@@ -77,7 +77,7 @@ class client {
         $this->apiurl = $this->baseurl . '/api';
 
         // Sometimes the etherpad host is located on an internal network like 127.0.0.1 or 10.0.0.0/8.
-        // Since Moodle 4.0 this kind of host are blocked by default.
+        // Since Moodle 4.0 these kinds of hosts are blocked by default.
         $settings = [];
         if (!empty($this->config->ignoresecurity)) {
             $settings['ignoresecurity'] = true;
