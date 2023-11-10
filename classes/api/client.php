@@ -98,8 +98,8 @@ class client {
 
         // Should the certificate be verified.
         if (empty($this->config->check_ssl)) {
-            $curloptions['CURLOPT_SSL_VERIFYHOST'] = 0;
-            $curloptions['CURLOPT_SSL_VERIFYPEER'] = 0;
+            $this->curloptions['CURLOPT_SSL_VERIFYHOST'] = 0;
+            $this->curloptions['CURLOPT_SSL_VERIFYPEER'] = 0;
         }
 
         if (empty($this->config->apiversion)) {
