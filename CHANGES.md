@@ -4,6 +4,10 @@ moodle-mod_etherpadlite
 Changes
 -------
 
+### v4.3.1
+
+* 2023-11-09 -   Fix client construtor #73 (Thank to Daniil Fajnberg)
+
 ### v4.3
 
 * 2023-10-15 -  Add close button to the etherpad page
