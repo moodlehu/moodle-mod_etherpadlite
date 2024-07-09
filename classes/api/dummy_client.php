@@ -20,9 +20,9 @@ namespace mod_etherpadlite\api;
  * This is a dummy class for testing purpose to simulate the communicate with the etherpadlite server.
  *
  * @package    mod_etherpadlite
- *
  * @author     Andreas Grabs <moodle@grabs-edv.de>
  * @see       https://github.com/TomNomNom/etherpad-lite-client
+ * @copyright 2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license    Apache License
  */
 class dummy_client extends client {
