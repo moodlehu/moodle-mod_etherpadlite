@@ -20,7 +20,7 @@ Feature: Show the etherpadlite activity in fullscreen
     # Set up a etherpadlite.
     When I log in as "teacher1"
     And I am on "Course 1" course homepage with editing mode on
-    And I add a "Etherpad Lite" to section "1" and I fill the form with:
+    And I add a etherpadlite activity to course "Course 1" section "1" and I fill the form with:
       | Name               | testpad1          |
       | Etherpadlite Intro | Intro to Testpad2 |
 
