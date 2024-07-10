@@ -35,14 +35,14 @@ namespace mod_etherpadlite;
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class lib_test extends \advanced_testcase {
+final class lib_test extends \advanced_testcase {
     /**
      * Test create an instance.
      *
      * @covers ::etherpadlite_add_instance()
      * @return void
      */
-    public function test_etherpadlite_initialise() {
+    public function test_etherpadlite_initialise(): void {
         global $DB;
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -73,7 +73,7 @@ class lib_test extends \advanced_testcase {
      * @covers \mod_etherpadlite\util::get_coursemodule()
      * @return void
      */
-    public function test_etherpadlite_get_instance() {
+    public function test_etherpadlite_get_instance(): void {
         global $DB;
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -109,7 +109,7 @@ class lib_test extends \advanced_testcase {
      * @covers \mod_etherpadlite\observer\group::group_created()
      * @return void
      */
-    public function test_etherpadlite_add_group() {
+    public function test_etherpadlite_add_group(): void {
         global $DB;
         $this->resetAfterTest();
         $this->setAdminUser();

@@ -23,34 +23,34 @@
  * @copyright  2012 Humboldt-Universität zu Berlin <moodle-support@cms.hu-berlin.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-$string['activityopen']           = 'Allow editing from';
 $string['activityclose']          = 'Allow editing to';
+$string['activityopen']           = 'Allow editing from';
 $string['activityopenclose']      = 'Allow editing from/to';
 $string['activityopenclose_help'] = 'If activated, students can edit the etherpad only in the specified period.';
 $string['adminguests']            = 'Guests allowed to write?';
 $string['adminguestsdesc']        = 'With this set, users who are allowed to configure a specific etherpadlite module can allow guests to write in this specific etherpadlite module';
 $string['apikey']                 = 'API Key';
+$string['apikeydesc']             = 'This is the API Key which this module needs to communicate with your etherpadlite server. This API key is stored on your etherpadliste server and can be copied from there.';
 $string['apiversion']             = 'API version';
 $string['apiversiondesc']         = 'The default version is "1.2". You only should use version "1.1" if you use a very old version of etherpad lite server!';
-$string['apikeydesc']             = 'This is the API Key which this module needs to communicate with your etherpadlite server. This API key is stored on your etherpadliste server and can be copied from there.';
 $string['checkssl']               = 'Verify HTTPS cert';
 $string['checkssldesc']           = 'With this set, the HTTPS certificate of the etherpadlite server will be checked, to prevent man in the middle attacks';
 $string['connected']              = 'Connected';
 $string['connecttimeout']         = 'Connect Timeout';
 $string['connecttimeoutdesc']     = 'Connect timeout is the maximum amount of time in seconds allowed to connect to the server. It can be set to 0 to disable this limit, but this is not advisable in a production environment.<br>
 See also: <a href="https://curl.se/libcurl/c/CURLOPT_CONNECTTIMEOUT.html" target="blank">CURLOPT_CONNECTTIMEOUT</a>';
-$string['copylink']                              = 'Copy pad link';
-$string['copylinkdesc']                          = 'Add a button to the module navigation settings, which allows teachers and managers to easily get the full link for the current pad.';
 $string['cookiedomain']                          = 'Cookie Domain';
 $string['cookiedomaindesc']                      = 'Here you can enter the domain, which should be stored in the session cookie, so that the etherpadlite server recognize it. When moodle runs on the domain moodle.example.com and your etherpadlite server on etherpadlite.example.com, then your cookie domain should be .example.com.';
 $string['cookietime']                            = 'Session elapse time';
 $string['cookietimedesc']                        = 'Here you have to enter the time (in seconds) until the etherpadlite session should be valid';
-$string['deletenow']                             = 'Immediately';
+$string['copylink']                              = 'Copy pad link';
+$string['copylinkdesc']                          = 'Add a button to the module navigation settings, which allows teachers and managers to easily get the full link for the current pad.';
+$string['deletein24hours']                       = '24 hours';
 $string['deleteinonehour']                       = '1 hour';
 $string['deleteintwelvehours']                   = '12 hours';
-$string['deletein24hours']                       = '24 hours';
 $string['deletemgroupads']                       = 'Delete moodle group pads in';
 $string['deletemgroupadsdesc']                   = 'Delete all group pads created in association with moodle group mode';
+$string['deletenow']                             = 'Immediately';
 $string['donotdelete']                           = 'Do not delete';
 $string['error_config_has_no_api_key']           = 'The api key is not configured yet! Please check your configuration!';
 $string['error_config_has_no_valid_baseurl']     = 'The configured server url is not valid! Please check your configuration!';
@@ -58,10 +58,10 @@ $string['error_could_not_get_api_version']       = 'The Moodle server could not 
 $string['error_invalid_api_key']                 = 'The api key is not valid! Please check your configuration!';
 $string['error_wrong_api_version']               = 'The api version is not compatible! Please check the version of your Etherpad server!';
 $string['etherpadlite']                          = 'Etherpad Lite';
+$string['etherpadlite:addinstance']              = 'Add new pad';
+$string['etherpadlite_link_copied_to_clipboard'] = 'The link of this etherpad was copied to your clipboard.';
 $string['etherpadliteintro']                     = 'Etherpadlite Intro';
 $string['etherpadlitename']                      = 'Etherpadlite Name';
-$string['etherpadlite_link_copied_to_clipboard'] = 'The link of this etherpad was copied to your clipboard.';
-$string['etherpadlite:addinstance']              = 'Add new pad';
 $string['fullscreen']                            = 'Fullscreen';
 $string['guestsallowed']                         = 'Guests allowed to write?';
 $string['guestsallowed_help']                    = 'This determines if guests are allowed to write in this pad. If not, they will be only able to read the content of the pad.';
@@ -71,10 +71,10 @@ $string['link_copied']                           = 'Link copied!';
 $string['minwidth']                              = 'Minimum width';
 $string['minwidthdesc']                          = 'If you don\'t want a very small etherpad on small displays like cell phones, you can set a minimum width that will keep the pad.';
 $string['modulename']                            = 'Etherpad Lite';
-$string['modulenameplural']                      = 'Etherpad Lites';
 $string['modulename_help']                       = 'The Etherpad Lite module enables students and teachers to write text in a collaborative way. The text is synced automatically as they type.
 
 (The etherpadlite server, which stands behind this module, is still in beta stage. That\'s why problems might occur in rare circumstances, but aren\'t expected)';
+$string['modulenameplural']                      = 'Etherpad Lites';
 $string['not_connected']        = 'Not connected';
 $string['padname']              = 'Padname for all instances';
 $string['padnamedesc']          = 'A general padname can be helpful, if you want to find all pads from this Moodle installation on your etherpadlite server. Pad groups are generated autmatically.';
@@ -85,6 +85,9 @@ $string['resetting_data']       = 'Reset Etherpad Lite data';
 $string['responsiveiframe']     = 'Responsive iFrame';
 $string['responsiveiframedesc'] = 'With this set, the iFrame for the Etherpad Lite editor will fit nicely into a responsive Moodle theme and will scale its width according to the browser window. If not, the Etherpad Lite editor will have a fixed width which basically adapts to the width of the browser window at page load time, but will not scale when the window is resized.';
 $string['restorewindowsize']    = 'Restore window size';
+$string['ssl']          = 'HTTPS Redirect';
+$string['ssldesc']      = 'With this set, your site will redirect itself to HTTPS, if an etherpadlite is opened (eye candy for the user)';
+$string['summaryguest'] = 'You are logged in as guest. That\'s why you can only see the readonly version of this Pad. Reload the page to get new changes.';
 $string['timeout']              = 'Timeout';
 $string['timeoutdesc']          = 'Timeout is the total time in seconds that we wait for a response to a given request, including the time it takes to establish the connection and the time it takes for the server to respond. It can be set to 0 to disable this limit, but this is not advisable in a production environment.<br>
 See also: <a href="https://curl.se/libcurl/c/CURLOPT_TIMEOUT.html" target="blank">CURLOPT_TIMEOUT</a>';
@@ -93,6 +96,3 @@ $string['urldesc']      = 'This is the URL to your Etherpadlite server in the fo
 $string['urlisblocked'] = 'The current host "{$a}" is blocked';
 $string['urlisblocked_but_ignored'] = 'The current host "{$a}" is blocked but "ignoresecurity" is activated.';
 $string['urlnotset']    = 'The etherpad server url is not configured for this site';
-$string['ssl']          = 'HTTPS Redirect';
-$string['ssldesc']      = 'With this set, your site will redirect itself to HTTPS, if an etherpadlite is opened (eye candy for the user)';
-$string['summaryguest'] = 'You are logged in as guest. That\'s why you can only see the readonly version of this Pad. Reload the page to get new changes.';
