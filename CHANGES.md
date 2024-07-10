@@ -4,6 +4,11 @@ moodle-mod_etherpadlite
 Changes
 -------
 
+### v4.3.2
+
+* 2024-07-10 -   Optimize github actions
+* 2024-07-10 -   Fix some smaller coding style issues
+
 ### v4.3.1
 
 * 2023-11-09 -   Fix client construtor #73 (Thank to Daniil Fajnberg)
