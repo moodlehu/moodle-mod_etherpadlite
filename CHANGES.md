@@ -4,6 +4,14 @@ moodle-mod_etherpadlite
 Changes
 -------
 
+### v4.4
+
+* 2024-07-10 -   Requires now Moodle 4.4
+* 2024-07-10 -   Optimize github actions
+* 2024-07-10 -   Fix some smaller coding style issues
+* 2024-07-10 -   All recent Moodle and PHP versions (Luca Bösch) #75
+* 2024-05-26 -   Smaller monologo icon for Moodle ≥ 4.4 (Luca Bösch) #74
+
 ### v4.3.1
 
 * 2023-11-09 -   Fix client construtor #73 (Thank to Daniil Fajnberg)
