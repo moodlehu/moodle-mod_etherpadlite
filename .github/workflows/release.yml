@@ -38,79 +38,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - php: 8.3
-            moodlebranch: MOODLE_404_STABLE
-            database: pgsql
-            node: 16.20
-          - php: 8.3
-            moodlebranch: MOODLE_404_STABLE
-            database: mariadb
-            node: 16.20
-          - php: 8.2
-            moodlebranch: MOODLE_404_STABLE
-            database: pgsql
-            node: 16.20
-          - php: 8.2
-            moodlebranch: MOODLE_404_STABLE
-            database: mariadb
-            node: 16.20
-          - php: 8.1
-            moodlebranch: MOODLE_404_STABLE
-            database: pgsql
-            node: 16.20
-          - php: 8.1
-            moodlebranch: MOODLE_404_STABLE
-            database: mariadb
-            node: 16.20
-          - php: 8.2
-            moodlebranch: MOODLE_403_STABLE
-            database: pgsql
-            node: 16.20
-          - php: 8.2
-            moodlebranch: MOODLE_403_STABLE
-            database: mariadb
-            node: 16.20
-          - php: 8.1
-            moodlebranch: MOODLE_403_STABLE
-            database: pgsql
-            node: 16.20
-          - php: 8.1
-            moodlebranch: MOODLE_403_STABLE
-            database: mariadb
-            node: 16.20
-          - php: 8.0
-            moodlebranch: MOODLE_403_STABLE
-            database: pgsql
-            node: 16.20
-          - php: 8.0
-            moodlebranch: MOODLE_403_STABLE
-            database: mariadb
-            node: 16.20
-          - php: 8.2
-            moodlebranch: MOODLE_402_STABLE
-            database: pgsql
-            node: 16.20
-          - php: 8.2
-            moodlebranch: MOODLE_402_STABLE
-            database: mariadb
-            node: 16.20
-          - php: 8.1
-            moodlebranch: MOODLE_402_STABLE
-            database: pgsql
-            node: 16.20
-          - php: 8.1
-            moodlebranch: MOODLE_402_STABLE
-            database: mariadb
-            node: 16.20
-          - php: 8.0
-            moodlebranch: MOODLE_402_STABLE
-            database: pgsql
-            node: 16.20
-          - php: 8.0
-            moodlebranch: MOODLE_402_STABLE
-            database: mariadb
-            node: 16.20
+        php: ['7.4', '8.0', '8.1', '8.2']
+        node: ['16.20']
+        moodlebranch: ['MOODLE_401_STABLE', 'MOODLE_402_STABLE', 'MOODLE_403_STABLE']
+        database: ['mariadb', 'pgsql']
+        exclude:
+          - php: '7.4'
+            moodlebranch: 'MOODLE_402_STABLE'
+          - php: '7.4'
+            moodlebranch: 'MOODLE_403_STABLE'
+          - php: '8.2'
+            moodlebranch: 'MOODLE_401_STABLE'
 
     steps:
       - name: Check out repository code
