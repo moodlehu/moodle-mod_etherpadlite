@@ -22,18 +22,12 @@
     Example context (json):
     {
         "id" : 1,
-        "minwidth" : "400px"
+        "minwidth" : "400px",
+        "emptyurl" : "https://example.com"
     }
 
 }}
 
-{{#responsiveiframe}}
-    <div class="embed-responsive" style="height:500px;min-width:{{minwidth}};">
-        <iframe class="etherpadiframe border embed-responsive-item h-100" id="etherpadiframe_{{id}}" src=""></iframe>
-    </div>
-{{/responsiveiframe}}
-{{^responsiveiframe}}
-    <div style="height:500px;width:100%;">
-        <iframe class="etherpadiframe border" style="height:500px;width:100%;min-width:{{minwidth}};" id="etherpadiframe_{{id}}" src="about:blank"></iframe>
-    </div>
-{{/responsiveiframe}}
+<div class="embed-responsive" style="height:500px;min-width:{{minwidth}};">
+    <iframe class="etherpadiframe border w-100 h-100" id="etherpadiframe_{{id}}" src="{{emptyurl}}"></iframe>
+</div>

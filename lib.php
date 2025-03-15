@@ -224,7 +224,6 @@ function etherpadlite_user_complete($course, $user, $mod, $etherpadlite) {
  * @param  bool      $isteacher
  * @param  int       $timestart
  * @return bool
- * @todo Finish documenting this function
  */
 function etherpadlite_print_recent_activity($course, $isteacher, $timestart) {
     return false;  // True if anything was printed, otherwise false.
@@ -236,7 +235,6 @@ function etherpadlite_print_recent_activity($course, $isteacher, $timestart) {
  * as sending out mail, toggling flags etc ...
  *
  * @return bool
- * @todo Finish documenting this function
  **/
 function etherpadlite_cron() {
     return true;
@@ -279,34 +277,28 @@ function etherpadlite_uninstall() {
  * Checks whether or not a given feature is supported.
  *
  * @param  string $feature FEATURE_xx constant for requested feature
- * @return bool   True if module supports feature, null if doesn't know
+ * @return mixed  True if module supports feature, false if not, null if doesn't know or string for the module purpose.
  */
 function etherpadlite_supports($feature) {
     switch ($feature) {
         case FEATURE_GROUPS:
-            return true;
         case FEATURE_GROUPINGS:
-            return true;
-        case FEATURE_GROUPMEMBERSONLY:
-            return false;
         case FEATURE_MOD_INTRO:
-            return true;
-        case FEATURE_COMPLETION_TRACKS_VIEWS:
-            return false;
-        case FEATURE_COMPLETION_HAS_RULES:
-            return false;
-        case FEATURE_GRADE_HAS_GRADE:
-            return false;
-        case FEATURE_GRADE_OUTCOMES:
-            return false;
         case FEATURE_BACKUP_MOODLE2:
-            return true;
         case FEATURE_SHOW_DESCRIPTION:
             return true;
+
+        case FEATURE_GROUPMEMBERSONLY:
+        case FEATURE_COMPLETION_TRACKS_VIEWS:
+        case FEATURE_COMPLETION_HAS_RULES:
+        case FEATURE_GRADE_HAS_GRADE:
+        case FEATURE_GRADE_OUTCOMES:
+            return false;
+
         case FEATURE_MOD_PURPOSE:
             return MOD_PURPOSE_COLLABORATION;
         default:
-            return false;
+            return null;
     }
 }
 
