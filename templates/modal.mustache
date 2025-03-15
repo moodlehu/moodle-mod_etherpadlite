@@ -22,26 +22,25 @@
     Example context (json):
     {
         "id"        : 1,
-        "legacy"    : 1,
         "name"      : "Test pad",
         "courseurl" : "https://example.com/course/view.php?id=2"
     }
 
 }}
 
-<div class="etherpadmodal modal fade{{#legacy}} legacy{{/legacy}}" id="etherpadmodal_{{id}}">
+<div class="etherpadmodal modal fade}" id="etherpadmodal_{{id}}">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
 
             <!-- Modal Header -->
             <div class="modal-header">
-                <h3 class="my-0 py-0">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" title="{{#str}}restorewindowsize, mod_etherpadlite{{/str}}" >
+                <h3 class="d-flex justify-content-between mt-1 w-100">
+                    <button type="button" class="close-button btn btn-primary" data-bs-dismiss="modal" title="{{#str}}restorewindowsize, mod_etherpadlite{{/str}}" >
                         <i class="fa fa-compress fa-lg" aria-hidden="true"></i>
                     </button>
-                    {{name}}
+                    <span class="ms-2 flex-grow-1">{{name}}</span>
+                    {{> mod_etherpadlite/closebutton }}
                 </h3>
-                {{> mod_etherpadlite/closebutton }}
             </div>
 
             <!-- Modal body -->

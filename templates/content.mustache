@@ -22,12 +22,12 @@
     Example context (json):
     {
         "id"               : 46,
-        "legacy"           : 1,
         "name"             : "Test pad",
         "summaryguest"     : "...",
         "responsiveiframe" : 1,
         "minwidth"         : "400px",
         "frameurl"         : "https://example.com",
+        "emptyurl"         : "https://example.com",
         "hasnotice"        : 1,
         "noticetype"       : "warning",
         "courseurl"        : "https://example.com/course/view.php?id=2",
@@ -40,11 +40,11 @@
     {{notice}}
 </div>
 {{/hasnotice}}
-<h3>
-    <button type="button" title="{{#str}}fullscreen, mod_etherpadlite{{/str}}" class="etherpadmodal btn btn-primary" data-toggle="modal" data-target="#etherpadmodal_{{id}}">
+<h3 class="d-flex justify-content-between">
+    <button type="button" title="{{#str}}fullscreen, mod_etherpadlite{{/str}}" class="etherpadmodal btn btn-primary" data-bs-toggle="modal" data-bs-target="#etherpadmodal_{{id}}">
         <i class="fa fa-expand fa-lg" aria-hidden="true"></i>
     </button>
-    {{name}}
+    <span class="ms-2 flex-grow-1">{{name}}</span>
     {{> mod_etherpadlite/closebutton }}
 </h3>
 
@@ -55,12 +55,7 @@
         </div>
     </div>
 {{/summaryguest}}
-{{#legacy}}
-    {{> mod_etherpadlite/iframe_legacy}}
-{{/legacy}}
-{{^legacy}}
-    {{> mod_etherpadlite/iframe}}
-{{/legacy}}
+{{> mod_etherpadlite/iframe}}
 {{> mod_etherpadlite/modal}}
 {{#js}}
 require(['mod_etherpadlite/modal_iframe'], function(mod) {

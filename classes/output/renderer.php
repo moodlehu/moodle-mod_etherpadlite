@@ -46,12 +46,9 @@ class renderer extends \plugin_renderer_base {
         $content->name             = $etherpadlite->name;
         $content->summaryguest     = $summaryguest;
         $content->frameurl         = $frameurl;
+        $content->emptyurl         = new \moodle_url('/mod/etherpadlite/empty.html');
         $content->minwidth         = (empty($config->minwidth) ? 10 : $config->minwidth) . 'px';
-        $content->responsiveiframe = !empty($config->responsiveiframe);
         $content->courseurl        = new \moodle_url('/course/view.php', ['id' => $etherpadlite->course]);
-        if (!$this->is_boost_based()) {
-            $content->legacy = true;
-        }
 
         // Add a warning notice.
         if (\mod_etherpadlite\api\client::is_testing()) {

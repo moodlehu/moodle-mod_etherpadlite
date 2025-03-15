@@ -19,13 +19,11 @@ namespace mod_etherpadlite\api;
 /**
  * This is a helper class to communicate with the etherpadlite server.
  *
- * @package    mod_etherpadlite
- *
- * @author     Timo Welde <tjwelde@gmail.com>
- * @author     Andreas Grabs <moodle@grabs-edv.de>
+ * @package   mod_etherpadlite
+ * @author    Andreas Grabs <moodle@grabs-edv.de>
  * @see       https://github.com/TomNomNom/etherpad-lite-client
- * @copyright  Tomnomnom <mail@tomnomnom.com>
- * @license    Apache License
+ * @copyright 2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class client {
     /** The default api version if none is set in configuration */

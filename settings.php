@@ -32,6 +32,7 @@ if (!empty($config->url)) {
     $urldescwidget = new \mod_etherpadlite\output\component\urlsettingsnote($config);
     $infotext = $OUTPUT->render($urldescwidget);
 }
+/** @var \admin_settingpage $settings */
 $settings->add(new admin_setting_configtext('etherpadlite/url', get_string('url', 'etherpadlite'),
     $infotext, '', PARAM_URL, 40));
 
@@ -65,9 +66,6 @@ $settings->add(new admin_setting_configcheckbox('etherpadlite/check_ssl', get_st
 
 $settings->add(new admin_setting_configcheckbox('etherpadlite/adminguests', get_string('adminguests', 'etherpadlite'),
     get_string('adminguestsdesc', 'etherpadlite'), '0'));
-
-$settings->add(new admin_setting_configcheckbox('etherpadlite/responsiveiframe', get_string('responsiveiframe', 'etherpadlite'),
-    get_string('responsiveiframedesc', 'etherpadlite'), '0'));
 
 $settings->add(new admin_setting_configtext('etherpadlite/minwidth', get_string('minwidth', 'etherpadlite'),
     get_string('minwidthdesc', 'etherpadlite'), '400', PARAM_INT));
