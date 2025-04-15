@@ -43,7 +43,7 @@ jobs:
       matrix:
         php: ['8.2', '8.3']
         database: ['mariadb', 'pgsql']
-        moodlebranch: ['main']
+        moodlebranch: ['MOODLE_500_STABLE']
 
     steps:
       - name: Check out repository code
