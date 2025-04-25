@@ -738,6 +738,9 @@ class client {
      * @return string|bool The blocked host or false
      */
     public static function is_url_blocked($urlstring) {
+        global $CFG;
+        require_once($CFG->libdir . '/filelib.php');
+
         $curl = new \curl(['ignoresecurity' => true]);
         $url  = new \moodle_url($urlstring);
         if ($curl->get_security()->url_is_blocked($url)) {
@@ -761,6 +764,8 @@ class client {
      * @return static
      */
     public static function get_instance($apikey, $apiurl = null) {
+        global $CFG;
+        require_once($CFG->libdir . '/filelib.php');
         static $client;
         if (empty($client)) {
             if (static::is_testing()) {
