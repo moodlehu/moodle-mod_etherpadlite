@@ -26,7 +26,7 @@
  */
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->version   = 2025041600;  // The current module version (Date: YYYYMMDDXX).
+$plugin->version   = 2025122100;  // The current module version (Date: YYYYMMDDXX).
 $plugin->release   = 'v5.0.1 (2025090700)';
 $plugin->requires  = 2025040800;
 $plugin->component = 'mod_etherpadlite';
