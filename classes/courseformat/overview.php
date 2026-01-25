@@ -51,11 +51,21 @@ class overview extends \core_courseformat\activityoverviewbase {
             ['id' => $this->cm->id],
         );
 
+        if (
+            class_exists(button::class) &&
+            (new \ReflectionClass(button::class))->hasConstant('BODY_OUTLINE')
+        ) {
+            $bodyoutline = button::BODY_OUTLINE;
+            $buttonclass = $bodyoutline->classes();
+        } else {
+            $buttonclass = "btn btn-outline-secondary";
+        }
+
         $text = get_string('view');
         $content = new action_link(
             url: $url,
             text: $text,
-            attributes: ['class' => button::BODY_OUTLINE->classes()],
+            attributes: ['class' => $buttonclass],
         );
 
         return new overviewitem(
